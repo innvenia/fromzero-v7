@@ -15,7 +15,7 @@ El usuario puede corregir respuestas editando `Respuesta seleccionada` o agregan
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | listo para revisión |
-| Historial de estados | 2026-06-18: cuestionario ejecutado en modo plan y registrado para revisión |
+| Historial de estados | 2026-06-18: cuestionario ejecutado en modo plan y registrado para revisión; 2026-06-18: correcciones documentales aplicadas por solicitud del usuario |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -88,10 +88,10 @@ Si `Aprobación del usuario` no es `aprobada`, este archivo no puede usarse para
 | D003 | Alcance | Todo lo documentado sigue vigente; fases solo ordenan entrega |
 | D004 | `record-relationship` | Subsistema transversal; no módulo visible independiente |
 | D005 | UI | UI FromZero como base operativa |
-| D006 | Estructura | Adaptar documentación a `.codex` y `artifacts` donde aplique |
+| D006 | Estructura | Renombrar solo `.agent/` a `.codex/` y `_reference/` a `artifacts/`; no altera `src/app`, `src/framework`, `src/web`, `core-ai` ni `supabase` |
 | D007 | Modo inicial | SaaS |
 | D008 | Modelo comercial funcional | `per_tenant` |
-| D009 | Usuarios multi-tenant | Parámetro global; default: un usuario pertenece a un tenant |
+| D009 | Usuarios multi-tenant | Parámetro global con default OFF: un usuario pertenece a un tenant; corrige `allow_multi_tenant_users: true` a `false` |
 | D010 | Supabase desarrollo | Proyecto cloud directo en `supabase.com` |
 | D011 | Tenant activo | Selector UI por nombre en instalaciones multi-tenant; backend valida permisos |
 | D012 | Auth default | Email/password; MFA configurable |
@@ -145,7 +145,7 @@ Si `Aprobación del usuario` no es `aprobada`, este archivo no puede usarse para
 | D060 | Modelo OpenRouter | Verificar identificador exacto antes de usar |
 | D061 | Plan codes | Free, Trial, Pro, Enterprise |
 | D062 | Plan default | Trial |
-| D063 | Trial vencido | Read-only por defecto |
+| D063 | Trial vencido | Degradar a Free (`degrade_to_free`) si existe plan `free` o freemium |
 | D064 | Anti-abuso | reCAPTCHA adapter |
 | D065 | Optimización imágenes | WebP activable, default off |
 | D066 | Locale default | `es` |
@@ -166,10 +166,10 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | Q003 | respondida | crítica | producto | Según la documentación, ¿cómo interpretamos el alcance y las fases? | Todo por fases; Release reducido; Redefinir alcance | Todo, por fases | `docs/PRD.md`, `docs/DEPENDENCY_MATRIX.md` | No reduce producto vendible |
 | Q004 | respondida | crítica | módulos | ¿Cómo debe tratarse la capacidad de relacionar registros entre módulos? | Subsistema transversal; Módulo visible; Solo soporte | Subsistema transversal | `docs/REFERENCE_MODULES.md` | Mantiene 27 módulos visibles |
 | Q005 | respondida | crítica | UI | ¿Cómo quieres definir la interfaz visual del framework? | UI FromZero; Referencia externa; Diferir UI | UI FromZero | `docs/REFERENCE_DESIGN_SYSTEM.md`, recurso `fromzero-ui-template` | Sanitizar marcas y deuda migrada |
-| Q006 | respondida | importante | estructura | La documentación menciona una estructura y el repo actual usa otra. ¿Cómo lo resolvemos? | Adaptar a Codex; Neutral multi-agente; Conservar docs | Adaptar a Codex | `docs/REFERENCE_STRUCTURE.md`, estado del repo | `.codex` y `artifacts` reemplazan referencias obsoletas |
+| Q006 | respondida | importante | estructura | La documentación menciona una estructura y el repo actual usa otra. ¿Cómo lo resolvemos? | Adaptar a Codex; Neutral multi-agente; Conservar docs | Adaptar a Codex | `docs/REFERENCE_STRUCTURE.md`, estado del repo | Solo renombra `.agent/` a `.codex/` y `_reference/` a `artifacts/`; no altera `src/app`, `src/framework`, `src/web`, `core-ai` ni `supabase`. Fuente: `docs/REFERENCE_STRUCTURE.md:33`, `docs/REFERENCE_STRUCTURE.md:36`, `docs/REFERENCE_STRUCTURE.md:81`, `docs/REFERENCE_STRUCTURE.md:86`, `docs/REFERENCE_STRUCTURE.md:111-113` |
 | Q007 | respondida | crítica | producto | ¿Cuál debe ser el modo inicial del framework al hacer bootstrap? | SaaS; Corporativo; Configurable sin default | SaaS | `docs/BOOTSTRAP_REFERENCE.md` | Alineado a venta B2B |
 | Q008 | respondida | crítica | comercial | ¿Cuál debe ser el modelo comercial inicial dentro del producto? | Por tenant; Por usuario; Configurable | Por tenant | `docs/BOOTSTRAP_REFERENCE.md`, `docs/REFERENCE_MODULES.md` | `licensing_model = per_tenant` |
-| Q009 | respondida | crítica | usuarios | ¿Un mismo usuario podrá pertenecer a varias cuentas o empresas desde el inicio? | Sí configurable; No al inicio; Solo Super Admin | Parámetro global; default un usuario solo pertenece a un tenant | `docs/BOOTSTRAP_REFERENCE.md`, conversación | Capacidad configurable, default off |
+| Q009 | respondida | crítica | usuarios | ¿Un mismo usuario podrá pertenecer a varias cuentas o empresas desde el inicio? | Sí configurable; No al inicio; Solo Super Admin | Parámetro global; default OFF: un usuario solo pertenece a un tenant | `docs/BOOTSTRAP_REFERENCE.md`, conversación | Corrige el default documentado `allow_multi_tenant_users: true` a `false`. Fuente: `docs/BOOTSTRAP_REFERENCE.md:61`, `docs/BOOTSTRAP_REFERENCE.md:119`, `docs/PRD.md:221` |
 | Q010 | respondida | crítica | datos | ¿Dónde debe trabajarse Supabase durante el desarrollo inicial del framework? | Local y cloud; Cloud con SQL; Solo cloud | Trabajar directamente con proyecto cloud en `supabase.com` | `docs/REFERENCE_STACK.md` | Se complementa con SQL versionado en Q052 |
 | Q011 | respondida | crítica | permisos | ¿Cómo debe resolverse el tenant activo cuando la instalación permite usuarios en más de un tenant? | Servidor decide; Perfil seguro; Selección cliente | UI permite cambiar tenant por nombre; la opción activa es el tenant activo | `docs/SECURITY_ASSURANCE.md`, conversación | Backend debe validar membresía/RBAC/RLS |
 | Q012 | respondida | importante | auth | ¿Qué comportamiento de autenticación debe traer el framework por defecto? | Email, MFA opcional; OAuth inicial; MFA obligatorio | Email, MFA opcional | `docs/BOOTSTRAP_REFERENCE.md` | Reconfirmado como configurable en Q075 |
@@ -196,7 +196,7 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | Q033 | respondida | importante | UI | ¿Qué tipo de experiencia debe priorizar la interfaz base? | Operacional densa; Comercial visual; Mínima técnica | Operacional densa | `docs/PRD.md` | SaaS/corporate operativo |
 | Q034 | respondida | crítica | API | ¿Qué alcance debe tener la API versionada inicial? | Todos los módulos; Solo base; Interna primero | Todos los módulos | `docs/REFERENCE_ARCHITECTURE.md` | Contrato versionado aunque implementación sea por fases |
 | Q035 | respondida | crítica | seguridad | ¿Qué granularidad deben tener las API keys? | Tenant, módulo, acción; Tenant completo; Global admin | Tenant, módulo, acción | `docs/REFERENCE_MODULES.md` | Mínimo privilegio |
-| Q036 | corregida | importante | import-export | ¿Qué formatos debe soportar import/export como contrato base? | CSV/XLSX/JSON; CSV/JSON; Adapter por módulo | CSV, XLSX, JSON | `docs/PRD.md`, conversación | Reconciliada por Q070: export agrega PDF |
+| Q036 | corregida | importante | import-export | ¿Qué formatos debe soportar import/export como contrato base? | CSV/XLSX/JSON; CSV/JSON; Adapter por módulo | CSV, XLSX | `docs/PRD.md`, conversación | Import se alinea a PRD con CSV/XLSX; `REFERENCE_MODULES` incluye JSON y debe alinearse después. Fuente: `docs/PRD.md:593`, `docs/REFERENCE_MODULES.md:1491`, `docs/REFERENCE_MODULES.md:1532` |
 | Q037 | respondida | crítica | permisos | ¿Cómo debe modelarse el sistema de roles y permisos? | Roles base + perfiles; Solo perfiles custom; Roles fijos | Roles base + perfiles | `docs/REFERENCE_MODULES.md` | Super Admin, Admin, Member, Guest |
 | Q038 | respondida | crítica | permisos | ¿Qué alcance debe tener el Super Admin inicial? | Global + Tenant Zero; Solo global; Tenant normal | Global + Tenant Zero | `docs/BOOTSTRAP_REFERENCE.md` | Trazabilidad fundacional |
 | Q039 | respondida | importante | auditoría | ¿Qué debe auditar el módulo de logs por defecto? | Seguridad y cambios; Solo seguridad; Todo evento | Seguridad y cambios | `docs/SECURITY_ASSURANCE.md` | Evitar ruido de todos los eventos |
@@ -210,7 +210,7 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | Q047 | respondida | importante | performance | ¿Cuándo deben bloquear los presupuestos de performance? | Release candidate; Desde primer corte; Solo venta | Release candidate | `docs/SCALABILITY_ASSURANCE.md` | En primer corte se miden |
 | Q048 | respondida | importante | performance | ¿Dónde deben ejecutarse las pruebas de carga k6? | Staging dedicado; Local; Producción aprobada | Staging dedicado | recurso `k6` | No producción sin autorización |
 | Q049 | respondida | crítica | stack | Según la documentación del proyecto, ¿cómo deben manejarse las versiones del stack inicial? | Estables fijadas; Rangos compatibles; Últimas siempre | Estables fijadas | `docs/REFERENCE_STACK.md` | Verificar oficiales antes de fijar |
-| Q050 | respondida | importante | stack | ¿Qué gestor de paquetes debe usarse para el workspace JavaScript/TypeScript? | pnpm; npm; Yarn | npm | conversación | Reemplaza recomendación inicial |
+| Q050 | respondida | importante | stack | ¿Qué gestor de paquetes debe usarse para el workspace JavaScript/TypeScript? | pnpm; npm; Yarn | npm | conversación | Elección libre sin conflicto documental; la documentación solo lista `package.json`, no fija gestor. Fuente: `docs/REFERENCE_STRUCTURE.md:98` |
 | Q051 | decisión documentada asumida | importante | estructura | ¿Qué estructura debe usar el código del framework cuando se implemente? | Monorepo apps/packages; Next root + servicios; Repos separados | Ya está definido en la documentación | `docs/REFERENCE_STRUCTURE.md` | Usar estructura documentada |
 | Q052 | respondida | crítica | datos | Aunque se trabaje en Supabase cloud, ¿cómo deben gobernarse los cambios de base de datos? | SQL versionado; Dashboard + export; Dashboard manual | SQL versionado | `docs/REFERENCE_STRUCTURE.md` | Migraciones versionadas |
 | Q053 | respondida | importante | deploy | ¿Debe recomendarse un proveedor VPS específico para el despliegue Docker inicial? | Genérico Docker; Hostinger default; Sin proveedor | En principio Coolify, pero aplicable a Docker genérico | `docs/PRD.md`, conversación | Coolify como ruta principal |
@@ -223,21 +223,21 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | Q060 | respondida | importante | público | ¿Qué alcance deben tener las rutas públicas del framework? | Base mínima; Completas venta; Solo auth | Base mínima | `docs/REFERENCE_STRUCTURE.md` | Reemplazable por app derivada |
 | Q061 | respondida | crítica | documentación | Cuando una respuesta contradiga un documento viejo, ¿qué debe mandar para la especificación futura? | Cuestionario manda; Corregir docs primero; Bloquear hasta alinear | Mostrar versión del cuestionario y versión documental para decidir individualmente | conversación | No resolver conflictos en silencio |
 | Q062 | respondida | importante | operación | Sobre los MCP de Supabase y SonarQube, ¿cuándo se deben activar realmente? | Después del cuestionario; Durante Spec; No activar todavía | Después del cuestionario | conversación | Requiere acción separada |
-| Q063 | respondida | crítica | IA | Para OpenRouter, ¿cómo registramos el modelo Gemma 4? | Verificar ID exacto; Usar nombre literal; Alias configurable | Verificar ID exacto | conversación | Requiere verificación oficial antes de implementación |
+| Q063 | respondida | crítica | IA | Para OpenRouter, ¿cómo registramos el modelo Gemma 4? | Verificar ID exacto; Usar nombre literal; Alias configurable | Verificar ID exacto | conversación | Riesgo ALTO: `Gemma 4` puede no existir como identificador de modelo; verificar ID exacto en OpenRouter antes de cualquier Spec ejecutable. Fuente: Q063 del Q&A; verificación externa pendiente |
 | Q064 | respondida | importante | billing | ¿Qué plantillas de plan debe traer el framework? | Free/Trial/Pro/Enterprise; Trial/Pro/Enterprise; Pro/Enterprise | Free, Trial, Pro, Enterprise | `docs/REFERENCE_MODULES.md` | Sin precios fijos |
 | Q065 | respondida | importante | billing | ¿Qué plan debe asignarse a un tenant nuevo por defecto? | Trial; Free; Pro manual | Trial | `docs/PRD.md` | `subscription.default_plan_code = trial` |
-| Q066 | respondida | importante | billing | Si vence un trial y no hay pago activo, ¿qué debe ocurrir por defecto? | Read-only; Degradar a Free; Suspender tenant | Read-only | `docs/PRD.md` | Si hay Free, regla documental de precedencia debe revisarse caso por caso |
-| Q067 | respondida | importante | import-export | La documentación incluye exportación PDF, pero la opción anterior omitía PDF. ¿Qué debe quedar? | Incluir PDF; Sin PDF inicial; PDF separado | Incluir PDF | `docs/PRD.md` | Import CSV/XLSX; export CSV/XLSX/JSON/PDF |
-| Q068 | respondida | importante | seguridad | ¿Qué protección anti-abuso debe recomendar el framework para formularios sensibles? | Turnstile adapter; reCAPTCHA adapter; Sin default | reCAPTCHA adapter | `docs/PRD.md`, conversación | Contradice preferencia documental de Turnstile; decisión explícita del Q&A |
+| Q066 | corregida | importante | billing | Si vence un trial y no hay pago activo, ¿qué debe ocurrir por defecto? | Read-only; Degradar a Free; Suspender tenant | Degradar a Free (`degrade_to_free`) | `docs/PRD.md`, `docs/REFERENCE_MODULES.md` | `read_only_mode` es inalcanzable si existe plan `free` o freemium, porque `subscription.expiry_action` se ignora y siempre degrada a Free. Fuente: `docs/PRD.md:546`, `docs/REFERENCE_MODULES.md:361`, Q064 |
+| Q067 | respondida | importante | import-export | La documentación incluye exportación PDF, pero la opción anterior omitía PDF. ¿Qué debe quedar? | Incluir PDF; Sin PDF inicial; PDF separado | Incluir PDF | `docs/PRD.md` | Import CSV/XLSX; export CSV/XLSX/JSON/PDF. Fuente: `docs/PRD.md:593`, `docs/PRD.md:594` |
+| Q068 | respondida | importante | seguridad | ¿Qué protección anti-abuso debe recomendar el framework para formularios sensibles? | Turnstile adapter; reCAPTCHA adapter; Sin default | reCAPTCHA adapter | `docs/REFERENCE_ARCHITECTURE.md`, conversación | Decisión alineada con los adapters de seguridad perimetral documentados. Fuente: `docs/REFERENCE_ARCHITECTURE.md:63` |
 | Q069 | respondida | importante | storage | ¿Qué default debe tener la optimización de imágenes subidas? | Activable off; On default; Sin optimización | Activable, off default | `docs/PRD.md` | WebP disponible por setting |
 | Q070 | respondida | importante | i18n | ¿Cuál debe ser el idioma default del framework al iniciar? | Español; Inglés; Elegir en setup | Español | `docs/PRD.md` | `es` source of truth |
 | Q071 | respondida | importante | configuración | ¿Qué zona horaria default debe usar el framework? | UTC; America/Guatemala; Elegir en setup | UTC | `docs/PRD.md` | Cada tenant puede ajustar |
 | Q072 | respondida | importante | billing | ¿Qué moneda default debe usar billing en las plantillas base? | USD; Local por tenant; Elegir en setup | USD | `docs/STRATEGY.md` | Precios finales por app |
-| Q073 | respondida | crítica | seguridad | ¿Cómo debe aplicarse MFA por defecto? | Super Admin obligatorio; Opcional todos; Obligatorio todos | Configurable para todos | `docs/BOOTSTRAP_REFERENCE.md`, conversación | Reconfirmado como excepción en Q076 |
-| Q074 | respondida | crítica | seguridad | ¿Qué expiración deben tener las API keys por defecto? | Expiran por defecto; Expiración opcional; Nunca expiran | Expiración opcional | `docs/SECURITY_ASSURANCE.md`, conversación | Reconfirmado como excepción en Q077 |
+| Q073 | respondida | crítica | seguridad | ¿Cómo debe aplicarse MFA por defecto? | Super Admin obligatorio; Opcional todos; Obligatorio todos | Configurable para todos | `docs/BOOTSTRAP_REFERENCE.md`, conversación | Decisión alineada con `mfa_policy: optional`; no es excepción de seguridad. Fuente: `docs/BOOTSTRAP_REFERENCE.md:78`, `docs/BOOTSTRAP_REFERENCE.md:138` |
+| Q074 | respondida | crítica | seguridad | ¿Qué expiración deben tener las API keys por defecto? | Expiran por defecto; Expiración opcional; Nunca expiran | Expiración opcional | `docs/SECURITY_ASSURANCE.md`, conversación | Compatible con la documentación: se exige soportar expiración, pero `expires_at` puede ser nulo. Fuente: `docs/SECURITY_ASSURANCE.md:45`, `docs/REFERENCE_MODULES.md:1161` |
 | Q075 | respondida | crítica | seguridad | ¿Cómo deben gestionarse secretos en despliegue Docker/Coolify? | Panel/env store; Archivos `.env` manuales; Vault externo | Panel/env store | instrucciones globales, conversación | Repo mantiene solo `.env.example` |
-| Q076 | respondida | crítica | seguridad | ¿Confirmas que ningún perfil, incluido Super Admin, debe tener MFA obligatorio por defecto? | Super Admin obligatorio; Configurable todos; Política global | Configurable todos | conversación | Excepción de seguridad aprobada por Q&A |
-| Q077 | respondida | crítica | seguridad | ¿Confirmas que las API keys pueden crearse sin expiración obligatoria? | Expiran por defecto; Expiración opcional; Solo Super Admin | Expiración opcional | conversación | Excepción de seguridad aprobada por Q&A |
+| Q076 | respondida | crítica | seguridad | ¿Confirmas que ningún perfil, incluido Super Admin, debe tener MFA obligatorio por defecto? | Super Admin obligatorio; Configurable todos; Política global | Configurable todos | conversación | Decisión alineada con `mfa_policy: optional`; no es excepción de seguridad. Fuente: `docs/BOOTSTRAP_REFERENCE.md:78`, `docs/BOOTSTRAP_REFERENCE.md:138` |
+| Q077 | respondida | crítica | seguridad | ¿Confirmas que las API keys pueden crearse sin expiración obligatoria? | Expiran por defecto; Expiración opcional; Solo Super Admin | Expiración opcional | conversación | Compatible documentalmente; queda como buena práctica recomendar expiración aunque no sea obligatoria. Fuente: `docs/SECURITY_ASSURANCE.md:45`, `docs/REFERENCE_MODULES.md:1161` |
 | Q078 | respondida | crítica | cierre | ¿Cómo dejamos el cuestionario FromZero en este punto? | Completo para registrar; Corregir respuestas; Más preguntas | Completo para registrar | conversación | Registrar para revisión y esperar aprobación |
 
 ## Conflictos y excepciones explícitas
@@ -245,21 +245,22 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | ID | Tema | Versión de la documentación | Versión del cuestionario | Tratamiento |
 |---|---|---|---|---|
 | C001 | Versión | Documentos mencionan 7.0.0 | Proyecto actual manda como v7.4 | Alinear docs después |
-| C002 | Estructura agente | Documentos mencionan `.agent/` | Repo usa `.codex/` y `artifacts/` | Adaptar a Codex |
-| C003 | Multi-tenant users | Docs permiten configuración | Default decidido: un usuario pertenece a un tenant | Mantener parámetro global |
-| C004 | Tenant activo | Seguridad prefería servidor/perfil seguro | Usuario eligió selección UI por nombre | Backend debe validar membresía, RBAC y RLS |
+| C002 | Estructura agente | Documentos mencionan `.agent/` y `_reference/` | Repo usa `.codex/` y `artifacts/` | Renombrar solo esas carpetas; conservar árbol de código `src/app`, `src/framework`, `src/web`, `core-ai`, `supabase`. Fuente: `docs/REFERENCE_STRUCTURE.md:33`, `docs/REFERENCE_STRUCTURE.md:36`, `docs/REFERENCE_STRUCTURE.md:81`, `docs/REFERENCE_STRUCTURE.md:86`, `docs/REFERENCE_STRUCTURE.md:111-113` |
+| C003 | Multi-tenant users | `allow_multi_tenant_users: true` aparece como default en bootstrap | Default decidido: `allow_multi_tenant_users: false` | Inversión explícita del valor por defecto documentado para que un usuario pertenezca a un solo tenant por defecto. Fuente: `docs/BOOTSTRAP_REFERENCE.md:61`, `docs/BOOTSTRAP_REFERENCE.md:119`, `docs/PRD.md:221` |
+| C004 | Tenant activo | La documentación exige contexto seguro, aislamiento RLS y validación de acceso, pero no fija el mecanismo de selección de tenant | Usuario eligió selección UI por nombre | Decisión de diseño con mitigación: el backend emite el contexto seguro y valida membresía, RBAC y RLS; la UI solo expresa preferencia. Fuente: `docs/PRD.md:246-248`, `docs/PRD.md:330-334`, `docs/SECURITY_ASSURANCE.md:56`, `docs/SECURITY_ASSURANCE.md:101` |
 | C005 | Observabilidad | Docs mencionan Sentry/PostHog | Framework solo provee opciones, no activas | Activación por app derivada |
 | C006 | MCP | Recursos indican no activar sin aprobación | Usuario autorizó preparar/activar después del cuestionario | Requiere acción separada; no ejecutado aquí |
-| C007 | PDF export | Opción inicial omitió PDF | PDF incluido en export | Q067 corrige Q036 |
-| C008 | Captcha | Docs prefieren Turnstile por privacidad | Usuario eligió reCAPTCHA adapter | Registrar como decisión explícita |
-| C009 | MFA | Seguridad recomendaba Super Admin obligatorio | Usuario eligió configurable para todos | Excepción explícita aprobada en Q076 |
-| C010 | API keys | Seguridad recomendaba expiración por defecto | Usuario eligió expiración opcional | Excepción explícita aprobada en Q077 |
-| C011 | OpenRouter Gemma 4 | Identificador no verificado | Usar OpenRouter/Gemma 4 como intención | Verificar ID exacto antes de Spec ejecutable |
+| C007 | PDF export | Opción inicial omitió PDF | PDF incluido en export | Q067 corrige Q036 para mantener export CSV/XLSX/JSON/PDF. Fuente: `docs/PRD.md:594` |
+| C008 | Captcha | `REFERENCE_ARCHITECTURE` lista Turnstile y reCAPTCHA v3 como adapters de seguridad perimetral | Usuario eligió reCAPTCHA adapter | Decisión alineada con adapters documentados. Fuente: `docs/REFERENCE_ARCHITECTURE.md:63` |
+| C009 | MFA | `mfa_policy` default `optional` | Usuario eligió configurable para todos | Decisión alineada con bootstrap; no es excepción de seguridad. Fuente: `docs/BOOTSTRAP_REFERENCE.md:78`, `docs/BOOTSTRAP_REFERENCE.md:138` |
+| C010 | API keys | Seguridad exige soportar expiración; Modules permite `expires_at` nulo | Usuario eligió expiración opcional | Compatible documentalmente; registrar como buena práctica/riesgo operativo, no contradicción: recomendar expiración aunque no sea obligatoria. Fuente: `docs/SECURITY_ASSURANCE.md:45`, `docs/REFERENCE_MODULES.md:1161` |
+| C011 | OpenRouter Gemma 4 | Identificador no verificado en documentación local | Usar OpenRouter/Gemma 4 como intención | Riesgo ALTO: `Gemma 4` puede no existir como ID; verificar el identificador exacto en OpenRouter antes de cualquier Spec ejecutable. Fuente: Q063 del Q&A; verificación externa pendiente |
+| C012 | Import JSON | `REFERENCE_MODULES` incluye JSON en import | PRD limita import a CSV/XLSX; export conserva CSV/XLSX/JSON/PDF | Inconsistencia interna: import se alinea a PRD y `REFERENCE_MODULES` debe alinearse después. Fuente: `docs/PRD.md:593`, `docs/PRD.md:594`, `docs/REFERENCE_MODULES.md:1491`, `docs/REFERENCE_MODULES.md:1532` |
 
 ## Resumen validado para Spec
 
 - Resumen validado por el usuario: no
-- Correcciones integradas: ruta v7.4, UI FromZero, Supabase cloud, providers por adapter, Coolify/Docker, conflict resolution caso por caso, export PDF, MFA/API key exceptions
+- Correcciones integradas: ruta v7.4, UI FromZero, Supabase cloud, providers por adapter, Coolify/Docker, conflict resolution caso por caso, trial `degrade_to_free`, import CSV/XLSX, export PDF, MFA alineado, API key expiración opcional compatible
 - Decisiones críticas cerradas: ruta, versión, alcance, UI, tenancy, auth, datos, proveedores, deploy, permisos, seguridad, billing, IA, QA, operación
 - Decisiones diferidas aprobadas: verificar identificador exacto OpenRouter/Gemma 4; activar MCP después del cuestionario en acción separada
 - Supuestos que pasan a Spec: ninguno hasta aprobación explícita del usuario
@@ -278,3 +279,4 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | Fecha | Cambio | Autor |
 |---|---|---|
 | 2026-06-18 | Registro del cuestionario respondido para revisión | Codex |
+| 2026-06-18 | Correcciones de coherencia documental solicitadas por el usuario | Codex |
