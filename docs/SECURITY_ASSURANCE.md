@@ -47,6 +47,10 @@ Referencias:
 | Errores | Mensajes seguros, sin stack traces ni secretos. |
 | CI quality gate | SonarQube/SonarCloud bloquea release si falla seguridad o calidad. |
 
+### 2.1 RBAC Server-Side
+
+El control RBAC se implementa siempre en servidor, referenciando el módulo Profile (`A6. profile`) y la tabla `profile_permissions`. Cada Server Action/API Route debe invocar un guard estándar, por ejemplo `requirePermission(action, moduleSlug)`, al inicio de la operación. Primero se valida la acción permitida por Profile y luego RLS limita los datos por Tenant; Client Components y menús RBAC-aware solo reducen superficie visual, nunca sustituyen la validación server-side.
+
 ---
 
 ## 3. Matriz OWASP Web Top 10
@@ -144,6 +148,6 @@ Este snapshot no sustituye una auditoría ASVS completa. Define las áreas ASVS 
 - Un upload con MIME/tamaño inválido no recibe signed URL.
 - Un payload con campos extra no modifica propiedades no permitidas.
 - Una consulta de búsqueda global respeta RLS y RBAC.
-- Una invocación AI respeta budget cap, rate limit y auditoría.
+- Una invocación AI respeta budget cap, límites por petición, rate limit y auditoría.
 - Un error 500 no expone stack trace ni secretos.
 - SonarQube/SonarCloud bloquea release con vulnerabilidades críticas.

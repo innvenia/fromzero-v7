@@ -191,6 +191,10 @@ Mismo schema Zod compartido; el servidor SIEMPRE revalida.
 - **Client Components:** Solo interactividad UI.
 - **Prohibido:** Mutaciones desde Client Components directos.
 
+#### RBAC Server-Side
+
+Toda Server Action y API Route invoca un guard estándar, por ejemplo `requirePermission(action, moduleSlug)`, antes de ejecutar consultas o mutaciones. El guard resuelve el Profile activo y valida contra `profile_permissions` del módulo solicitado. El orden obligatorio es RBAC para autorizar la acción y RLS para aislar los datos; la UI solo oculta acciones, nunca es la barrera única de seguridad.
+
 ### 4.6 Presigned URLs (File Upload)
 ```
 Cliente → Server Action (solicitud) → Presigned URL → Upload directo (Browser → Storage)
@@ -225,12 +229,17 @@ Motor de automatización "Si-Entonces" basado en reglas configurables:
 - Límite por plan (`max_rules`).
 - Toggle global: `event_bus_enabled` en Settings.
 
+#### Auditoría y Background
+
+El registro de auditoría se centraliza en un wrapper estándar de Server Actions/API Routes que captura contexto 5W, ejecuta la operación y escribe en `logs` al completarse una mutación exitosa. Un trigger de PostgreSQL opera como respaldo de integridad ante escrituras directas o fallos de instrumentación. También se registran intentos fallidos de autenticación/autorización y ejecuciones background relevantes, con metadata formada por actor o API key, acción, entidad, timestamp, IP, user agent, request ID, razón y cambios cuando aplique.
+
 ### 4.11 Core AI (Integración IA)
 - Servicio **Python independiente** (`core-ai/`, runtime separado).
 - Invocado desde **Server Actions** a través del bridge en `src/framework/ai/`.
 - Catálogo de modelos en tabla `ai_models` (global).
+- `ai_models` define pricing (`cost_per_1k_tokens_input`, `cost_per_1k_tokens_output`, `pricing_unit`, `currency`) y guardrails técnicos (`context_window`, `max_input_tokens`, `max_tokens` como salida, `max_cost_per_request`, `request_timeout_seconds`, `input_modalities`, `fallback_model_id`, `deprecated_at`).
 - Credenciales de proveedor por Tenant (tabla `integrations`).
-- Tracking de costos en `logs.metadata`.
+- Tracking de costos en `logs.metadata`, incluyendo `pricing_unit` y `currency`.
 
 ---
 

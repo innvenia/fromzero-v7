@@ -385,8 +385,18 @@ Configura el catálogo multi-proveedor de modelos de LLM disponibles para el Cor
 | `endpoint_url` | `text` | | URL base del endpoint. NULL para proveedores con SDK estándar |
 | `temperature` | `decimal(3,2)` | DEFAULT `0.7` | Parámetro de inferencia: creatividad (0.0–2.0) |
 | `max_tokens` | `integer` | DEFAULT `4096` | Máximo de tokens de salida |
+| `context_window` | `integer` | | Contexto total admitido por el modelo (input + output) |
+| `max_input_tokens` | `integer` | nullable | Tope de tokens de entrada por petición |
 | `cost_per_1k_tokens_input` | `decimal(10,6)` | | Costo por 1K tokens de entrada (USD) para tracking |
 | `cost_per_1k_tokens_output` | `decimal(10,6)` | | Costo por 1K tokens de salida (USD) para tracking |
+| `pricing_unit` | `enum` | DEFAULT `per_1k`; valores: `per_1k`, `per_1m` | Unidad de los costos del proveedor |
+| `currency` | `varchar(3)` | DEFAULT `USD` | Moneda de los costos |
+| `max_cost_per_request` | `decimal(10,6)` | nullable | Tope de costo estimado por invocación; si se excede, el motor rechaza la petición |
+| `request_timeout_seconds` | `integer` | nullable | Timeout por petición para ese modelo/proveedor |
+| `supports_streaming` | `boolean` | DEFAULT `false` | Si el modelo soporta respuestas por streaming |
+| `input_modalities` | `JSONB` | DEFAULT `["text"]` | Modalidades aceptadas (`text`, `image`, `audio`, `video`) para validar el input |
+| `deprecated_at` | `timestamptz` | nullable | Marca de deprecación sin reemplazar `is_active` |
+| `fallback_model_id` | `UUID FK ai_models` | nullable | Modelo de respaldo si el principal falla o no está disponible |
 | `is_active` | `boolean` | DEFAULT `true` | Si el modelo está disponible para uso |
 
 **RLS:** Tabla global (sin `tenant_id`). Solo Super Admin gestiona modelos.
@@ -402,9 +412,9 @@ Configura el catálogo multi-proveedor de modelos de LLM disponibles para el Cor
 
 #### Estructura de UI
 
-**Formulario:** Formulario simple (sin tabs). Campos: `name`, `provider` (select), `model_id`, `endpoint_url`, `temperature` (slider), `max_tokens`, `cost_per_1k_tokens_input`, `cost_per_1k_tokens_output`, `is_active` (toggle).
+**Formulario:** Formulario simple (sin tabs). Campos: `name`, `provider` (select), `model_id`, `endpoint_url`, `temperature` (slider), `max_tokens`, `context_window`, `max_input_tokens`, `cost_per_1k_tokens_input`, `cost_per_1k_tokens_output`, `pricing_unit`, `currency`, `max_cost_per_request`, `request_timeout_seconds`, `supports_streaming`, `input_modalities`, `deprecated_at`, `fallback_model_id`, `is_active` (toggle).
 
-**Grid:** Columnas: `name`, `provider`, `model_id`, `is_active`, `cost_per_1k_tokens_input`.
+**Grid:** Columnas: `name`, `provider`, `model_id`, `is_active`, `pricing_unit`, `currency`, `context_window`, `supports_streaming`, `deprecated_at`, `cost_per_1k_tokens_input`.
 
 #### Integraciones
 
@@ -413,12 +423,15 @@ Configura el catálogo multi-proveedor de modelos de LLM disponibles para el Cor
 | **Core IA (§4.2)** | Los modelos configurados aquí alimentan al Core IA para resolver proveedor y parámetros |
 | **Parámetros (`settings`)** | `ai_default_model_id` referencia un `id` de esta tabla |
 | **Integraciones (`integration`)** | Las credenciales del proveedor se resuelven desde la tabla `integrations` por Tenant |
-| **Log (`log`)** | Cada invocación IA registra `model_id`, tokens y costo estimado en metadata |
+| **Log (`log`)** | Cada invocación IA registra `model_id`, tokens, `pricing_unit`, `currency` y costo estimado en metadata |
 
 #### Notas de Implementación
 
 - Los modelos se registran a nivel global (no por Tenant). Las credenciales sí son por Tenant (tabla `integrations`).
-- El costo estimado por invocación se calcula como: `(tokens_input / 1000 * cost_per_1k_tokens_input) + (tokens_output / 1000 * cost_per_1k_tokens_output)`.
+- El costo estimado por invocación respeta `pricing_unit`: para `per_1k`, `(tokens_input / 1000 * cost_per_1k_tokens_input) + (tokens_output / 1000 * cost_per_1k_tokens_output)`; para `per_1m`, usa el mismo cálculo dividiendo entre 1,000,000. `currency` identifica la moneda usada para registrar el costo.
+- Guardrails por petición: el motor valida `context_window`, `max_input_tokens`, `max_tokens` como máximo de salida, `max_cost_per_request`, `request_timeout_seconds` e `input_modalities` antes de invocar al proveedor. Si el input, la salida solicitada, la modalidad o el costo estimado exceden los límites, retorna error controlado y no ejecuta la llamada externa.
+- `fallback_model_id` se usa cuando el modelo principal falla, no está disponible o tiene `deprecated_at` informado; el fallback debe pasar los mismos guardrails antes de ejecutarse.
+- Separación de responsabilidades: el motor provee catálogo con pricing, medición de consumo por petición y guardrails técnicos por modelo/proveedor. Las cuotas de negocio (caps por Tenant, usuario o feature) las define la aplicación derivada.
 - Si `ai_enabled = false` en Parámetros, el módulo sigue visible para configuración pero las invocaciones IA retornan error controlado.
 
 ---
@@ -457,10 +470,16 @@ Registro inmutable centralizado de toda actividad del sistema basado en las 5W (
 | CRUD (`create`, `update`, `delete`) | `changes` (diff de campos), `module_code`, `record_id` |
 | Login/Logout | `auth_method` (`jwt`\|`api_key`), `session_id` |
 | API Key action | `auth_method: "api_key"`, `api_key_id`, `actor_id: null` |
-| AI invocation (`ai.invocation`) | `model_id`, `tokens_input`, `tokens_output`, `estimated_cost_usd` |
+| AI invocation (`ai.invocation`) | `model_id`, `tokens_input`, `tokens_output`, `pricing_unit`, `currency`, `estimated_cost_usd` |
 | Email transaccional | `template_code`, `recipient`, `delivery_status` (`delivered`\|`bounced`\|`failed`), `provider`, `cost` |
 | System event | `job_name`, `execution_status`, `records_processed`, `error` |
 | Rule execution | `rule_id`, `action_type`, `attempt_number`, `error` |
+
+#### Patrón de Captura de Auditoría
+
+El punto único de registro es un wrapper estándar alrededor de Server Actions y API Routes. Ese wrapper arma el contexto 5W antes de la mutación, ejecuta la operación y escribe en `logs` cuando la mutación finaliza exitosamente. Un trigger de PostgreSQL actúa como respaldo de integridad para capturar escrituras directas o fallos de instrumentación, sin reemplazar el wrapper porque no siempre dispone de todo el contexto HTTP.
+
+Se registra toda mutación exitosa (`create`, `update`, `delete`, `restore`), todo intento fallido de autenticación o autorización, y toda ejecución interna relevante (jobs, webhooks, reglas e invocaciones IA). La metadata 5W se arma con `actor_id` o `api_key_id` (quién), `action`, `entity_type` y `entity_id` (qué), `timestamp` (cuándo), `ip_address`, `user_agent` y `request_id` (dónde), y `metadata.reason`, `metadata.changes`, `metadata.auth_method` o datos específicos del evento (por qué).
 
 **RLS:** Aplica RLS. El campo `tenant_id` aísla logs por Tenant. Admin solo ve `WHERE tenant_id = current_tenant`. Super Admin ve todos. Registros con `tenant_id = NULL` solo visibles por Super Admin.
 
@@ -979,6 +998,63 @@ Motor de automatizaciones del Tenant. Permite crear reglas basadas en eventos de
 
 Comparadores soportados: `equals`, `not_equals`, `contains`, `not_contains`, `greater_than`, `less_than`, `in`, `not_in`, `is_null`, `is_not_null`, `changed_to`, `changed_from`.
 
+#### Gramática Cerrada de `conditions`
+
+La representación canónica persistida en `conditions` usa operadores cerrados: `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `in`, `not_in`, `contains`, `starts_with`, `is_null`. El builder visual puede mostrar labels más descriptivos, pero debe normalizarlos a esos valores antes de guardar.
+
+Los grupos combinan condiciones con `AND` u `OR` y permiten anidación explícita mediante `conditions`. Cada condición referencia campos del registro origen por nombre interno (`field`) en `snake_case`; para campos personalizados se usa `custom_data.field_name`. No se permiten expresiones libres, código ejecutable ni rutas fuera del payload del evento.
+
+Schema canónico:
+
+```json
+{
+  "operator": "AND",
+  "conditions": [
+    { "field": "status", "operator": "eq", "value": "completed" },
+    {
+      "operator": "OR",
+      "conditions": [
+        { "field": "priority", "operator": "in", "value": ["high", "critical"] },
+        { "field": "custom_data.sla_risk", "operator": "eq", "value": true }
+      ]
+    }
+  ]
+}
+```
+
+Schema de `action_config` por `action_type`:
+
+```json
+{
+  "send_notification": {
+    "recipient_user_id": "uuid | null",
+    "recipient_profile_id": "uuid | null",
+    "title": "string",
+    "body": "string",
+    "channels": ["in_app"]
+  },
+  "send_email": {
+    "template_code": "string",
+    "to_email": "string | null",
+    "to_field": "string | null",
+    "variables": {}
+  },
+  "update_field": {
+    "field": "string",
+    "value": "any"
+  },
+  "call_webhook": {
+    "url": "https://example.com/webhook",
+    "method": "POST",
+    "headers": {},
+    "body_template": {},
+    "timeout_seconds": 10
+  }
+}
+```
+
+Loop guard: toda ejecución de regla propaga `origin_rule_id`, `origin_rule_run_id` y `rule_depth` en el payload interno. El motor rechaza reentradas de la misma regla sobre el mismo registro y corta cadenas que excedan el límite de profundidad configurado para el Event Bus.
+
 **Tabla `rule_runs` (historial de ejecuciones):**
 
 | Campo | Tipo | Constraints | Descripción |
@@ -1234,6 +1310,14 @@ Registra conexiones con servicios externos a nivel Tenant: proveedores AI (OpenA
 **Grid:** Columnas: `name`, `provider`, `status` (badge), `is_active`, `last_tested_at`.
 
 **Formulario:** `provider` (select con lista de proveedores soportados), `name`, formulario dinámico de `config` y `credentials` según el provider seleccionado. Botón "Test Connection".
+
+#### Patrón de `credentials` por Adapter
+
+`credentials` es un JSONB cifrado por adapter. Los campos genéricos comunes son `auth_type`, `api_key`, `client_id`, `client_secret`, `access_token`, `refresh_token`, `webhook_secret`, `region`, `base_url`, `expires_at` y `scopes`; cada adapter usa solo los que correspondan. Estos valores nunca se muestran completos en UI ni se escriben en `logs`.
+
+Adapters default documentados: `stripe`, `resend`, `openrouter`, `inngest`, `recaptcha`, `s3` y `r2`. Los campos exactos de cada proveedor se verifican contra su documentación oficial en el Sprint donde se implemente o actualice el adapter; este documento define el patrón, no contratos específicos de terceros.
+
+El cifrado at rest debe usar AES-256 o un mecanismo equivalente provisto por Supabase Vault/KMS, con la clave fuera del repositorio. La validación de conexión es opcional por adapter; cuando existe, actualiza `last_tested_at` y `status` sin persistir respuestas sensibles del proveedor.
 
 #### Notas de Implementación
 
