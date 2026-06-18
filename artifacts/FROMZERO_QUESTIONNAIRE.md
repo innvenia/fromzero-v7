@@ -14,11 +14,11 @@ El usuario puede corregir respuestas editando `Respuesta seleccionada` o agregan
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | listo para revisión |
-| Historial de estados | 2026-06-18: cuestionario ejecutado en modo plan y registrado para revisión; 2026-06-18: correcciones documentales aplicadas por solicitud del usuario |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: cuestionario ejecutado en modo plan y registrado para revisión; 2026-06-18: correcciones documentales aplicadas por solicitud del usuario; 2026-06-18: aprobado explícitamente por el usuario |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo el cuestionario. |
 | Artefactos prerequisito | `artifacts/FROMZERO_CONTEXT.md` |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, Q&A ejecutado en conversación |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_SPEC.md` |
@@ -259,20 +259,20 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 
 ## Resumen validado para Spec
 
-- Resumen validado por el usuario: no
+- Resumen validado por el usuario: si
 - Correcciones integradas: ruta v7.4, UI FromZero, Supabase cloud, providers por adapter, Coolify/Docker, conflict resolution caso por caso, trial `degrade_to_free`, import CSV/XLSX, export PDF, MFA alineado, API key expiración opcional compatible
 - Decisiones críticas cerradas: ruta, versión, alcance, UI, tenancy, auth, datos, proveedores, deploy, permisos, seguridad, billing, IA, QA, operación
 - Decisiones diferidas aprobadas: verificar identificador exacto OpenRouter/Gemma 4; activar MCP después del cuestionario en acción separada
-- Supuestos que pasan a Spec: ninguno hasta aprobación explícita del usuario
-- Frase literal de aprobación o revisión: pendiente
+- Supuestos que pasan a Spec: decisiones efectivas D001-D071, conflictos C001-C012 y correcciones integradas del cuestionario aprobado
+- Frase literal de aprobación o revisión: Apruebo el cuestionario.
 
 ## Revisión y aprobación
 
-- Revisado por el usuario: no
+- Revisado por el usuario: si
 - Cambios solicitados: pendiente
-- Aprobado para crear `artifacts/FROMZERO_SPEC.md`: no
-- Fecha de aprobación: pendiente
-- Frase literal de aprobación: pendiente
+- Aprobado para crear `artifacts/FROMZERO_SPEC.md`: si
+- Fecha de aprobación: 2026-06-18
+- Frase literal de aprobación: Apruebo el cuestionario.
 
 ## Registro de cambios
 
@@ -280,3 +280,4 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 |---|---|---|
 | 2026-06-18 | Registro del cuestionario respondido para revisión | Codex |
 | 2026-06-18 | Correcciones de coherencia documental solicitadas por el usuario | Codex |
+| 2026-06-18 | Aprobación explícita del cuestionario por el usuario | Usuario |
