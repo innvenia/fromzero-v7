@@ -12,11 +12,11 @@ Ruta de salida: `artifacts/adr/005-core-ai-openrouter.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: propagados campos y guardrails de Core AI, requiere re-aprobación |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: propagados campos y guardrails de Core AI, requiere re-aprobación; 2026-06-18: re-aprobado por aprobación explícita del plan vigente |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo el plan. |
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md` aprobado como base |
 | Documentos o fuentes asociadas | `docs/REFERENCE_ARCHITECTURE.md`, `docs/SECURITY_ASSURANCE.md`, `docs/REFERENCE_THREAT_MODEL.md`, `artifacts/FROMZERO_SPEC.md`, OpenRouter |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `core-ai/`, `.env.example` |

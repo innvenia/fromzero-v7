@@ -12,11 +12,11 @@ Ruta de salida: `artifacts/adr/003-integrations-jobs-cache.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: corregido a modelo dual pg_cron + Inngest, requiere re-aprobación; 2026-06-18: propagado patrón de credentials cifradas por adapter, requiere re-aprobación |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: corregido a modelo dual pg_cron + Inngest, requiere re-aprobación; 2026-06-18: propagado patrón de credentials cifradas por adapter, requiere re-aprobación; 2026-06-18: re-aprobado por aprobación explícita del plan vigente |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo el plan. |
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md` aprobado como base |
 | Documentos o fuentes asociadas | `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_STACK.md`, `docs/SCALABILITY_ASSURANCE.md`, `artifacts/FROMZERO_SPEC.md`, recursos `stripe`, `inngest`, `redis`, `k6` |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `.env.example`, `src/framework/integrations/`, `src/framework/jobs/` |

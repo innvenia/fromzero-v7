@@ -10,11 +10,11 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación; 2026-06-18: aprobado explícitamente por el usuario para preparar Sprint 1 |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo el plan. |
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md` aprobado explícitamente como base |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, `artifacts/FROMZERO_SPEC.md`, `artifacts/adr/`, recursos locales FromZero |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `artifacts/issues/`, `artifacts/test-plans/` |

@@ -10,11 +10,11 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar; 2026-06-18: corregida por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones desde `docs/`, requiere re-aprobación |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar; 2026-06-18: corregida por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones desde `docs/`, requiere re-aprobación; 2026-06-18: re-aprobada por aprobación explícita del plan vigente |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo el plan. |
 | Artefactos prerequisito | `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md` aprobado |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, recursos locales FromZero, OpenRouter |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md`, `artifacts/adr/` |
@@ -632,7 +632,7 @@ Evaluación de agentes futuros:
 
 ## Aprobación
 
-- Revisado por: pendiente tras corrección.
-- Fecha: pendiente.
-- Estado: requiere re-aprobación.
-- Frase literal: pendiente.
+- Revisado por: usuario.
+- Fecha: 2026-06-18.
+- Estado: aprobado.
+- Frase literal: Apruebo el plan.
