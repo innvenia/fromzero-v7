@@ -10,8 +10,8 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | listo para revisión |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -147,7 +147,7 @@
 | Tag | módulo | Context | release candidate | Sprint 7 | `src/framework/modules/tag/` | CRUD tests | tenant scope | tags aislados |
 | Bookmark | módulo | Context | release candidate | Sprint 7 | `src/framework/modules/bookmark/` | user tests | user scope | bookmark por usuario |
 | Filter | módulo | Context | release candidate | Sprint 5 | `src/framework/modules/filter/` | grid tests | ownership | filtro guardado |
-| Task | módulo | Context | release candidate | Sprint 10 | `src/app/(app)/tasks/` | full triad tests | reference module | módulo ejemplo |
+| Task | módulo | Context | release candidate | Sprint 10 | `src/web/modules/task/` | full triad tests | reference module | módulo ejemplo |
 | Record Relationship | transversal | Context | release candidate | Sprint 5 | `src/framework/relationships/` | relation tests | referential gates | relaciones transversales |
 | Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | resolver | primer corte | Sprint 3 | `supabase/` | migration/RLS tests | Supabase | base segura |
 | Core AI Python | servicio interno | docs | release candidate | Sprint 9 | `core-ai/` | Pydantic tests | internal-only | IA interna |
@@ -158,6 +158,7 @@
 | RLS tenant-aware | seguridad | schema/security | primer corte | Sprint 3 | SQL policies | RLS tests | isolation | acceso cross-tenant falla |
 | API `/api/v1/*` | API | architecture | primer corte | Sprint 3 | `docs/API_ENDPOINT_INVENTORY.md` | contract tests | versioning | rutas versionadas |
 | Event bus/Inngest | job | stack/resource | release candidate | Sprint 8 | `src/framework/jobs/` | Inngest tests | idempotency | eventos procesados |
+| pg_cron scheduled jobs | job programado | D9/Stack/Architecture/Scalability | release candidate | Sprint 8 | `supabase/migrations/`, `src/framework/jobs/` | schedule tests | pg_cron | configuración base en Sprint 8; expiración/trial en Sprint 6; purga en Sprint 7 |
 | Redis/BullMQ | escalabilidad | stack/resource | posterior | Sprint 11 | adapter placeholder | fallback tests | default off | no bloquea sin Redis |
 | Playwright | testing | resource | release candidate | Sprint 2 | `tests/e2e/` | `npx playwright test` | viewports | UI no rota |
 | k6 | testing/performance | resource | release candidate | Sprint 11 | `tests/k6/` | `k6 run` | budgets | carga aceptada |
@@ -226,6 +227,7 @@
 | REQ-054 | Core AI como servicio interno | ai-providers | Architecture | Core AI | release candidate | Sprint 9 | `core-ai/` | integration tests | internal | no público directo |
 | REQ-055 | FastAPI/Pydantic v2 para Core AI | ai-providers | Stack | Python | release candidate | Sprint 9 | `core-ai/` | API tests | Pydantic | servicio valida DTO |
 | REQ-056 | API p95 < 200ms salvo excepción | performance-budget | Scalability | Performance | release candidate | Sprint 11 | k6/APM | `k6 run` | p95 | budget cumplido |
+| REQ-071 | FCP < 1.5s Fast 3G | performance-budget | PRD/Architecture | Performance | release candidate | Sprint 11 | reports | Lighthouse/Playwright | FCP | budget cumplido |
 | REQ-057 | LCP < 2.5s Fast 3G | performance-budget | Scalability | Performance | release candidate | Sprint 11 | reports | Lighthouse | LCP | budget cumplido |
 | REQ-058 | Lighthouse > 90 | performance-budget | Scalability | Performance | release candidate | Sprint 11 | reports | Lighthouse | score | score cumplido |
 | REQ-059 | k6 para flujos críticos | escalabilidad | Scalability/k6 | Load | release candidate | Sprint 11 | k6 scripts | `k6 run` | load | carga crítica cubierta |
@@ -259,6 +261,7 @@
 | GATE-012 | API versionada | api-inventory | architecture | primer corte | Sprint 3 | API inventory | route tests | versioning | pública sin `/api/v1` |
 | GATE-013 | Inventario API antes de endpoints | api-inventory | architecture | primer corte | Sprint 1 | `docs/API_ENDPOINT_INVENTORY.md` | review | inventory | endpoint sin contrato |
 | GATE-014 | API p95 < 200ms | performance-budget | scalability | release candidate | Sprint 11 | k6 reports | k6/APM | p95 | p95 incumplido |
+| GATE-026 | FCP < 1.5s Fast 3G | performance-budget | PRD/architecture | release candidate | Sprint 11 | Lighthouse report | Lighthouse/Playwright | FCP | FCP incumplido |
 | GATE-015 | LCP < 2.5s Fast 3G | performance-budget | scalability | release candidate | Sprint 11 | Lighthouse report | Lighthouse | LCP | LCP incumplido |
 | GATE-016 | Lighthouse > 90 | performance-budget | scalability | release candidate | Sprint 11 | Lighthouse report | Lighthouse | score | score incumplido |
 | GATE-017 | k6 en staging | escalabilidad | k6 | release candidate | Sprint 11 | k6 scripts | `k6 run` | load | sin carga crítica |
@@ -275,8 +278,8 @@
 
 | Tipo | Total detectado | Cubiertos | Pendientes | Diferidos con razón | Excluidos con razón |
 |---|---:|---:|---:|---:|---:|
-| REQ | 70 | 70 | 0 | 0 | 0 |
-| GATE | 25 | 25 | 0 | 0 | 0 |
+| REQ | 71 | 71 | 0 | 0 | 0 |
+| GATE | 26 | 26 | 0 | 0 | 0 |
 
 Regla de cierre:
 Para presentar el plan como listo para aprobación, `Pendientes` debe ser `0` en REQ y GATE. Este plan cumple esa condición.
@@ -287,10 +290,10 @@ Para presentar el plan como listo para aprobación, `Pendientes` debe ser `0` en
 |---|---|---|---|---|---|
 | 1 | Matriz REQ | REQ-001 | cubierto | ninguno | Sprint 1 asignado |
 | 2 | Matriz REQ | REQ-035 | cubierto | ninguno | Sprint 8 asignado |
-| 3 | Matriz REQ | REQ-070 | cubierto | ninguno | Sprint 12 asignado |
+| 3 | Matriz REQ | REQ-071 | cubierto | ninguno | Sprint 11 asignado |
 | 4 | Matriz GATE | GATE-001 | cubierto | ninguno | Sprint 1 asignado |
 | 5 | Matriz GATE | GATE-013 | cubierto | ninguno | Sprint 1 asignado |
-| 6 | Matriz GATE | GATE-025 | cubierto | ninguno | Sprint 1 asignado |
+| 6 | Matriz GATE | GATE-026 | cubierto | ninguno | Sprint 11 asignado |
 
 ## 5.6 Contraste de decisiones Questionnaire -> Spec -> Plan
 
@@ -298,12 +301,14 @@ Para presentar el plan como listo para aprobación, `Pendientes` debe ser `0` en
 |---|---|---|---|---|---|
 | Ruta del proyecto | Framework base | Framework base | Sprints construyen framework, no app vertical | consistente | ninguna |
 | Estructura | `.codex/`, `artifacts/` solo tooling | conserva `src/app`, `src/framework`, `src/web`, `core-ai`, `supabase` | Sprint 1 crea/valida estructura objetivo | consistente | ninguna |
+| Task path | Q058/D058 define módulo demo web en `src/web/modules/task` | Task es módulo ejemplo de app final | Sprint 10 usa `src/web/modules/task`; `src/app` solo enruta | consistente tras corrección | ninguna |
 | Package manager | npm | npm | Sprint 1 fija lockfile npm | consistente | verificar versiones |
 | Supabase | Cloud directo + SQL versionado | Supabase principal | Sprint 3 migraciones/RLS | consistente | aprobar accesos antes de cloud |
 | Multi-tenant users | default OFF | default OFF | Sprint 3/4 valida membresía | consistente | ninguna |
 | Trial vencido | `degrade_to_free` | `degrade_to_free` | Sprint 6 billing | consistente | ninguna |
 | Import/export | Import CSV/XLSX; export CSV/XLSX; PDF individual | igual | Sprint 8 y Sprint 6 PDF individual | consistente | ninguna |
 | OpenRouter | ID verificado | `google/gemma-4-26b-a4b-it:free` | Sprint 9 revalida antes de Build | consistente | revalidar proveedor |
+| Jobs programados | D9: pg_cron por tiempo e Inngest por usuario | modelo dual pg_cron/Inngest | Sprint 6 expiración de tokens y trial; Sprint 7 purga; Sprint 8 base jobs | consistente | ninguna |
 | MCP | posterior | acción separada | Sprint 12 documenta, no activa | consistente | aprobación dedicada |
 | Redis | default off | default off | Sprint 11 fallback y placeholder | consistente | activar solo si se aprueba |
 
@@ -330,7 +335,7 @@ Evaluación de agentes futuros:
 
 | Sprint | Zona | Condición de activación | Estado | Aprobación o razón | Acción antes de Build |
 |---|---|---|---|---|---|
-| Sprint 1 | secretos/deploy | crear placeholders y lockfiles | requiere aprobación | Plan pendiente de aprobación | aprobar Plan |
+| Sprint 1 | secretos/deploy | crear placeholders y lockfiles | requiere aprobación | Plan requiere re-aprobación | re-aprobar Plan |
 | Sprint 3 | permisos/RLS/RBAC | migraciones/RLS/tenant base | requiere aprobación | riesgo cross-tenant | confirmar antes de ejecutar migraciones cloud |
 | Sprint 4 | auth/sesiones | login, MFA, tenant context, API keys | requiere aprobación | cambios de seguridad de acceso | confirmar antes de Build del Sprint |
 | Sprint 6 | billing/pagos/webhooks | Stripe, suscripciones, statements, PDF | requiere aprobación | impacto monetario | usar mocks o aprobar integración |
@@ -345,7 +350,9 @@ Evaluación de agentes futuros:
 | Sprint | Automatización | Juicio humano requerido | 80% correcto aceptable | Costo del fallo | Detección | Rollback | Evidencia | Estado |
 |---|---|---|---|---|---|---|---|---|
 | Sprint 3 | Bootstrap inicial | si | no | Alto: estado corrupto | logs/bootstrap tests | reset entorno no prod | seed report | aprobado para planificar |
+| Sprint 6 | pg_cron expiración de tokens y trial | si | no | Alto: acceso o billing incorrecto | logs pg_cron/reconciliation | revocar token/ajustar suscripción | schedule report | requiere aprobación antes de Build |
 | Sprint 6 | Billing cycle jobs | si | no | Alto: cobro incorrecto | reconciliation/webhooks | adjustment/refund | statements/invoices | requiere aprobación antes de Build |
+| Sprint 7 | pg_cron purga de soft-deletes | si | no | Alto: borrado irreversible | purge preview/log | backup restore | purge log | requiere aprobación antes de Build |
 | Sprint 8 | Import/export async | si | no | Medio/alto: datos corruptos | job logs/preview | cancelar job/purge output | history | requiere aprobación antes de Build |
 | Sprint 8 | Rules/notifications | si | no | Medio: acción no deseada | event logs/retries | disable rule | execution logs | requiere aprobación antes de Build |
 | Sprint 9 | AI invocation | si | no | Medio/alto: costo o fuga | usage log/budgets | disable tenant AI | AI logs | requiere aprobación antes de Build |
@@ -372,7 +379,7 @@ Criterios de aceptación:
 Repositorio listo para implementar sin tocar servicios externos, con estructura y placeholders validados.
 
 Dependencias:
-Spec aprobada y Plan aprobado por el usuario.
+Spec y Plan re-aprobados por el usuario.
 
 ### Sprint 2 - Stack web y UI shell
 
@@ -467,16 +474,16 @@ Sprints 3 y 4 completados.
 Estado: pendiente
 
 Objetivo:
-Implementar billing core: plans, subscriptions, statements, invoices, Stripe adapter mockeable, webhooks de billing, `degrade_to_free` y PDF individual.
+Implementar billing core: plans, subscriptions, statements, invoices, Stripe adapter mockeable, webhooks de billing, `degrade_to_free`, pg_cron para expiración de tokens, recordatorios/expiración de trial y PDF individual.
 
 Archivos objetivo:
-`src/framework/modules/subscription/`, `src/framework/modules/statement/`, `src/framework/modules/invoice/`, `src/framework/billing/`, `src/framework/integrations/stripe/`.
+`src/framework/modules/subscription/`, `src/framework/modules/statement/`, `src/framework/modules/invoice/`, `src/framework/billing/`, `src/framework/integrations/stripe/`, `supabase/migrations/`.
 
 Pruebas/comandos:
 Billing unit tests, webhook tests, reconciliation tests, PDF tests.
 
 Verificaciones:
-No cobros reales sin aprobación, webhooks firmados, Trial vencido degrada a Free.
+No cobros reales sin aprobación, webhooks firmados, Trial vencido degrada a Free, schedules de expiración de tokens y trial definidos en pg_cron.
 
 Criterios de aceptación:
 Estados de billing correctos y auditables con provider aislado por adapter.
@@ -489,16 +496,16 @@ Sprints 3 y 4 completados. Aprobación humana para cualquier integración real.
 Estado: pendiente
 
 Objetivo:
-Implementar File, Document, Tag, Bookmark, consent records, versionado acotado, signed URLs, soft delete y storage browser base.
+Implementar File, Document, Tag, Bookmark, consent records, versionado acotado, signed URLs, soft delete, pg_cron para purga de soft-deletes y storage browser base.
 
 Archivos objetivo:
-`src/framework/modules/file/`, `src/framework/modules/document/`, `src/framework/modules/tag/`, `src/framework/modules/bookmark/`, `src/framework/modules/consent/`.
+`src/framework/modules/file/`, `src/framework/modules/document/`, `src/framework/modules/tag/`, `src/framework/modules/bookmark/`, `src/framework/modules/consent/`, `supabase/migrations/`.
 
 Pruebas/comandos:
 Storage tests, signed URL tests, CRUD tests, consent tests, migration tests.
 
 Verificaciones:
-MIME/size, ownership, consent auditable, versionado solo documents/files.
+MIME/size, ownership, consent auditable, versionado solo documents/files, purga pg_cron controlada.
 
 Criterios de aceptación:
 Gestión de archivos y shared modules segura, reusable y tenant-aware.
@@ -511,16 +518,16 @@ Sprints 3, 4 y 5 completados.
 Estado: pendiente
 
 Objetivo:
-Implementar Inngest adapter, jobs, rules, notifications, email templates, integration/webhook modules, SSRF guard, import CSV/XLSX y export CSV/XLSX.
+Implementar configuración base de jobs, pg_cron para schedules por tiempo, Inngest adapter para workflows disparados por usuario, rules, notifications, email templates, integration/webhook modules, SSRF guard, import CSV/XLSX y export CSV/XLSX.
 
 Archivos objetivo:
-`src/framework/jobs/`, `src/framework/events/`, `src/framework/modules/notification/`, `src/framework/modules/rule/`, `src/framework/modules/email-template/`, `src/framework/modules/webhook/`, `src/framework/modules/import/`, `src/framework/modules/export/`, `src/framework/integrations/`.
+`src/framework/jobs/`, `src/framework/events/`, `src/framework/modules/notification/`, `src/framework/modules/rule/`, `src/framework/modules/email-template/`, `src/framework/modules/webhook/`, `src/framework/modules/import/`, `src/framework/modules/export/`, `src/framework/integrations/`, `supabase/migrations/`.
 
 Pruebas/comandos:
 Inngest tests, webhook HMAC/replay tests, SSRF abuse tests, import/export tests.
 
 Verificaciones:
-Jobs idempotentes, retries, audit logs, signed URLs, no JSON import.
+Jobs idempotentes, retries, audit logs, signed URLs, no JSON import, pg_cron separado de Inngest.
 
 Criterios de aceptación:
 Automatizaciones e intercambio de datos funcionan con evidencia y rollback.
@@ -558,7 +565,7 @@ Objetivo:
 Crear Task como módulo ejemplo de app final, páginas públicas mínimas reemplazables, help center base, command palette y documentación demo.
 
 Archivos objetivo:
-`src/app/(app)/tasks/`, `src/app/(public)/`, `docs/demo/`, `src/framework/help/`, `src/framework/commands/`.
+`src/web/modules/task/`, `src/app/(public)/`, `docs/demo/`, `src/framework/help/`, `src/framework/commands/`.
 
 Pruebas/comandos:
 Reference module tests, Playwright E2E, docs review.
@@ -577,7 +584,7 @@ Sprints 2, 3, 4 y 5 completados.
 Estado: pendiente
 
 Objetivo:
-Cerrar gates de release candidate: SonarQube, secrets scan, dependency advisories, Playwright completo, k6 staging, Lighthouse, abuse tests, performance budgets y revisión de seguridad.
+Cerrar gates de release candidate: SonarQube, secrets scan, dependency advisories, Playwright completo, k6 staging, Lighthouse, abuse tests, performance budgets FCP/LCP/API p95 y revisión de seguridad.
 
 Archivos objetivo:
 `.github/workflows/`, `tests/e2e/`, `tests/k6/`, reports, CI config.
@@ -586,7 +593,7 @@ Pruebas/comandos:
 `npm run lint`, `npm run typecheck`, `npm test`, `npx playwright test`, `k6 run`, SonarQube gate.
 
 Verificaciones:
-API p95 < 200 ms, LCP < 2.5 s, Lighthouse > 90, no SSRF, no BOLA, no secretos.
+API p95 < 200 ms, FCP < 1.5 s Fast 3G, LCP < 2.5 s Fast 3G, Lighthouse > 90, no SSRF, no BOLA, no secretos.
 
 Criterios de aceptación:
 Release candidate técnico con gates verdes o excepciones documentadas.
@@ -633,7 +640,7 @@ Sprints 1 a 11 completados. Revisión legal antes de venta.
 - Páginas de infraestructura: Sprint 12.
 - Modo mantenimiento: Sprint 12.
 - Setup wizard: Sprint 3.
-- Jobs programados: Sprint 8.
+- Jobs programados: Sprint 8 configuración base pg_cron; Sprint 6 expiración de tokens y recordatorios/expiración de trial; Sprint 7 purga de soft-deletes.
 - Configuración de módulos: Sprint 3.
 - Tablas, pivotes e historiales: Sprints 3, 5, 6, 7.
 - Seguridad y escalabilidad por módulo: Sprints 3 a 11.
@@ -664,7 +671,7 @@ Redis queda default off. Sprint 11 valida fallback para rate limiting/cache simp
 
 ### Jobs
 
-Inngest es adapter default. Jobs deben ser idempotentes, auditables, con retry controlado y rollback o compensación.
+Modelo dual: pg_cron para jobs programados por tiempo, incluyendo purga de soft-deletes, expiración de tokens, recordatorios y expiración de trial; Inngest para workflows disparados por usuario, import/export grande, retries y procesos que no deben bloquear requests HTTP. Todo job debe ser idempotente, auditable, con retry controlado y rollback o compensación.
 
 ### Queries
 
@@ -688,7 +695,7 @@ Framework provee adapters/placeholders; activación concreta queda por app deriv
 
 ### k6/performance
 
-k6 solo contra staging dedicado. Producción requiere aprobación explícita.
+k6 solo contra staging dedicado. Producción requiere aprobación explícita. Budgets de release: API p95 < 200 ms, FCP < 1.5 s Fast 3G, LCP < 2.5 s Fast 3G y Lighthouse > 90.
 
 ## 8. Cierre por Sprint
 
@@ -726,7 +733,7 @@ Cada Sprint debe cerrar con:
 - Diferidos justificados por fuente documental: completo.
 - Archivos objetivo validados contra estructura de referencia: si, en nivel plan.
 - Contradicciones plan vs spec: ninguna detectada.
-- Contradicciones plan vs questionnaire: ninguna detectada tras corrección editorial de resumen.
+- Contradicciones plan vs questionnaire: se detectó Task path inconsistente con Q058/D058 y `docs/REFERENCE_STRUCTURE.md`; corregido a `src/web/modules/task/`, resultado consistente tras la corrección.
 - Revisión de especialistas o fallback para dominios relevantes: completo.
 - Zonas de validación humana por Sprint: completo.
 - Automatización vs augmentación evaluada: completo.

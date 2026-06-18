@@ -10,8 +10,8 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación |
 | Aprobación del usuario | no aplica |
 | Fecha de aprobación | no aplica |
 | Frase literal de aprobación | no aplica |
@@ -23,32 +23,32 @@
 
 ## Resumen para el dueño
 
-- Estado actual: Spec aprobada; Plan y State listos para revisión.
-- Último avance: diseño técnico ADR y Plan por Sprints creados.
+- Estado actual: Spec, ADR 003 y Plan corregidos; requieren re-aprobación.
+- Último avance: corrección documental de Task path, modelo dual pg_cron/Inngest y FCP.
 - Sprint actual: Sprint 1 pendiente, no iniciado.
-- Siguiente acción: revisar y aprobar el Plan.
-- Bloqueos o riesgos: Plan sin aprobación; servicios externos y secretos requieren autorización separada.
-- Qué necesita decidir o aprobar el dueño: responder `Apruebo el plan.` si el Plan vigente es correcto.
+- Siguiente acción: revisar y re-aprobar Spec/ADR/Plan corregidos.
+- Bloqueos o riesgos: Build bloqueado hasta re-aprobación explícita; servicios externos y secretos requieren autorización separada.
+- Qué necesita decidir o aprobar el dueño: responder una aprobación explícita del plan corregido si el Plan vigente es correcto.
 
 ## 1. Estado general
 
 - Estado del proyecto: plan.
 - Plugin FromZero runtime: fallback desde workspace local `.codex/plugins/fromzero`.
 - Cuestionario: aprobado.
-- Spec: aprobada.
-- Plan: actualizado en revisión.
+- Spec: requiere re-aprobación.
+- Plan: requiere re-aprobación.
 - Git: inicializado.
 - Branch: `main`.
-- Working tree: con artefactos FromZero nuevos/modificados de esta fase hasta commit.
+- Working tree: corrección documental en curso hasta commit.
 - Commit base: `88c9a19 docs(fromzero): align pre-spec documentation`.
-- Último commit FromZero: `88c9a19 docs(fromzero): align pre-spec documentation`.
+- Último commit FromZero: `81505b7 docs(fromzero): create implementation plan and state`.
 
 ## 2. Artefactos vigentes
 
 - Cuestionario: `artifacts/FROMZERO_QUESTIONNAIRE.md`.
 - Contexto: `artifacts/FROMZERO_CONTEXT.md`.
 - Spec: `artifacts/FROMZERO_SPEC.md`.
-- Diseño técnico: `artifacts/adr/`.
+- Diseño técnico: `artifacts/adr/`; `artifacts/adr/003-integrations-jobs-cache.md` requiere re-aprobación.
 - Plan: `artifacts/FROMZERO_PLAN.md`.
 - Recursos instalados: plugin local FromZero en `.codex/plugins/fromzero`.
 - Lockfile FromZero: pendiente; crear `.fromzero/fromzero.lock.json` solo si se instalan recursos en Sprint 1.
@@ -106,8 +106,9 @@
 | Artefacto | Estado | Fecha | Frase literal | Commit |
 |---|---|---|---|---|
 | `artifacts/FROMZERO_QUESTIONNAIRE.md` | aprobado | 2026-06-18 | Apruebo el cuestionario. | 4c960be |
-| `artifacts/FROMZERO_SPEC.md` | aprobado | 2026-06-18 | Apruebo la especificación. | pendiente |
-| `artifacts/FROMZERO_PLAN.md` | pendiente | pendiente | pendiente | pendiente |
+| `artifacts/FROMZERO_SPEC.md` | requiere re-aprobación | pendiente | pendiente | pendiente |
+| `artifacts/adr/003-integrations-jobs-cache.md` | requiere re-aprobación | pendiente | pendiente | pendiente |
+| `artifacts/FROMZERO_PLAN.md` | requiere re-aprobación | pendiente | pendiente | pendiente |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
@@ -126,11 +127,11 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: Plan pendiente de aprobación.
-- Riesgos activos: RLS/RBAC, billing/webhooks, Core AI/OpenRouter, jobs automatizados, import/export, performance, revisión legal.
+- Bloqueos actuales: Spec/ADR/Plan corregidos requieren re-aprobación antes de Build.
+- Riesgos activos: RLS/RBAC, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export, performance FCP/LCP/API p95, revisión legal.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales.
 - Secretos o accesos requeridos: ninguno para revisar Plan; serán requeridos por Sprint con aprobación separada.
-- Estado de aprobación humana requerido: aprobar Plan antes de Sprint 1.
+- Estado de aprobación humana requerido: re-aprobar Plan corregido antes de Sprint 1.
 
 ## 8. Próxima acción
 

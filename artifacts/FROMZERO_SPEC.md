@@ -10,11 +10,11 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | aprobado |
-| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar |
-| Aprobación del usuario | aprobada |
-| Fecha de aprobación | 2026-06-18 |
-| Frase literal de aprobación | Apruebo la especificación. |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar; 2026-06-18: corregida por Task path, pg_cron y FCP, requiere re-aprobación |
+| Aprobación del usuario | pendiente |
+| Fecha de aprobación | pendiente |
+| Frase literal de aprobación | pendiente |
 | Artefactos prerequisito | `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md` aprobado |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, recursos locales FromZero, OpenRouter |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md`, `artifacts/adr/` |
@@ -27,7 +27,7 @@
 - Para quién: desarrolladores, equipos de producto, agencias y emprendedores técnicos que necesitan una base con código propio, extensible y vendible.
 - Resultado esperado: una base From Zero v7.4 white-label, con UI operacional densa, módulos core, datos aislados por tenant, permisos server-side, APIs versionadas, pruebas y gates de release.
 - Qué queda fuera: código de aplicación final específico, app Expo incluida, observabilidad activa por defecto, Plan/Build, activación MCP en este turno y cualquier conexión a servicios externos.
-- Decisiones importantes ya tomadas: SaaS, `per_tenant`, Supabase cloud con SQL versionado, UI FromZero, npm, Docker/Coolify, Stripe/Resend/OpenRouter por adapters, Inngest por adapter, Redis default off.
+- Decisiones importantes ya tomadas: SaaS, `per_tenant`, Supabase cloud con SQL versionado, UI FromZero, npm, Docker/Coolify, Stripe/Resend/OpenRouter por adapters, pg_cron para jobs programados por tiempo, Inngest por adapter para jobs disparados por usuario, Redis default off.
 - Riesgos o límites que debe conocer el dueño: OpenRouter/Gemma usa ID explícito verificado, MCP se activará en acción separada y `allow_multi_tenant_users` queda con default documental corregido.
 - Qué se pide aprobar: esta especificación como base para crear el plan FromZero; aprobarla no ejecuta código.
 - Visión validada usada como fuente: `artifacts/FROMZERO_QUESTIONNAIRE.md` -> `## Resumen validado para Spec`.
@@ -61,7 +61,7 @@
 | Email | D014/Q014 | `docs/PRD.md` | Multi-provider, Resend default | no | no aplica |
 | Core AI | D015/Q015 | arquitectura, OpenRouter | Multi-provider, OpenRouter `google/gemma-4-26b-a4b-it:free` | no | no aplica |
 | Redis/colas | D016/Q016 | escalabilidad, recurso `redis` | Opcional default off | no | no aplica |
-| Event bus | D017/Q017 | recurso `inngest` | Inngest adapter default | no | no aplica |
+| Event bus/jobs | D017/Q017, D9 | `docs/DOCUMENT_INVENTORY.md`, `docs/REFERENCE_STACK.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/SCALABILITY_ASSURANCE.md`, recurso `inngest` | pg_cron para jobs programados por tiempo; Inngest adapter para jobs disparados por usuario | no | no aplica |
 | Deploy | D018/Q018/Q053 | `docs/PRD.md` | Coolify sobre Docker VPS, genérico Docker | no | no aplica |
 | Observabilidad | D019/Q019 | `docs/PRD.md` | Opciones para apps derivadas, no activas | no | no aplica |
 | Quality gate | D020/Q020 | recurso `sonarqube` | SonarQube self-hosted | no | no aplica |
@@ -122,6 +122,7 @@
 | 2026-06-18 | Se fijó `google/gemma-4-26b-a4b-it:free` como ID OpenRouter inicial verificado | OpenRouter oficial | C011, Q063 |
 | 2026-06-18 | Se alinearon conflictos documentales C001, C002, C003, C007, C010 y C012 antes de aprobar SPEC | Documentación corregida | `docs/`, `FROMZERO_QUESTIONNAIRE.md` |
 | 2026-06-18 | Aprobación explícita de la Spec y habilitación de diseño técnico, Plan y State | Aprobación literal: "Apruebo la especificación." | `FROMZERO_PLAN.md`, `FROMZERO_STATE.md`, `artifacts/adr/` |
+| 2026-06-18 | Corrección de Spec por Task path, modelo dual pg_cron/Inngest y presupuesto FCP | Solicitud del usuario, `docs/DOCUMENT_INVENTORY.md`, `docs/REFERENCE_STRUCTURE.md`, `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_STACK.md`, `docs/SCALABILITY_ASSURANCE.md` | `FROMZERO_PLAN.md`, `artifacts/adr/003-integrations-jobs-cache.md` |
 
 ## Matriz de cobertura del insumo
 
@@ -177,6 +178,7 @@
 | RLS tenant-aware | seguridad | schema/security | 1 | cubierto | seguridad/gates | primer corte |
 | API `/api/v1/*` | API | architecture | 1 | cubierto | contrato base API | primer corte |
 | Event bus/Inngest | job | stack/resource | 2 | cubierto | automatización/jobs | release candidate |
+| pg_cron | job programado | docs D9/stack/architecture/scalability | 2 | cubierto | jobs programados por tiempo | release candidate |
 | Redis/BullMQ | escalabilidad | stack/resource | 3 | cubierto | escalabilidad | posterior según activación |
 | Playwright | testing | resource | 2 | cubierto | pruebas esperadas | release candidate |
 | k6 | testing/performance | resource | 2 | cubierto | KPIs/SLOs | release candidate |
@@ -245,6 +247,7 @@
 | REQ-054 | Core AI como servicio interno | ai-providers | Architecture | Core AI | release candidate | cubierto | Core AI |  | integration tests |
 | REQ-055 | FastAPI/Pydantic v2 para Core AI | ai-providers | Stack | Python | release candidate | cubierto | Core AI |  | API tests |
 | REQ-056 | API p95 < 200ms salvo excepción | performance-budget | Scalability | Performance | release candidate | cubierto | KPIs |  | k6/APM |
+| REQ-071 | FCP < 1.5s Fast 3G | performance-budget | PRD/Architecture | Performance | release candidate | cubierto | KPIs |  | Lighthouse/Playwright |
 | REQ-057 | LCP < 2.5s Fast 3G | performance-budget | Scalability | Performance | release candidate | cubierto | KPIs |  | Lighthouse |
 | REQ-058 | Lighthouse > 90 | performance-budget | Scalability | Performance | release candidate | cubierto | KPIs |  | Lighthouse |
 | REQ-059 | k6 para flujos críticos | escalabilidad | Scalability/k6 | Load | release candidate | cubierto | pruebas |  | k6 |
@@ -278,6 +281,7 @@
 | GATE-012 | API versionada | api-inventory | architecture | primer corte | cubierto | API | route inventory | pública sin `/api/v1` |
 | GATE-013 | Inventario API antes de endpoints | api-inventory | architecture | primer corte | cubierto | API | Spec/Plan review | endpoint sin contrato |
 | GATE-014 | API p95 < 200ms | performance-budget | scalability | release candidate | cubierto | KPIs | k6/APM | p95 incumplido sin excepción |
+| GATE-026 | FCP < 1.5s Fast 3G | performance-budget | PRD/architecture | release candidate | cubierto | KPIs | Lighthouse/Playwright | FCP incumplido sin excepción |
 | GATE-015 | LCP < 2.5s Fast 3G | performance-budget | scalability | release candidate | cubierto | KPIs | Lighthouse | incumplido |
 | GATE-016 | Lighthouse > 90 | performance-budget | scalability | release candidate | cubierto | KPIs | Lighthouse | score incumplido |
 | GATE-017 | k6 en staging | escalabilidad | k6 | release candidate | cubierto | pruebas | `k6 run` | sin carga crítica |
@@ -393,7 +397,8 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 - OpenRouter: modelo inicial `google/gemma-4-26b-a4b-it:free`; pinning explícito requerido por entorno.
 - Resend: proveedor default de email detrás de adapter.
 - Stripe: proveedor default de pagos detrás de adapter.
-- Inngest: implementación inicial del event bus detrás de adapter.
+- pg_cron: jobs programados por tiempo para purga de soft-deletes, expiración de tokens, recordatorios y expiración de trial.
+- Inngest: implementación inicial del event bus y workflows disparados por usuario detrás de adapter.
 - reCAPTCHA: adapter anti-abuso inicial.
 
 ## Seguridad
@@ -413,8 +418,8 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 ## Escalabilidad
 
 - Cache: Redis opcional default off; todo cache debe tener namespace por tenant, TTL e invalidación documentada.
-- Jobs: Inngest adapter default; jobs recurrentes para import/export, billing cycles, cleanup/purge, email retries, statements/invoices y AI usage aggregation.
-- Redis/Inngest: Redis no bloquea primer corte; Inngest sí queda como contrato release candidate para reglas/jobs.
+- Jobs: modelo dual. pg_cron para procesos basados en tiempo como purga de soft-deletes, expiración de tokens, recordatorios y expiración de trial; Inngest adapter default para workflows disparados por usuario como import/export grande, retries y tareas durables sin bloquear requests HTTP.
+- Redis/Inngest/pg_cron: Redis no bloquea primer corte; pg_cron e Inngest quedan como contratos release candidate para jobs programados y workflows asíncronos.
 - Observabilidad: hooks y opciones para apps derivadas; no activa por default en framework base.
 - Validación visual/E2E: Playwright y Lighthouse en release candidate.
 - Load: k6 contra staging dedicado, nunca producción sin aprobación explícita.
@@ -545,6 +550,7 @@ Evaluación de agentes futuros:
 | Metrica | Valor objetivo | Fuente | Gate/Sprint que la verifica | Estado |
 |---|---|---|---|---|
 | API p95 | < 200 ms salvo excepción documentada | `SCALABILITY_ASSURANCE.md` | k6/APM en RC | cubierto |
+| FCP | < 1.5 s en Fast 3G | `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md` | Lighthouse/Playwright en RC | cubierto |
 | LCP | < 2.5 s en Fast 3G | `SCALABILITY_ASSURANCE.md` | Lighthouse/Playwright en RC | cubierto |
 | Lighthouse | > 90 | `SCALABILITY_ASSURANCE.md` | Lighthouse en RC | cubierto |
 | Cobertura crítica | 80% lógica crítica | cuestionario Q046 | CI test coverage | cubierto |
@@ -621,7 +627,7 @@ Evaluación de agentes futuros:
 
 ## Aprobación
 
-- Revisado por: usuario.
-- Fecha: 2026-06-18.
-- Estado: aprobado.
-- Frase literal: Apruebo la especificación.
+- Revisado por: pendiente tras corrección.
+- Fecha: pendiente.
+- Estado: requiere re-aprobación.
+- Frase literal: pendiente.

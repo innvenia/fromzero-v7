@@ -12,8 +12,8 @@ Ruta de salida: `artifacts/adr/003-integrations-jobs-cache.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | borrador |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: corregido a modelo dual pg_cron + Inngest, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -25,25 +25,25 @@ Ruta de salida: `artifacts/adr/003-integrations-jobs-cache.md`
 
 ## Decisión
 
-Implementar integraciones por adapters: Stripe default para pagos, Resend default para email, OpenRouter default para IA, Inngest default para event bus/jobs, reCAPTCHA como adapter anti-abuso y Redis default off. Toda integración debe tener placeholders en `.env.example`, wrapper interno, feature flag o setting de activación y gate de seguridad antes de producción.
+Implementar integraciones por adapters: Stripe default para pagos, Resend default para email, OpenRouter default para IA, pg_cron para jobs programados por tiempo, Inngest default para workflows/jobs disparados por usuario, reCAPTCHA como adapter anti-abuso y Redis default off. Toda integración debe tener placeholders en `.env.example`, wrapper interno, feature flag o setting de activación y gate de seguridad antes de producción.
 
 ## Contexto
 
-La Spec activa billing, webhooks, notifications, rules, import/export, Core AI, budgets, rate limits, observabilidad diferida y MCP posterior con acción separada. También exige que automatizaciones peligrosas no dependan de aciertos parciales.
+La Spec activa billing, webhooks, notifications, rules, import/export, Core AI, budgets, rate limits, observabilidad diferida y MCP posterior con acción separada. La documentación D9 define `pg_cron` para jobs programados e Inngest para jobs disparados por usuario. También exige que automatizaciones peligrosas no dependan de aciertos parciales.
 
 ## Opciones
 
 | Opción | Resultado |
 |---|---|
-| Adapters con defaults y placeholders | Elegida. Entrega base vendible sin acoplar secretos. |
+| Modelo dual pg_cron + Inngest con adapters y placeholders | Elegida. Alinea jobs por tiempo y workflows disparados por usuario sin acoplar secretos. |
 | Integraciones directas por módulo | Rechazada. Duplica lógica y dificulta gates. |
 | Redis obligatorio desde inicio | Rechazada. La decisión aprobada es default off. |
 
 ## Tradeoffs
 
-- Hay que diseñar interfaces y fallbacks antes de activar proveedores.
+- Hay que diseñar interfaces, schedules y fallbacks antes de activar proveedores.
 - Reduce riesgo de lock-in y facilita apps derivadas.
-- Jobs críticos requieren idempotencia, retries, auditoría y evidencia.
+- Jobs críticos requieren idempotencia, retries, auditoría y evidencia; los basados en tiempo deben declararse como schedules pg_cron.
 
 ## Impacto seguridad
 
@@ -54,10 +54,11 @@ La Spec activa billing, webhooks, notifications, rules, import/export, Core AI, 
 
 ## Impacto escalabilidad
 
-- Jobs de billing, import/export, notifications y rules deben ser idempotentes.
+- pg_cron cubre purga de soft-deletes, expiración de tokens, recordatorios y expiración de trial.
+- Inngest cubre import/export grande, retries, notifications, rules y workflows disparados por usuario.
 - Redis puede activarse por entorno si rate limit/cache lo exige.
 - k6 valida flujos críticos en staging antes de release candidate.
 
 ## Resultado
 
-El Plan debe ubicar jobs y automatizaciones después de datos/auth/API, incluir filtro automatización vs augmentación, y bloquear release si faltan idempotencia, retries, auditoría, SSRF guard, webhook signatures o pruebas k6.
+El Plan debe ubicar jobs y automatizaciones después de datos/auth/API, incluir filtro automatización vs augmentación, y bloquear release si faltan idempotencia, retries, auditoría, schedules pg_cron para procesos por tiempo, SSRF guard, webhook signatures o pruebas k6.
