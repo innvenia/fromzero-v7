@@ -1,7 +1,7 @@
 # From Zero Framework: Estrategia de Producto
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Estado:** En construcción. Este documento describe la visión del producto que se va a crear.
 > **Propósito:** Definir qué es From Zero como producto entregable, su identidad, propuesta de valor, motor técnico y modelo comercial.

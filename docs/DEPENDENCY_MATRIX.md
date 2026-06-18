@@ -1,7 +1,7 @@
 # Matriz de Dependencias y Aceptación
 
 > **Producto:** From Zero Framework  
-> **Versión:** 7.0.0  
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-07  
 > **Fuente de verdad:** [`PRD.md`](./PRD.md), [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md), [`SECURITY_ASSURANCE.md`](./SECURITY_ASSURANCE.md), [`SCALABILITY_ASSURANCE.md`](./SCALABILITY_ASSURANCE.md).  
 > **Propósito:** Ordenar la ejecución técnica por dependencias, carga y criterios verificables.  

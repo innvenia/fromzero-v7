@@ -1,7 +1,7 @@
 # From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** [`PRD.md`](./PRD.md)
 > **Propósito:** Presentar la visión general, arquitectura base, arranque rápido y mapa de documentación.

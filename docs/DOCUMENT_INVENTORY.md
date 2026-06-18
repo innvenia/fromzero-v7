@@ -1,7 +1,7 @@
 # Document Inventory - Documentación de Producto (Depurada)
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-07
 > **Propósito:** Índice maestro de la documentación **de producto** depurada.
 > **Alcance:** Solo describe el producto y el framework objetivo.
@@ -31,12 +31,12 @@
 
 ---
 
-## 2. Decisiones de Diseño Canónicas (v7.0.0)
+## 2. Decisiones de Diseño Canónicas (v7.4.0)
 
 | ID | Decisión |
 |----|----------|
 | D1 | **Nombre del producto:** From Zero Framework. |
-| D2 | **Versión inicial homologada:** 7.0.0 en todos los documentos. |
+| D2 | **Versión inicial homologada:** 7.4.0 en todos los documentos. |
 | D3 | **Componente IA:** "Core AI", servicio Python en `core-ai/`. |
 | D4 | **Estructura:** `src/app` (router Next.js) + `src/framework` (base) + `src/web` (aplicación web) + `mobile/` futuro + `core-ai/` (IA). |
 | D5 | **Bootstrap:** `bootstrap.json` reemplaza cualquier archivo previo de inicialización. Solo se usa para genesis del framework; en runtime la BD y los módulos administrativos son la fuente de verdad. |
@@ -51,6 +51,7 @@
 | D14 | **Seguridad excelente:** los controles se verifican contra OWASP Top 10, OWASP API Top 10, ASVS, SSDLC y `SECURITY_ASSURANCE.md`. |
 | D15 | **Escalabilidad excelente:** los controles se verifican contra cache, async, queries, load, scale, quotas, costos y `SCALABILITY_ASSURANCE.md`. |
 | D16 | **Design System:** contrato propio del framework documentado en `REFERENCE_DESIGN_SYSTEM.md` y materializado por el scaffold en `src/framework/ui`. |
+| D17 | **Alineación documental pre-SPEC:** versión 7.4.0, estructura de producto sin tooling IA/metodología, bootstrap multi-tenant users default `false`, Import/Export CSV/XLSX, API keys con expiración soportada opcional, KPIs frontend y WCAG 2.2 AA. |
 
 ---
 

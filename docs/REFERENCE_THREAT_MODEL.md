@@ -1,7 +1,7 @@
 # Threat Model - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** [`PRD.md`](./PRD.md)
 > **Alcance:** Documentación de producto y requisitos de seguridad del framework.

@@ -1,7 +1,7 @@
 # Contrato de Base de Datos - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad funcional:** [`PRD.md`](./PRD.md)
 > **Propósito:** Consolidar las tablas base del framework, su ownership, alcance multi-tenant, RLS y política de eliminación.

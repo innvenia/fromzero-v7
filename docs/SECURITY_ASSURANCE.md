@@ -1,7 +1,7 @@
 # Security Assurance - From Zero Framework
 
 > **Producto:** From Zero Framework  
-> **Versión:** 7.0.0  
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06  
 > **Fuente de verdad:** [`PRD.md`](./PRD.md), [`REFERENCE_THREAT_MODEL.md`](./REFERENCE_THREAT_MODEL.md), [`REFERENCE_DATABASE_SCHEMA.md`](./REFERENCE_DATABASE_SCHEMA.md).  
 > **Propósito:** Convertir la seguridad en controles verificables de desarrollo y operación.  
@@ -42,7 +42,7 @@ Referencias:
 | Input validation | Zod/Pydantic server-side antes de procesar datos. |
 | SQL injection | Consultas parametrizadas o clientes seguros; SQL concatenado prohibido. |
 | XSS/script injection | Sanitización de HTML y output encoding. |
-| API keys | Hash/cifrado, scopes, expiración, rotación y auditoría. |
+| API keys | Hash/cifrado, scopes, expiración, rotación y auditoría. Soportar expiración es obligatorio; aplicarla es opcional y la UI la recomienda por defecto. |
 | Auditoría | Operaciones críticas registradas en `logs`. |
 | Errores | Mensajes seguros, sin stack traces ni secretos. |
 | CI quality gate | SonarQube/SonarCloud bloquea release si falla seguridad o calidad. |

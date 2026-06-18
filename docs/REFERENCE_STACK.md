@@ -1,7 +1,7 @@
 # Stack Tecnológico - From Zero Framework
 
 > **Producto:** From Zero Framework  
-> **Versión:** 7.0.0  
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-07  
 > **Fuente de verdad:** [`PRD.md`](./PRD.md), [`REFERENCE_ARCHITECTURE.md`](./REFERENCE_ARCHITECTURE.md).  
 > **Propósito:** Centralizar stack, política de versiones, herramientas y canales de conexión.  

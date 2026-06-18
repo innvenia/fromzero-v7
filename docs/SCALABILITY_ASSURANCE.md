@@ -1,7 +1,7 @@
 # Scalability Assurance - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-07
 > **Fuente de verdad:** [`PRD.md`](./PRD.md), [`REFERENCE_ARCHITECTURE.md`](./REFERENCE_ARCHITECTURE.md), [`REFERENCE_STACK.md`](./REFERENCE_STACK.md).
 > **Propósito:** Definir controles verificables de escalabilidad para módulos, apps derivadas, workers y release candidates.
@@ -85,6 +85,8 @@ Escenarios mínimos:
 Threshold base:
 
 - API p95 < 200ms salvo excepción documentada.
+- LCP < 2.5s en red Fast 3G (PRD §1.7.2).
+- Lighthouse Score > 90 en Performance, Accessibility, Best Practices y SEO (PRD §1.7.2).
 - Sin errores 5xx bajo carga esperada.
 - Sin fuga cross-tenant bajo concurrencia.
 

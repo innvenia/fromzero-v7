@@ -23,7 +23,7 @@ Mientras el scaffold del framework no exista, este archivo describe el objetivo 
 
 - El Design System pertenece al framework, no a una plantilla externa.
 - Las aplicaciones derivadas consumen componentes, tokens y patrones desde `src/framework/ui`.
-- La UI debe ser responsive, accesible, consistente con shadcn/ui + Tailwind v4 y libre de marcas de terceros.
+- La UI debe ser responsive, accesible con objetivo WCAG 2.2 AA, consistente con shadcn/ui + Tailwind v4 y libre de marcas de terceros.
 - Los agentes deben extender componentes existentes antes de crear variantes nuevas.
 - La identidad visual final de cada app se resuelve por configuración runtime, no por forks del Design System.
 

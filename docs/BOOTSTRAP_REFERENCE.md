@@ -1,7 +1,7 @@
 # Referencia de Bootstrap: `bootstrap.json`
 
 > **Producto:** From Zero Framework  
-> **Versión:** 7.0.0  
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06  
 > **Fuente de verdad:** [`PRD.md`](./PRD.md) y [`REFERENCE_ARCHITECTURE.md`](./REFERENCE_ARCHITECTURE.md).  
 > **Propósito:** Definir el archivo canónico de genesis inicial del framework.  
@@ -50,7 +50,7 @@ Reglas:
 ```json
 {
   "_metadata": {
-    "version": "7.0.0",
+    "version": "7.4.0",
     "generated_at": "2026-06-06T00:00:00Z",
     "prd_reference": "PRD.md"
   },
@@ -58,7 +58,7 @@ Reglas:
     "mode": "saas",
     "name": "From Zero Framework",
     "url": "http://localhost:3000",
-    "allow_multi_tenant_users": true,
+    "allow_multi_tenant_users": false,
     "licensing_model": "per_tenant"
   },
   "infrastructure": {
@@ -116,7 +116,7 @@ Reglas:
 | `mode` | string | Sí | `saas` o `corporate`. |
 | `name` | string | Sí | Nombre inicial de la plataforma. |
 | `url` | string | Sí | URL base inicial. |
-| `allow_multi_tenant_users` | boolean | Sí | Habilita usuarios en múltiples tenants. |
+| `allow_multi_tenant_users` | boolean | Sí | Habilita usuarios en múltiples tenants. Default `false`; cuando está en `false`, un email solo puede pertenecer a un Tenant para simplificar login. |
 | `licensing_model` | string | Sí | `per_tenant` o `per_user`. |
 
 ### 4.3 `infrastructure`

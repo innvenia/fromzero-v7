@@ -1,7 +1,7 @@
 # Estructura de Referencia - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** [`PRD.md`](./PRD.md)
 > **Propósito:** Definir la anatomía física del proyecto, garantizando la separación nítida entre el **código del framework (la base reutilizable)** y el **código de la aplicación (lo que se construye sobre la base)**.
@@ -30,10 +30,7 @@ El proyecto sigue un enfoque **Next.js + Supabase** como stack principal. La ló
 
 ```text
 / (Workspace Root)
-├── .agent/                        # Configuración del entorno de desarrollo
 ├── docs/                          # Documentación del producto
-│
-├── _reference/                    # Material visual de referencia (read-only, archivado)
 │
 ├── src/                           # ═══ APLICACIÓN NEXT.JS ═══
 │   │
@@ -98,6 +95,8 @@ El proyecto sigue un enfoque **Next.js + Supabase** como stack principal. La ló
 ├── package.json  ├── next.config.ts  ├── tsconfig.json
 └── README.md
 ```
+
+La herramienta de IA con la que se desarrolla crea su propio directorio de configuración en la raíz (por ejemplo `.codex/` en Codex o `.claude/` en Claude). Su nombre depende de la herramienta, no forma parte del framework y no se distribuye con el producto. Los artefactos de la metodología FromZero se generan en `artifacts/` y tampoco forman parte del framework entregable.
 
 ---
 

@@ -1,7 +1,7 @@
 # Referencia Técnica de Módulos - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** [`PRD.md`](./PRD.md) - Secciones §1.3, §3.A–§3.D
 > **Propósito:** Especificación técnica canónica de los **27 módulos core** del framework. Cada entrada define schema de BD, server actions, estructura de UI, integraciones y parámetros configurables. Este documento complementa al PRD: el PRD describe **qué** y **por qué**; este documento especifica **cómo** se implementa técnicamente.
@@ -1158,7 +1158,7 @@ Gestión de credenciales programáticas para acceso Machine-to-Machine (M2M). Ca
 | `key_prefix` | `varchar(10)` | NOT NULL | Primeros caracteres para identificación visual (ej: `sk_live_abc`) |
 | `profile_id` | `UUID FK profiles` | NOT NULL | Profile que define los permisos de esta key |
 | `scopes` | `text[]` | | Scopes opcionales para restricción granular adicional |
-| `expires_at` | `timestamptz` | | Fecha de expiración. NULL = no expira |
+| `expires_at` | `timestamptz` | | Fecha de expiración. NULL = no expira; soportar expiración es obligatorio, aplicarla es opcional y la UI la recomienda por defecto |
 | `last_used_at` | `timestamptz` | | Último uso registrado |
 | `is_active` | `boolean` | DEFAULT `true` | Toggle |
 | `created_by` | `UUID FK auth.users` | NOT NULL | Usuario que creó la key |
@@ -1488,7 +1488,7 @@ Grafo genérico para modelar relaciones entre registros de cualquier módulo usa
 
 #### Descripción Técnica
 
-Importación masiva de datos desde archivos CSV, XLSX y JSON. El proceso sigue un wizard de 4 pasos: (1) Selección de módulo destino, (2) Upload de archivo, (3) Mapeo de columnas, (4) Preview + confirmación. El procesamiento es asíncrono para archivos grandes. El módulo destino debe tener su configuración de Import definida en el Módulo de Módulos (§3.A).
+Importación masiva de datos desde archivos CSV y XLSX. El proceso sigue un wizard de 4 pasos: (1) Selección de módulo destino, (2) Upload de archivo, (3) Mapeo de columnas, (4) Preview + confirmación. El procesamiento es asíncrono para archivos grandes. El módulo destino debe tener su configuración de Import definida en el Módulo de Módulos (§3.A).
 
 #### Schema de Base de Datos
 
@@ -1501,7 +1501,7 @@ Importación masiva de datos desde archivos CSV, XLSX y JSON. El proceso sigue u
 | `module_code` | `varchar(50)` | NOT NULL | Código del módulo destino |
 | `file_name` | `varchar(300)` | NOT NULL | Nombre del archivo original |
 | `file_url` | `text` | NOT NULL | URL del archivo en Storage |
-| `file_format` | `varchar(10)` | NOT NULL | `csv`, `xlsx`, `json` |
+| `file_format` | `varchar(10)` | NOT NULL | `csv`, `xlsx` |
 | `column_mapping` | `JSONB` | | Mapeo columnas archivo → campos BD |
 | `total_rows` | `integer` | | Total de filas en el archivo |
 | `processed_rows` | `integer` | DEFAULT `0` | Filas procesadas |
@@ -1529,7 +1529,7 @@ Importación masiva de datos desde archivos CSV, XLSX y JSON. El proceso sigue u
 
 **Wizard (4 pasos):**
 1. **Módulo destino:** Select de módulos con import habilitado
-2. **Upload:** Drag & drop o file picker (CSV, XLSX, JSON)
+2. **Upload:** Drag & drop o file picker (CSV, XLSX)
 3. **Mapeo:** UI de columnas del archivo → campos del módulo. Auto-mapeo por coincidencia de nombres
 4. **Preview:** Tabla con primeras 10 filas mapeadas. Validaciones visibles. Botón "Confirmar"
 
@@ -1554,7 +1554,7 @@ Importación masiva de datos desde archivos CSV, XLSX y JSON. El proceso sigue u
 
 #### Descripción Técnica
 
-Exportación de datos del Tenant a archivos descargables (CSV, XLSX, JSON, PDF). El usuario selecciona módulo, aplica filtros opcionales, elige formato y genera el archivo. Archivos grandes se procesan asincrónicamente. Historial de exportaciones con enlace de descarga temporal.
+Exportación de datos del Tenant a archivos descargables (CSV, XLSX). El usuario selecciona módulo, aplica filtros opcionales, elige formato y genera el archivo. Archivos grandes se procesan asincrónicamente. Historial de exportaciones con enlace de descarga temporal.
 
 #### Schema de Base de Datos
 
@@ -1567,7 +1567,7 @@ Exportación de datos del Tenant a archivos descargables (CSV, XLSX, JSON, PDF).
 | `module_code` | `varchar(50)` | NOT NULL | Código del módulo exportado |
 | `file_name` | `varchar(300)` | | Nombre del archivo generado |
 | `file_url` | `text` | | URL temporal de descarga (Supabase Storage signed URL) |
-| `file_format` | `varchar(10)` | NOT NULL | `csv`, `xlsx`, `json`, `pdf` |
+| `file_format` | `varchar(10)` | NOT NULL | `csv`, `xlsx` |
 | `filters_applied` | `JSONB` | | Filtros aplicados durante la exportación |
 | `total_rows` | `integer` | | Total de registros exportados |
 | `status` | `varchar(20)` | DEFAULT `'pending'` | `pending`, `processing`, `completed`, `failed` |
@@ -1595,7 +1595,7 @@ Exportación de datos del Tenant a archivos descargables (CSV, XLSX, JSON, PDF).
 
 - Feature Gating: `import_export_enabled` en `plans.features`.
 - URLs de descarga con expiración configurable (default 24h).
-- Exportación PDF usa layout de Grid Universal con branding del Tenant (`tenant_branding`).
+- La exportación a PDF no pertenece al módulo Export de datasets. El PDF se genera al exportar un registro individual desde su vista de detalle/formulario en la UI, con branding del Tenant. Casos existentes: factura (`invoice`) y estado de cuenta (`statement`).
 
 ---
 
@@ -2064,7 +2064,7 @@ Módulo demostrativo y de referencia que implementa la Triada completa del frame
 | **Tags (§3.C)** | Etiquetado polimórfico |
 | **Bookmarks (§3.C)** | Marcado de favoritos por usuario |
 | **Filtros (§3.C)** | Filtros guardados y compartidos |
-| **Import/Export (§3.B)** | Importación CSV/XLSX, exportación multi-formato |
+| **Import/Export (§3.B)** | Importación CSV/XLSX, exportación CSV/XLSX |
 | **Event Bus (§4.13)** | Eventos: `task.created`, `task.updated`, `task.deleted`, `task.completed` |
 | **Interceptor de Auditoría (§4.11)** | Registro de todas las operaciones |
 | **Notificaciones (§3.B)** | Notificaciones configurables por evento |

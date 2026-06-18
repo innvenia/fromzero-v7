@@ -1,7 +1,7 @@
-# From Zero Framework v7.0.0 - PRD (Fuente de Verdad)
+# From Zero Framework v7.4.0 - PRD (Fuente de Verdad)
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** Este documento.
 > **Propósito:** Definir el contrato funcional y técnico primario del framework.
@@ -40,7 +40,7 @@ Las herramientas de inteligencia artificial han democratizado la capacidad de cr
 
 ### 1.2 Restricciones de Contexto
 
-- El framework v7.0.0 es el **MVP inicial del framework web**. Todo lo definido como capacidad del framework en este documento forma parte del MVP, aunque ciertas capacidades se habiliten o configuren según la aplicación final construida sobre la base.
+- El framework v7.4.0 es el **MVP inicial del framework web**. Todo lo definido como capacidad del framework en este documento forma parte del MVP, aunque ciertas capacidades se habiliten o configuren según la aplicación final construida sobre la base.
 - El framework está diseñado para **una única aplicación web responsiva** en su versión actual. El backend debe quedar preparado para servir frontends móviles futuros, pero una aplicación móvil nativa no forma parte del MVP web.
 - **Diseño Responsivo Obligatorio (Mobile-First):** Todo componente, layout, vista, formulario y elemento de UI del framework DEBE ser responsivo sin excepción. El diseño sigue la estrategia **Mobile-First**: se diseña primero para el viewport más reducido y se escala progresivamente hacia pantallas mayores. Ningún agente IA ni desarrollador puede crear componentes que funcionen exclusivamente en desktop o que degraden la experiencia en dispositivos móviles/tablets. La usabilidad y experiencia del usuario en cualquier tamaño de pantalla es un requisito de primer orden, no un ajuste posterior.
 - **App móvil nativa:** No se construirá una app nativa en el MVP web, pero la arquitectura API-first y la abstracción de Supabase deben asegurar su integración futura.
@@ -591,10 +591,12 @@ A continuación se lista la estructura de los 27 módulos del framework organiza
 | **Webhooks** (`webhook`)                   | Endpoints de salida para emitir eventos HTTP firmados con HMAC-SHA256. Catálogo de eventos suscribibles por módulo. Retry con backoff exponencial (3 intentos). Desactivación automática tras 10 fallos consecutivos. | Para notificar a sistemas de terceros en tiempo real con contratos de seguridad estrictos. | UI de configuración de endpoint con selector de eventos + historial de entregas. |
 | **Documents** (`document`)                 | CMS interno para contenido de conocimiento del Tenant: manuales, políticas, procedimientos. Soporta contenido enriquecido, categorización por tags (§3.C), vinculación a archivos (§3.C), relaciones multi-nivel y versionado mediante `document_versions`. Estados: `draft`, `published`, `archived`. | Para gestionar textos inyectables en la app sin tocar código, con control de versiones y trazabilidad. | Editor rich text con historial de versiones. |
 | **Import** (`import`)                      | Importación masiva desde CSV y XLSX. Wizard de 4 pasos: módulo destino → upload → mapeo de columnas → preview + confirmación. Procesamiento asíncrono para archivos grandes. Historial con métricas de éxito/error. | Para ingestar datos masivos de forma segura con monitoreo de progreso. | Wizard de mapeo visual + Grid de historial con estado en tiempo real. |
-| **Export** (`export`)                      | Exportación de datos a CSV, XLSX, JSON y PDF. Procesamiento asíncrono. Enlaces de descarga temporales. PDF con branding del Tenant (`tenant_branding`). | Para evitar bloqueos HTTP en reportes masivos con monitoreo de progreso. | Grid de historial con descarga diferida y notificación de completado. |
+| **Export** (`export`)                      | Exportación de datos a CSV y XLSX. Procesamiento asíncrono. Enlaces de descarga temporales. | Para evitar bloqueos HTTP en reportes masivos con monitoreo de progreso. | Grid de historial con descarga diferida y notificación de completado. |
 | **Suscripciones** (`subscription`)         | Gestión del ciclo de vida comercial de los Tenants. Cada Tenant tiene exactamente una suscripción vinculada a un Plan (§3.A). Controla trial, facturación y degradación automática. Modelo de licenciamiento configurable (`per_tenant` o `per_user`) desde `bootstrap.json`. Admin ve su suscripción (singleton); Super Admin accede al Grid completo. | Para orquestar el licenciamiento flexible y alimentar el proceso de facturación con datos precisos. | Grid CRUD / Vista singleton según rol. Acciones: upgrade, downgrade, cancelación. |
 | **Estados de Cuenta** (`statement`)        | Consolidado financiero del Tenant por ciclo de facturación. Recibe el resultado del cálculo de suscripciones, genera desglose de líneas de costo y desencadena la acción de cobro que produce un Invoice. | Para que el Admin visualice el desglose completo de costos y gestione métodos de pago. | Vista integrada al adapter de pagos configurado. Desglose por suscripción. |
 | **Invoices** (`invoice`)                   | Registro contable inmutable de transacciones de pago procesadas. El contenido (monto, descripción, moneda) es inmutable; solo el status (`processed`, `voided`, `reversed`) puede cambiar. PDF con branding limitado del Tenant. | Para el registro contable definitivo con trazabilidad inmutable y soporte de anulaciones. | Grid read-only con filtros por status/período + descarga PDF. |
+
+> **PDF de registros:** La exportación a PDF no pertenece al módulo Export de datasets. El PDF se genera al exportar un registro individual desde su vista de detalle/formulario en la UI, con branding del Tenant. Casos existentes: factura (`invoice`) y estado de cuenta (`statement`).
 
 ### C. Módulos de funcionalidades comunes para aplicaciones SaaS
 
@@ -1026,7 +1028,7 @@ El branding participa en la Cascada de Configuración (§4.15) con un nivel adic
 | Nivel                      | Fuente                       | Descripción                                                                                                                                                                                                                    |
 |:-------------------------- |:---------------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **1. Global (Parámetros)** | `settings.config.branding`   | Define la identidad visual por defecto de toda la plataforma.                                                                                                                                                                  |
-| **2. Tenant (Identidad Corporativa)** | `tenants.settings.tenant_branding` | Cada Tenant puede registrar su identidad corporativa (logo, color y datos visuales limitados) para uso en documentos, reportes, exportaciones PDF y superficies tenant-aware que la aplicación habilite explícitamente. Esta identidad no sustituye el branding base de la aplicación ni controla automáticamente sidebar, header, favicon o tokens globales. |
+| **2. Tenant (Identidad Corporativa)** | `tenants.settings.tenant_branding` | Cada Tenant puede registrar su identidad corporativa (logo, color y datos visuales limitados) para uso en documentos, PDFs de registros individuales y superficies tenant-aware que la aplicación habilite explícitamente. Esta identidad no sustituye el branding base de la aplicación ni controla automáticamente sidebar, header, favicon o tokens globales. |
 
 **Resolución en runtime (pseudocódigo):**
 
@@ -1041,7 +1043,7 @@ tenantIdentity = currentTenant.settings.tenant_branding
 > [!IMPORTANT]
 > A diferencia de los parámetros de locale/timezone (§4.15), el branding NO tiene nivel User. Las preferencias individuales de tema (Light/Dark) se gestionan a través de `user_preferences`, no del Theme Engine.
 
-**Caso de uso Documentación Corporativa:** Un Tenant sube su logo corporativo y define su `primary_color`. Al exportar reportes o generar facturas PDF, el documento incluye el logo y colores del Tenant como identidad corporativa. La UI principal mantiene la identidad visual de la aplicación definida en Parámetros, salvo superficies puntuales diseñadas explícitamente para mostrar identidad del Tenant.
+**Caso de uso Documentación Corporativa:** Un Tenant sube su logo corporativo y define su `primary_color`. Al generar PDFs de registros individuales, como facturas o estados de cuenta, el documento incluye el logo y colores del Tenant como identidad corporativa. La UI principal mantiene la identidad visual de la aplicación definida en Parámetros, salvo superficies puntuales diseñadas explícitamente para mostrar identidad del Tenant.
 
 #### 4.8.4 Gestión de Logos (Variantes y Fallbacks)
 
@@ -1218,7 +1220,7 @@ Las siguientes keys son las reconocidas por el framework en el campo `settings` 
 | `currency` | `string` | Hereda de Settings | §4.15 | Moneda del Tenant (ISO 4217). |
 | `date_format` | `string` | Hereda de Settings | §4.15 | Formato de fecha preferido (ej: `DD/MM/YYYY`, `MM/DD/YYYY`, `YYYY-MM-DD`). Heredable en 3 niveles: `Settings` → `Tenant` → `User`. |
 | `time_format` | `string` | `"24h"` | §4.15 | Formato de hora preferido: `"12h"` (AM/PM) o `"24h"` (reloj 24 horas). Heredable en 3 niveles: `Settings` → `Tenant` → `User`. Se almacena también en `users.time_format` para override individual. |
-| `tenant_branding` | `object` | `{}` | §3.B Tab 6 | Identidad corporativa del Tenant: `logo_url` (logo para documentación/PDF), `primary_color` (color corporativo para reportes/exportaciones). No afecta la UI de la aplicación. |
+| `tenant_branding` | `object` | `{}` | §3.B Tab 6 | Identidad corporativa del Tenant: `logo_url` (logo para documentación/PDF), `primary_color` (color corporativo para documentos y PDFs de registros individuales). No afecta la UI de la aplicación. |
 | `soft_delete.auto_purge_days` | `integer` | Hereda de Settings | §4.5 | Días antes de purga automática de registros soft-deleted del Tenant. |
 
 > [!NOTE]
@@ -1380,7 +1382,7 @@ Las siguientes integraciones son **opcionales** y se habilitan por configuració
 ### 5.1 Base Gráfica
 
 - **Design System:** Se empleará un **Design System propietario** basado en shadcn/ui + Tailwind v4 para mantener un frontend limpio, accesible y optimizado.
-- **Referencia Visual Histórica:** El directorio `_reference/tailadmin-source/` contiene material de consulta visual archivado (read-only). No es una dependencia activa.
+- **Referencia Visual Histórica:** El material visual histórico usado durante la definición del framework es solo consulta archivada. No forma parte de la estructura del proyecto ni es una dependencia activa.
 
 ### 5.2 Estructura Visual de Módulos (Vistas/Grids)
 

@@ -28,7 +28,7 @@
 - Resultado esperado: una base From Zero v7.4 white-label, con UI operacional densa, módulos core, datos aislados por tenant, permisos server-side, APIs versionadas, pruebas y gates de release.
 - Qué queda fuera: código de aplicación final específico, app Expo incluida, observabilidad activa por defecto, Plan/Build, activación MCP en este turno y cualquier conexión a servicios externos.
 - Decisiones importantes ya tomadas: SaaS, `per_tenant`, Supabase cloud con SQL versionado, UI FromZero, npm, Docker/Coolify, Stripe/Resend/OpenRouter por adapters, Inngest por adapter, Redis default off.
-- Riesgos o límites que debe conocer el dueño: OpenRouter/Gemma debe usar ID explícito, MCP se activará en acción separada, `allow_multi_tenant_users` corrige el default documental, y algunas fuentes deben alinearse después.
+- Riesgos o límites que debe conocer el dueño: OpenRouter/Gemma usa ID explícito verificado, MCP se activará en acción separada y `allow_multi_tenant_users` queda con default documental corregido.
 - Qué se pide aprobar: esta especificación como base para crear el plan FromZero; aprobarla no ejecuta código.
 - Visión validada usada como fuente: `artifacts/FROMZERO_QUESTIONNAIRE.md` -> `## Resumen validado para Spec`.
 
@@ -39,18 +39,18 @@
 - Cuestionario: `artifacts/FROMZERO_QUESTIONNAIRE.md`.
 - Referencia UI: `.codex/plugins/fromzero/library/ui-template-reference/` y recurso `fromzero-ui-template`.
 - Recursos de librería: `supabase`, `redis`, `sonarqube`, `stripe`, `inngest`, `playwright`, `k6`, `frontend-web`, `backend-api`, `databases`, `auth-providers`, `payments`, `deployment-cloud`, `ai-providers`, `testing-quality`, `mcp-supabase`, `mcp-sonarqube`.
-- Fuente externa verificada: OpenRouter, modelo `google/gemma-4-26b-a4b-it` en `https://openrouter.ai/google/gemma-4-26b-a4b-it`; modelos Google en `https://openrouter.ai/google`; pricing y pinning en `https://openrouter.ai/pricing`.
+- Fuente externa verificada: OpenRouter, modelo `google/gemma-4-26b-a4b-it:free` en `https://openrouter.ai/google/gemma-4-26b-a4b-it%3Afree`; modelos Google en `https://openrouter.ai/google`; pricing y pinning en `https://openrouter.ai/pricing`.
 
 ## Decisiones del cuestionario
 
 | Decisión | Fuente en cuestionario | Fuente documental | Resultado en spec | Contradicción o reducción | Excepción aprobada |
 |---|---|---|---|---|---|
 | Ruta del proyecto | D001/Q001 | `docs/PRD.md` | Framework base From Zero | no | no aplica |
-| Versión canónica | D002/Q002 | contexto, ruta repo | v7.4 | sí, contra menciones 7.0.0 | sí, Q002 |
+| Versión canónica | D002/Q002 | contexto, ruta repo | v7.4 | resuelta en `docs/` | Q002 |
 | Alcance completo por fases | D003/Q003 | `docs/PRD.md`, `docs/DEPENDENCY_MATRIX.md` | Todo el alcance documentado queda vigente | no | no aplica |
 | Record relationship | D004/Q004 | `docs/REFERENCE_MODULES.md` | Subsistema transversal | no | no aplica |
 | UI | D005/Q005 | UI FromZero, `docs/REFERENCE_DESIGN_SYSTEM.md` | UI FromZero base | no | no aplica |
-| Estructura agente | D006/Q006/C002 | `docs/REFERENCE_STRUCTURE.md` | Solo `.agent` -> `.codex`, `_reference` -> `artifacts` | sí | sí, Q006 |
+| Estructura producto/tooling | D006/Q006/C002 | `docs/REFERENCE_STRUCTURE.md` | Árbol solo del framework entregable; tooling IA y `artifacts/` fuera del producto | resuelta en `docs/` | Q006 |
 | Modo inicial | D007/Q007 | `docs/BOOTSTRAP_REFERENCE.md` | SaaS | no | no aplica |
 | Licenciamiento funcional | D008/Q008 | `docs/REFERENCE_MODULES.md` | `per_tenant` | no | no aplica |
 | Multi-tenant users | D009/Q009/C003 | `docs/BOOTSTRAP_REFERENCE.md`, `docs/PRD.md` | Default OFF | sí, invierte bootstrap:61 | sí, Q009 |
@@ -59,7 +59,7 @@
 | Auth default | D012/Q012 | `docs/BOOTSTRAP_REFERENCE.md` | Email/password, MFA configurable | no | no aplica |
 | Pagos | D013/Q013 | `docs/PRD.md`, recurso `stripe` | Multi-provider, Stripe default | no | no aplica |
 | Email | D014/Q014 | `docs/PRD.md` | Multi-provider, Resend default | no | no aplica |
-| Core AI | D015/Q015 | arquitectura, OpenRouter | Multi-provider, OpenRouter Gemma 4 | no | no aplica |
+| Core AI | D015/Q015 | arquitectura, OpenRouter | Multi-provider, OpenRouter `google/gemma-4-26b-a4b-it:free` | no | no aplica |
 | Redis/colas | D016/Q016 | escalabilidad, recurso `redis` | Opcional default off | no | no aplica |
 | Event bus | D017/Q017 | recurso `inngest` | Inngest adapter default | no | no aplica |
 | Deploy | D018/Q018/Q053 | `docs/PRD.md` | Coolify sobre Docker VPS, genérico Docker | no | no aplica |
@@ -80,7 +80,7 @@
 | Estilo UI | D033/Q033 | PRD/UI | Operacional densa | no | no aplica |
 | API | D034/Q034 | architecture | API versionada para todos los módulos | no | no aplica |
 | API key scopes | D035/Q035 | modules/security | Tenant, módulo, acción | no | no aplica |
-| Import/export | D036/Q036/Q067/C012 | PRD/modules | Import CSV/XLSX; export CSV/XLSX/JSON/PDF | sí, Modules import JSON | sí, Q036 |
+| Import/export | D036/Q036/Q067/C007/C012 | PRD/modules | Import CSV/XLSX; export CSV/XLSX; PDF por registro individual desde UI | resuelta en `docs/` | Q036/Q067 |
 | RBAC | D037/Q037 | modules | Roles base + perfiles | no | no aplica |
 | Super Admin | D038/Q038 | bootstrap | Global + Tenant Zero | no | no aplica |
 | Auditoría | D039/Q039 | security/modules | Seguridad y cambios críticos | no | no aplica |
@@ -104,7 +104,7 @@
 | Shared modules | D057/Q059 | modules | File, Tag, Bookmark, Filter en framework shared | no | no aplica |
 | Público | D058/Q060 | structure | Base mínima reemplazable | no | no aplica |
 | Conflictos | D059/Q061 | questionnaire | Resolver caso por caso mostrando ambas versiones | no | no aplica |
-| Modelo OpenRouter | D060/Q063/C011 | OpenRouter | `google/gemma-4-26b-a4b-it` verificado | no | no aplica |
+| Modelo OpenRouter | D060/Q063/C011 | OpenRouter | `google/gemma-4-26b-a4b-it:free` verificado | no | no aplica |
 | Plan default | D061-D063/Q065-Q066 | PRD/modules | Trial, vencido degrada a Free si existe Free | no | no aplica |
 | Anti-abuso | D064/Q068/C008 | architecture | reCAPTCHA adapter | no | no aplica |
 | Imágenes | D065/Q069 | PRD | WebP activable default off | no | no aplica |
@@ -119,8 +119,8 @@
 | Fecha | Cambio | Fuente o razón | Artefacto relacionado |
 |---|---|---|---|
 | 2026-06-18 | Creación de Spec desde contexto y cuestionario aprobado | Aprobación literal: "Apruebo el cuestionario." | `FROMZERO_QUESTIONNAIRE.md` |
-| 2026-06-18 | Se fijó `google/gemma-4-26b-a4b-it` como ID OpenRouter inicial verificado | OpenRouter oficial | C011, Q063 |
-| 2026-06-18 | Se conservaron conflictos C001-C012 como trazabilidad para alinear docs después | Cuestionario corregido | `FROMZERO_QUESTIONNAIRE.md` |
+| 2026-06-18 | Se fijó `google/gemma-4-26b-a4b-it:free` como ID OpenRouter inicial verificado | OpenRouter oficial | C011, Q063 |
+| 2026-06-18 | Se alinearon conflictos documentales C001, C002, C003, C007, C010 y C012 antes de aprobar SPEC | Documentación corregida | `docs/`, `FROMZERO_QUESTIONNAIRE.md` |
 
 ## Matriz de cobertura del insumo
 
@@ -160,7 +160,7 @@
 | Export | módulo | Context | 2 | cubierto | import/export | release candidate |
 | Subscription | módulo | Context | 2 | cubierto | billing/subscriptions | release candidate |
 | Statement | módulo | Context | 2 | cubierto | billing | release candidate |
-| Invoice | módulo | Context | 2 | cubierto | billing/export PDF | release candidate |
+| Invoice | módulo | Context | 2 | cubierto | billing/PDF de registro | release candidate |
 | File | módulo | Context | 3 | cubierto | storage/files | release candidate |
 | Tag | módulo | Context | 3 | cubierto | módulos/shared | release candidate |
 | Bookmark | módulo | Context | 3 | cubierto | módulos/shared | release candidate |
@@ -225,11 +225,11 @@
 | REQ-035 | Integraciones externas | api-errors-security | Modules | Integration | release candidate | cubierto | integraciones |  | SSRF tests |
 | REQ-036 | Webhooks firmados y anti-replay | api-errors-security | Modules | Webhook | release candidate | cubierto | webhooks |  | webhook tests |
 | REQ-037 | Documentos versionados | storage-files | Modules | Document | release candidate | cubierto | storage |  | storage tests |
-| REQ-038 | Import CSV/XLSX con validación | import-export | PRD/Q036 | Import | release candidate | cubierto | import/export | JSON excluido por C012 | import tests |
-| REQ-039 | Export CSV/XLSX/JSON/PDF | import-export | PRD/Q067 | Export | release candidate | cubierto | import/export |  | export tests |
+| REQ-038 | Import CSV/XLSX con validación | import-export | PRD/Q036 | Import | release candidate | cubierto | import/export | Formatos limitados a CSV/XLSX | import tests |
+| REQ-039 | Export CSV/XLSX | import-export | PRD/Q036/Q067 | Export | release candidate | cubierto | import/export | PDF excluido del export masivo | export tests |
 | REQ-040 | Suscripciones | billing-subscriptions | Modules | Subscription | release candidate | cubierto | billing |  | billing tests |
 | REQ-041 | Statements | billing-subscriptions | Modules | Statement | release candidate | cubierto | billing |  | job tests |
-| REQ-042 | Invoices PDF | billing-subscriptions | Modules | Invoice | release candidate | cubierto | billing/export |  | PDF tests |
+| REQ-042 | PDF de registros individuales billing | billing-subscriptions | PRD/Modules | Invoice/Statement | release candidate | cubierto | billing/UI | PDF no pertenece al módulo Export masivo | PDF tests |
 | REQ-043 | Archivos con signed URLs | storage-files | Modules | File | release candidate | cubierto | storage |  | signed URL tests |
 | REQ-044 | Tags transversales | módulo | Modules | Tag | release candidate | cubierto | módulos shared |  | CRUD tests |
 | REQ-045 | Bookmarks por usuario | módulo | Modules | Bookmark | release candidate | cubierto | módulos shared |  | user-scoped tests |
@@ -319,7 +319,7 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 - UI FromZero white-label, operacional densa, responsive, i18n español/inglés.
 - API versionada `/api/v1/*` para todos los módulos, con auth, tenant context, RBAC, RLS, DTO, errores y auditoría.
 - Adapters multi-proveedor: Stripe, Resend, OpenRouter, Inngest, reCAPTCHA, observabilidad opcional.
-- Core AI multi-proveedor con OpenRouter `google/gemma-4-26b-a4b-it` como modelo inicial verificado.
+- Core AI multi-proveedor con OpenRouter `google/gemma-4-26b-a4b-it:free` como modelo inicial verificado.
 - Supabase cloud directo con SQL versionado; secretos fuera del repo.
 - Testing y gates: Vitest, Playwright, k6, SonarQube self-hosted, Lighthouse, RLS/RBAC/security tests.
 
@@ -389,7 +389,7 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 - Diferidas con placeholders: Redis, observabilidad Sentry/PostHog, MCP Supabase/SonarQube, app mobile Expo, Hostinger como proveedor alterno.
 - Condición de activación: configuración explícita por instalación, tenant o acción posterior aprobada.
 - Variables documentadas en `.env.example`: todas las públicas y placeholders; secretos en panel/env store.
-- OpenRouter: modelo inicial `google/gemma-4-26b-a4b-it`; pinning explícito requerido por entorno.
+- OpenRouter: modelo inicial `google/gemma-4-26b-a4b-it:free`; pinning explícito requerido por entorno.
 - Resend: proveedor default de email detrás de adapter.
 - Stripe: proveedor default de pagos detrás de adapter.
 - Inngest: implementación inicial del event bus detrás de adapter.
@@ -445,7 +445,7 @@ Documentar placeholders en `.env.example`. No incluir secretos reales.
 | `RESEND_API_KEY` | secreta | si email activo |
 | `OPENROUTER_API_KEY` | secreta | si IA activa |
 | `AI_PROVIDER` | config | default `openrouter` |
-| `AI_DEFAULT_MODEL` | config | default `google/gemma-4-26b-a4b-it` |
+| `AI_DEFAULT_MODEL` | config | default `google/gemma-4-26b-a4b-it:free` |
 | `INNGEST_EVENT_KEY` | secreta/config | si event bus activo |
 | `INNGEST_SIGNING_KEY` | secreta | si event bus activo |
 | `REDIS_URL` | secreta | opcional |
@@ -485,9 +485,9 @@ Documentar placeholders en `.env.example`. No incluir secretos reales.
 - No existen `FROMZERO_PLAN.md` ni `FROMZERO_STATE.md` antes de aprobación de Spec.
 - Matriz de decisiones, requisitos y gates cubre contexto y cuestionario.
 - Conflictos C001-C012 quedan visibles y resueltos para Spec o diferidos con razón.
-- OpenRouter model ID queda fijado como `google/gemma-4-26b-a4b-it`.
+- OpenRouter model ID queda fijado como `google/gemma-4-26b-a4b-it:free`.
 - Q066/D063 queda corregido a `degrade_to_free` cuando existe Free/freemium.
-- Import queda CSV/XLSX; export CSV/XLSX/JSON/PDF.
+- Import queda CSV/XLSX; export masivo CSV/XLSX; PDF queda como exportación de registro individual desde UI.
 - Aprobación del cuestionario queda registrada literal.
 
 ## Base para planificación
@@ -548,7 +548,7 @@ Evaluación de agentes futuros:
 | Lighthouse | > 90 | `SCALABILITY_ASSURANCE.md` | Lighthouse en RC | cubierto |
 | Cobertura crítica | 80% lógica crítica | cuestionario Q046 | CI test coverage | cubierto |
 | Playwright viewports | 375, 768, 1920 | recurso Playwright | E2E visual | cubierto |
-| OpenRouter context | 262K para `google/gemma-4-26b-a4b-it` | OpenRouter | AI adapter tests | cubierto |
+| OpenRouter context | 262K para `google/gemma-4-26b-a4b-it:free` | OpenRouter | AI adapter tests | cubierto |
 | OpenRouter pricing | sujeto a proveedor/modelo | OpenRouter pricing | budget tests | cubierto |
 
 ## Pruebas esperadas
@@ -585,7 +585,7 @@ Evaluación de agentes futuros:
 - Alto: multi-tenancy y RLS incompletos pueden causar fuga cross-tenant.
 - Alto: billing/webhooks mal diseñados pueden causar cobros o estados incorrectos.
 - Alto: purge destructivo requiere aprobación humana y evidencia.
-- Alto: OpenRouter/Gemma model ID debe mantenerse explícito y monitoreado por cambios/deprecación.
+- Alto: OpenRouter/Gemma free model ID debe mantenerse explícito y monitoreado por cambios/deprecación.
 - Medio: Supabase cloud directo puede generar deriva si SQL versionado no se disciplina.
 - Medio: UI FromZero puede copiar deuda visual si no se sanitiza.
 - Medio: Redis default off exige fallback robusto para rate limit/jobs pequeños.
@@ -617,14 +617,6 @@ Evaluación de agentes futuros:
   Condición de activación: antes de venta.
   Gate requerido: revisión legal.
   Riesgo si no se prepara: uso no autorizado o ambigüedad comercial.
-
-- Decisión: alinear documentación vieja.
-  Por que se difiere: Spec conserva conflictos C001-C012.
-  Impacto arquitectonico: evita que implementadores sigan docs obsoletos.
-  Placeholder/contrato requerido: changelog documental.
-  Condición de activación: antes de Plan o durante Sprint 0 documental.
-  Gate requerido: revisar `docs/`.
-  Riesgo si no se prepara: contradicciones reintroducidas.
 
 ## Aprobación
 

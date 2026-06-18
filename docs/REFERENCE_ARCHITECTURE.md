@@ -1,7 +1,7 @@
 # Arquitectura de Referencia - From Zero Framework
 
 > **Producto:** From Zero Framework
-> **Versión:** 7.0.0
+> **Versión:** 7.4.0
 > **Última actualización:** 2026-06-07
 > **Fuente de verdad:** [`PRD.md`](./PRD.md)
 > **Propósito:** Blueprint técnico de la arquitectura del framework. Complementa al PRD con decisiones arquitectónicas y patrones de implementación.
