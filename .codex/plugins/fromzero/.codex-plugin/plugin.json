@@ -1,0 +1,28 @@
+{
+  "name": "fromzero",
+  "version": "0.4.33",
+  "description": "Codex adapter for the FromZero Methodology.",
+  "author": {
+    "name": "FromZero"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "FromZero",
+    "shortDescription": "Agentic delivery gates for FromZero.",
+    "longDescription": "Codex adapter with skills, agents, checklists and templates for secure, scalable FromZero delivery.",
+    "developerName": "FromZero",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Revisa este proyecto con FromZero y dime cómo empezamos.",
+      "La documentación está en docs. Analiza el proyecto y dime qué falta.",
+      "Quiero crear una app con FromZero. Guíame paso a paso."
+    ],
+    "brandColor": "#0F766E",
+    "logo": "./assets/logo.svg"
+  }
+}

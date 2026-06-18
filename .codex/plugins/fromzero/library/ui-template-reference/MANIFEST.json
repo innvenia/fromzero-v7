@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "role": "Canonical Design System reference of the FromZero methodology.",
+  "upstream": "ui-template/nextjs-template (refresh origin when accessible; not normative)",
+  "includes": [
+    "README.md",
+    "AGENTS.md",
+    "docs/design-system.md",
+    "docs/interface-architecture.md",
+    "src/framework/ui/README.md",
+    "src/framework/ui/components",
+    "src/app/globals.css"
+  ],
+  "excludes": [
+    "node_modules",
+    ".next",
+    "src/web/template/migrated",
+    "test-results"
+  ],
+  "rule": "Use as reference and component source. The packaged copy is the normative source; upstream only refreshes it. Do not copy migrated runtime debt."
+}

@@ -1,0 +1,37 @@
+# Checklist central
+
+- Context con `artifacts/FROMZERO_CONTEXT.md` y Git verificado antes de escribir.
+- Fuentes prioritarias de `docs/` leídas o limitación documentada.
+- Inventario separa módulos, transversales, tablas, jobs, APIs y requisitos security/scale.
+- Inventario atomico con ID estable por heading funcional, bullet obligatorio y fila de tabla.
+- Inventario de invariantes/gates con ID estable por regla bloqueante.
+- Cuestionario crítico ejecutado como Q&A real, no borrador, revisado y aprobado antes de Spec.
+- Cuestionario crítico con resumen validado para Spec.
+- Spec con matriz de cobertura completa.
+- Spec con matriz de requisitos atomicos completa.
+- Spec con matriz de invariantes/gates completa.
+- Spec con usuario objetivo, usuario no objetivo y casos excluidos.
+- Spec con `Base para planificación` completa.
+- Spec contrastada contra fuentes prioritarias, no solo contra Context.
+- Design con contratos implementables y ADRs.
+- Plan con validación de cierre y trazabilidad criterios -> Sprints.
+- Plan con trazabilidad capacidades -> Sprints, archivos, pruebas y gates.
+- Plan con trazabilidad requisitos atomicos -> Sprints, archivos, pruebas, gates y criterio verificable.
+- Plan con trazabilidad invariantes/gates -> Sprints, archivos, comandos y criterio bloqueante.
+- Plan contrastado contra `Base para planificación`, con divergencias justificadas.
+- State con `artifacts/FROMZERO_STATE.md` como fuente de verdad operativa.
+- TDD con prueba fallida antes de lógica productiva.
+- Build por Sprints verificables.
+- Security aprobado.
+- UI aprobado o no aplica con razón.
+- Scalability aprobado.
+- Release con evidencia y handoff.
+- Release con aceptación de producto contra visión validada.
+- `library/manifest.json` revisado.
+- Recursos de integración activados o pregunta bloqueante.
+- `.env.example` sin secretos reales.
+- Cada fase cerrada con su informe de cierre de fase.
+- Cada fase exitosa con commit automático seguro o razón concreta.
+- Commit reportado con hash corto y mensaje completo.
+- Artefactos revisables enlazados para el usuario.
+- `Siguiente paso para ti:` con acción humana explícita.

@@ -1,0 +1,26 @@
+# Guardrails
+
+- No leer `.env` reales.
+- No ejecutar Git destructivo sin aprobación explícita.
+- Verificar `.git` desde Context antes de escribir archivos.
+- Si falta `.git`, pedir aprobación antes de inicializarlo y antes de cambios complejos.
+- No cambiar schemas sin spec.
+- No omitir RLS/RBAC.
+- No usar Redis como requisito base.
+- No cerrar sin verificación fresca.
+- No distribuir documentación interna como adaptador.
+- Al instalar o inicializar un adaptador en un proyecto destino, crear o actualizar `artifacts/START_HERE.md` desde `templates/start-here.md`.
+- No usar pasos, fases, Sprints, etapas ni items visibles numerados como `0`, salvo razón técnica extrema documentada.
+- No cerrar Context sin `artifacts/FROMZERO_CONTEXT.md`.
+- No cerrar Spec sin matriz de cobertura completa.
+- No cerrar Spec sin matriz de requisitos atomicos cuando haya fuentes prioritarias con detalle funcional.
+- No cerrar Spec sin matriz de invariantes/gates cuando haya reglas bloqueantes documentadas.
+- No cerrar Plan sin validación de cierre contra spec, insumo y estructura física cuando exista.
+- No cerrar Plan si solo cubre módulos macro y omite transversales documentadas.
+- No cerrar Plan si headings funcionales, bullets obligatorios, filas de tabla, estados, limites, TTLs, jobs, APIs, pruebas o gates documentados no tienen Sprint dueño.
+- No cerrar Plan si invariantes de bootstrap, datos reales, naming, servicios internos, dependencias, inventario API, performance, marcas de plantillas o consentimientos quedan sin Sprint dueño y comando/gate.
+- No iniciar Build cuando Plan o State requieren cambios o nueva aprobación.
+- No dejar dos artefactos vigentes con decisiones contradictorias.
+- No cerrar una fase exitosa sin intentar commit automático seguro.
+- No reportar commit solo con hash; incluir hash corto y mensaje completo.
+- No dejar al humano sin enlaces a artefactos y acción siguiente.

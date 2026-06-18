@@ -1,0 +1,68 @@
+{
+  "version": "0.1.0",
+  "policy": {
+    "automaticDownloads": false,
+    "approvalRequired": true,
+    "requireVersionPin": true,
+    "requireChecksumWhenAvailable": true,
+    "preferOfficialSources": true
+  },
+  "packs": [
+    {
+      "id": "frontend-vue-nuxt",
+      "category": "frontend-web",
+      "technologies": ["Vue", "Nuxt"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "mobile-flutter",
+      "category": "mobile",
+      "technologies": ["Flutter", "Dart"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "backend-django",
+      "category": "backend-api",
+      "technologies": ["Django", "Python"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "database-mongodb",
+      "category": "databases",
+      "technologies": ["MongoDB"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "auth-clerk",
+      "category": "auth",
+      "technologies": ["Clerk"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "payments-paddle",
+      "category": "payments",
+      "technologies": ["Paddle"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "deployment-aws",
+      "category": "deployment",
+      "technologies": ["AWS"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    },
+    {
+      "id": "ai-openai",
+      "category": "ai",
+      "technologies": ["OpenAI"],
+      "status": "candidate",
+      "source": "official-docs-required"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Node/Next.js/React/TypeScript
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Tests and coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+k6-results/
+
+# Python/FastAPI/Core AI
+__pycache__/
+*.py[cod]
+.python-version
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Supabase local state
+supabase/.branches/
+supabase/.temp/
+supabase/.cache/
+
+# Docker/local runtime
+docker-compose.override.yml
+*.pid
+tmp/
+temp/
+
+# Codex local runtime cache; keep project plugin tracked
+.codex/cache/
+.codex/tmp/
+.codex/logs/
+.codex/sessions/

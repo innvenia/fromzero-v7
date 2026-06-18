@@ -1,0 +1,30 @@
+{
+  "requiredEvidence": [
+    "pruebas ejecutadas o limitación explícita",
+    "artifacts/FROMZERO_CONTEXT.md creado o verificado",
+    "matriz de cobertura del insumo completa",
+    "cobertura de documentación prioritaria revisada",
+    "inventario de requisitos atomicos completo",
+    "headings funcionales trazados",
+    "requisitos atomicos trazados a Sprints",
+    "inventario de invariantes y verificaciones de release completo",
+    "invariantes y verificaciones de release trazados a Sprints",
+    "capacidades transversales trazadas a Sprints",
+    "tabla fuente-a-Sprint completa",
+    "checklist de transversales aplicado",
+    "KPIs/SLOs verificados o justificados",
+    "validación de cierre del plan completada",
+    "manifest de librería revisado",
+    "categorías de librería revisadas cuando aplican",
+    "integraciones activadas revisadas",
+    "recursos faltantes resueltos o bloqueados",
+    "lockfile FromZero revisado cuando se usó instalación del resolver",
+    "verificación de seguridad",
+    "verificación de escalabilidad",
+    "verificación visual en navegador con evidencia o fallback registrado cuando el proyecto tiene UI web",
+    ".env.example actualizado sin secretos cuando las integraciones requieren variables",
+    "handoff",
+    "hash y mensaje del commit automático, o razón concreta si no se creó",
+    "siguiente paso humano con enlaces a artefactos"
+  ]
+}

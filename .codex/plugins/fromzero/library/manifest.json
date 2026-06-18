@@ -1,0 +1,800 @@
+{
+  "version": "0.1.0",
+  "adapter": "codex",
+  "policy": {
+    "selfContained": true,
+    "externalDownloadsAllowed": "approval-required",
+    "readRealEnvFiles": false,
+    "requiredEnvDocumentation": ".env.example",
+    "fallbackWhenMissing": "ask-before-official-docs-or-pack-sync",
+    "resolver": "tools/resource-resolver.mjs",
+    "lockfile": ".fromzero/fromzero.lock.json"
+  },
+  "resources": [
+    {
+      "id": "supabase",
+      "type": "integration",
+      "name": "Supabase Auth, Postgres and RLS",
+      "triggers": [
+        "supabase",
+        "supabase auth",
+        "supabase storage",
+        "supabase realtime",
+        "supabase rls"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/supabase.md",
+      "requiredEnvExample": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      ],
+      "secretEnv": [
+        "SUPABASE_SERVICE_ROLE_KEY"
+      ],
+      "requiredGates": [
+        "rls",
+        "rbac",
+        "migration-review",
+        "tenant-isolation-tests"
+      ],
+      "required": false
+    },
+    {
+      "id": "redis",
+      "type": "integration",
+      "name": "Redis cache, rate limits and queues",
+      "triggers": [
+        "redis",
+        "cache",
+        "queue",
+        "bullmq",
+        "rate limit",
+        "lock",
+        "session"
+      ],
+      "phases": [
+        "fz-spec",
+        "fz-plan",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/redis.md",
+      "requiredEnvExample": [
+        "REDIS_URL"
+      ],
+      "secretEnv": [
+        "REDIS_URL"
+      ],
+      "requiredGates": [
+        "cache-decision",
+        "invalidation",
+        "distributed-rate-limit",
+        "fallback-mode"
+      ],
+      "required": false
+    },
+    {
+      "id": "sonarqube",
+      "type": "quality-gate",
+      "name": "SonarQube quality and security gate",
+      "triggers": [
+        "sonarqube",
+        "sonar",
+        "quality gate",
+        "static analysis",
+        "sast"
+      ],
+      "phases": [
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/sonarqube.md",
+      "requiredEnvExample": [
+        "SONAR_HOST_URL",
+        "SONAR_PROJECT_KEY"
+      ],
+      "secretEnv": [
+        "SONAR_TOKEN"
+      ],
+      "requiredGates": [
+        "quality-gate",
+        "security-hotspots",
+        "coverage-policy"
+      ],
+      "required": false
+    },
+    {
+      "id": "expo",
+      "type": "platform",
+      "name": "Expo mobile application",
+      "triggers": [
+        "expo",
+        "react native",
+        "mobile",
+        "ios",
+        "android",
+        "eas"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-ui",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/expo.md",
+      "requiredEnvExample": [
+        "EXPO_PUBLIC_API_URL"
+      ],
+      "secretEnv": [
+        "EXPO_TOKEN"
+      ],
+      "requiredGates": [
+        "mobile-navigation",
+        "secure-storage",
+        "device-qa",
+        "eas-build"
+      ],
+      "required": false
+    },
+    {
+      "id": "hostinger",
+      "type": "deployment",
+      "name": "Hostinger deployment",
+      "triggers": [
+        "hostinger",
+        "hosting",
+        "vps",
+        "domain",
+        "deploy"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-plan",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/hostinger.md",
+      "requiredEnvExample": [
+        "APP_BASE_URL"
+      ],
+      "secretEnv": [
+        "HOSTINGER_API_TOKEN",
+        "SSH_PRIVATE_KEY"
+      ],
+      "requiredGates": [
+        "deployment-target",
+        "tls",
+        "backup",
+        "rollback"
+      ],
+      "required": false
+    },
+    {
+      "id": "runpod",
+      "type": "infrastructure",
+      "name": "Runpod GPU runtime",
+      "triggers": [
+        "runpod",
+        "gpu",
+        "inference",
+        "ai runtime",
+        "model serving"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/runpod.md",
+      "requiredEnvExample": [
+        "RUNPOD_ENDPOINT_ID"
+      ],
+      "secretEnv": [
+        "RUNPOD_API_KEY"
+      ],
+      "requiredGates": [
+        "budget-cap",
+        "rate-limit",
+        "tenant-audit",
+        "egress-review"
+      ],
+      "required": false
+    },
+    {
+      "id": "stripe",
+      "type": "integration",
+      "name": "Stripe billing and webhooks",
+      "triggers": [
+        "stripe",
+        "billing",
+        "checkout",
+        "subscription",
+        "invoice",
+        "webhook"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/stripe.md",
+      "requiredEnvExample": [
+        "STRIPE_PUBLISHABLE_KEY"
+      ],
+      "secretEnv": [
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET"
+      ],
+      "requiredGates": [
+        "webhook-signature",
+        "idempotency",
+        "billing-rbac",
+        "audit-log"
+      ],
+      "required": false
+    },
+    {
+      "id": "inngest",
+      "type": "async",
+      "name": "Inngest background jobs",
+      "triggers": [
+        "inngest",
+        "background job",
+        "async job",
+        "workflow",
+        "scheduled job"
+      ],
+      "phases": [
+        "fz-spec",
+        "fz-plan",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/inngest.md",
+      "requiredEnvExample": [
+        "INNGEST_EVENT_KEY"
+      ],
+      "secretEnv": [
+        "INNGEST_SIGNING_KEY"
+      ],
+      "requiredGates": [
+        "idempotency",
+        "retry-policy",
+        "dead-letter",
+        "tenant-context"
+      ],
+      "required": false
+    },
+    {
+      "id": "playwright",
+      "type": "testing",
+      "name": "Playwright E2E and visual QA",
+      "triggers": [
+        "playwright",
+        "e2e",
+        "browser test",
+        "visual qa",
+        "responsive"
+      ],
+      "phases": [
+        "fz-ui",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/playwright.md",
+      "requiredEnvExample": [
+        "PLAYWRIGHT_BASE_URL"
+      ],
+      "secretEnv": [],
+      "requiredGates": [
+        "critical-flow-e2e",
+        "responsive-375-768-1920",
+        "a11y-smoke"
+      ],
+      "required": false
+    },
+    {
+      "id": "k6",
+      "type": "load-test",
+      "name": "k6 load testing",
+      "triggers": [
+        "k6",
+        "load test",
+        "performance test",
+        "p95",
+        "stress test"
+      ],
+      "phases": [
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/k6.md",
+      "requiredEnvExample": [
+        "K6_BASE_URL"
+      ],
+      "secretEnv": [],
+      "requiredGates": [
+        "critical-flow-load",
+        "p95-budget",
+        "capacity-notes"
+      ],
+      "required": false
+    },
+    {
+      "id": "stack-router",
+      "type": "router",
+      "name": "Technology stack router",
+      "triggers": [
+        "stack",
+        "technology",
+        "framework",
+        "language",
+        "runtime",
+        "platform",
+        "provider"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan"
+      ],
+      "packagedPath": "library/resources/stack-router.md",
+      "requiredEnvExample": [],
+      "secretEnv": [],
+      "requiredGates": [
+        "stack-detection",
+        "resource-selection",
+        "missing-resource-resolution"
+      ],
+      "required": true
+    },
+    {
+      "id": "frontend-web",
+      "type": "category",
+      "name": "Frontend web frameworks",
+      "triggers": [
+        "next.js",
+        "nextjs",
+        "react",
+        "vue",
+        "nuxt",
+        "angular",
+        "svelte",
+        "sveltekit",
+        "astro",
+        "remix",
+        "frontend",
+        "web app"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-ui",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/frontend-web.md",
+      "requiredEnvExample": [
+        "APP_BASE_URL"
+      ],
+      "secretEnv": [],
+      "requiredGates": [
+        "routing",
+        "i18n",
+        "accessibility",
+        "responsive",
+        "e2e"
+      ],
+      "required": false
+    },
+    {
+      "id": "fromzero-ui-template",
+      "type": "design-system",
+      "name": "FromZero UI template and Design System",
+      "triggers": [
+        "ui-template",
+        "design system",
+        "fromzero ui",
+        "ui",
+        "interfaz",
+        "diseno",
+        "diseño",
+        "pantalla",
+        "frontend",
+        "dashboard",
+        "component",
+        "layout",
+        "tokens",
+        "tailwind",
+        "shadcn",
+        "interface"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-ui",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/fromzero-ui-template.md",
+      "requiredEnvExample": [],
+      "secretEnv": [],
+      "requiredGates": [
+        "design-source-check",
+        "tokens",
+        "components",
+        "responsive",
+        "a11y",
+        "visual-qa"
+      ],
+      "required": false
+    },
+    {
+      "id": "backend-api",
+      "type": "category",
+      "name": "Backend API frameworks",
+      "triggers": [
+        "node",
+        "nestjs",
+        "express",
+        "fastapi",
+        "django",
+        "flask",
+        "rails",
+        "laravel",
+        "go",
+        "gin",
+        "spring",
+        "api",
+        "backend"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-security",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/backend-api.md",
+      "requiredEnvExample": [
+        "API_BASE_URL"
+      ],
+      "secretEnv": [],
+      "requiredGates": [
+        "input-validation",
+        "authz",
+        "rate-limit",
+        "safe-errors",
+        "observability"
+      ],
+      "required": false
+    },
+    {
+      "id": "databases",
+      "type": "category",
+      "name": "Databases and persistence",
+      "triggers": [
+        "postgres",
+        "postgresql",
+        "mysql",
+        "mariadb",
+        "mongodb",
+        "sqlite",
+        "sql server",
+        "dynamodb",
+        "database",
+        "orm",
+        "prisma",
+        "drizzle"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan",
+        "fz-security",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/databases.md",
+      "requiredEnvExample": [
+        "DATABASE_URL"
+      ],
+      "secretEnv": [
+        "DATABASE_URL"
+      ],
+      "requiredGates": [
+        "data-ownership",
+        "migrations",
+        "indexes",
+        "backup",
+        "access-control"
+      ],
+      "required": false
+    },
+    {
+      "id": "auth-providers",
+      "type": "category",
+      "name": "Authentication providers",
+      "triggers": [
+        "auth",
+        "authentication",
+        "authorization",
+        "clerk",
+        "auth.js",
+        "nextauth",
+        "firebase auth",
+        "cognito",
+        "oauth",
+        "oidc",
+        "saml"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/auth-providers.md",
+      "requiredEnvExample": [
+        "AUTH_URL"
+      ],
+      "secretEnv": [
+        "AUTH_SECRET",
+        "OAUTH_CLIENT_SECRET"
+      ],
+      "requiredGates": [
+        "session-security",
+        "server-side-rbac",
+        "token-storage",
+        "tenant-boundaries"
+      ],
+      "required": false
+    },
+    {
+      "id": "payments",
+      "type": "category",
+      "name": "Payments and billing providers",
+      "triggers": [
+        "payment",
+        "payments",
+        "billing",
+        "subscription",
+        "checkout",
+        "paddle",
+        "mercadopago",
+        "paypal",
+        "webhook"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/payments.md",
+      "requiredEnvExample": [
+        "PAYMENTS_PUBLIC_KEY"
+      ],
+      "secretEnv": [
+        "PAYMENTS_SECRET_KEY",
+        "PAYMENTS_WEBHOOK_SECRET"
+      ],
+      "requiredGates": [
+        "webhook-signature",
+        "idempotency",
+        "billing-rbac",
+        "audit-log"
+      ],
+      "required": false
+    },
+    {
+      "id": "deployment-cloud",
+      "type": "category",
+      "name": "Deployment and cloud providers",
+      "triggers": [
+        "vercel",
+        "netlify",
+        "railway",
+        "render",
+        "fly.io",
+        "aws",
+        "gcp",
+        "azure",
+        "cloudflare",
+        "docker",
+        "kubernetes",
+        "deployment",
+        "hosting"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-plan",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/deployment-cloud.md",
+      "requiredEnvExample": [
+        "APP_BASE_URL"
+      ],
+      "secretEnv": [
+        "DEPLOY_TOKEN",
+        "CLOUD_ACCESS_KEY"
+      ],
+      "requiredGates": [
+        "tls",
+        "secrets",
+        "healthcheck",
+        "rollback",
+        "observability"
+      ],
+      "required": false
+    },
+    {
+      "id": "ai-providers",
+      "type": "category",
+      "name": "AI providers and model runtimes",
+      "triggers": [
+        "openai",
+        "anthropic",
+        "claude",
+        "gemini",
+        "google ai",
+        "ollama",
+        "hugging face",
+        "replicate",
+        "ai",
+        "llm",
+        "embedding",
+        "vector"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/ai-providers.md",
+      "requiredEnvExample": [
+        "AI_PROVIDER"
+      ],
+      "secretEnv": [
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "GEMINI_API_KEY"
+      ],
+      "requiredGates": [
+        "budget-cap",
+        "rate-limit",
+        "prompt-injection",
+        "tenant-audit",
+        "data-retention"
+      ],
+      "required": false
+    },
+    {
+      "id": "testing-quality",
+      "type": "category",
+      "name": "Testing and quality tools",
+      "triggers": [
+        "vitest",
+        "jest",
+        "cypress",
+        "testing library",
+        "storybook",
+        "eslint",
+        "biome",
+        "quality",
+        "coverage",
+        "test"
+      ],
+      "phases": [
+        "fz-plan",
+        "fz-tdd",
+        "fz-ui",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/testing-quality.md",
+      "requiredEnvExample": [
+        "TEST_BASE_URL"
+      ],
+      "secretEnv": [],
+      "requiredGates": [
+        "unit",
+        "integration",
+        "e2e",
+        "coverage-policy",
+        "quality-gate"
+      ],
+      "required": false
+    },
+    {
+      "id": "missing-resource-resolution",
+      "type": "fallback",
+      "name": "Missing resource resolution workflow",
+      "triggers": [
+        "unknown stack",
+        "missing skill",
+        "unsupported technology",
+        "not in manifest",
+        "new provider"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-plan"
+      ],
+      "packagedPath": "library/resources/missing-resource-resolution.md",
+      "requiredEnvExample": [],
+      "secretEnv": [],
+      "requiredGates": [
+        "official-source-check",
+        "approval",
+        "version-pin",
+        "resource-capture"
+      ],
+      "required": false
+    },
+    {
+      "id": "mcp-supabase",
+      "type": "mcp",
+      "name": "Supabase MCP server",
+      "triggers": [
+        "supabase mcp",
+        "schema inspection",
+        "rls inspection"
+      ],
+      "phases": [
+        "fz-design",
+        "fz-build",
+        "fz-security"
+      ],
+      "packagedPath": "library/resources/mcp.md",
+      "requiredEnvExample": [],
+      "secretEnv": [
+        "SUPABASE_ACCESS_TOKEN"
+      ],
+      "requiredGates": [
+        "mcp-approval",
+        "no-secrets-in-repo"
+      ],
+      "required": false
+    },
+    {
+      "id": "mcp-sonarqube",
+      "type": "mcp",
+      "name": "SonarQube MCP server",
+      "triggers": [
+        "sonarqube mcp",
+        "quality gate",
+        "security hotspots"
+      ],
+      "phases": [
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/mcp.md",
+      "requiredEnvExample": [
+        "SONAR_HOST_URL"
+      ],
+      "secretEnv": [
+        "SONAR_TOKEN"
+      ],
+      "requiredGates": [
+        "mcp-approval",
+        "no-secrets-in-repo"
+      ],
+      "required": false
+    }
+  ]
+}

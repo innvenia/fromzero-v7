@@ -1,0 +1,34 @@
+# Context Checklist
+
+- Fuentes canónicas leídas.
+- Prioridad documental registrada cuando existe `docs/PRD.md` o documentos `docs/REFERENCE_*.md`.
+- Archivos leídos, truncados y omitidos registrados con razón.
+- `artifacts/START_HERE.md` creado o sobrescrito desde `templates/start-here.md`.
+- `artifacts/FROMZERO_CONTEXT.md` creado o actualizado desde template.
+- Entendimiento inicial registrado antes del Q&A cuando hubo decisiones críticas.
+- Usuario objetivo, usuario no objetivo y casos excluidos registrados.
+- Supuestos del agente registrados con riesgo y tratamiento.
+- Análisis crítico, gaps del insumo, contradicciones, supuestos débiles y mejoras propuestas registrados.
+- Si hubo decisiones críticas, se mostró `Activa el modo plan de tu agente antes de continuar.` o su variante con el nombre del agente.
+- Antes del primer ciclo de Q&A, se explicó que habrá ciclos, opciones recomendadas y respuesta abierta.
+- El cuestionario inició con resumen de entendimiento antes de preguntar.
+- Las preguntas críticas se trabajaron como entrevista guiada por ciclos.
+- Decisiones técnicas críticas fueron presentadas como tarjetas de decisión.
+- El cuestionario cerró con resumen validado para Spec.
+- Cada opción del cuestionario registra fuente documental o `sin respaldo documental`.
+- Ninguna opción recomendada reduce, difiere o contradice el insumo sin excepción aprobada.
+- Decisiones claras de la documentación fueron registradas como asumidas, no preguntadas como opcionales.
+- Si el Q&A real no se ejecutó, no existe `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo con respuestas vacías.
+- `artifacts/FROMZERO_QUESTIONNAIRE.md` está respondido, no es borrador, tiene `Modo Q&A ejecutado: si` y fue revisado, ajustado o aprobado antes de pasar a spec.
+- Decisión de UI registrada.
+- Inventario de capacidades enumerable.
+- Inventario separa módulos, transversales, tablas, jobs, APIs, páginas de infraestructura, seguridad y escalabilidad.
+- Inventario atomico extrae headings funcionales, subheadings, bullets obligatorios y filas de tabla de fuentes prioritarias.
+- Dominios documentados como auth, storage, billing, UI, theme, grid, custom fields, event bus, notifications, import/export y API no quedan resumidos en una sola fila agregada.
+- Inventario de invariantes/gates extrae reglas de bootstrap, datos reales, naming, servicios internos, dependencias, inventario API, performance, marcas de plantillas y consentimientos.
+- Estado Git verificado antes de escribir archivos.
+- Si falta `.git`, inicialización aprobada o riesgo documentado.
+- `README.md` del proyecto existe o su creación fue propuesta y resuelta.
+- Alcance clasificado.
+- Tenant ownership claro.
+- Ambigüedades bloqueantes listadas.

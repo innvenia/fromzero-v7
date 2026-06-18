@@ -1,0 +1,60 @@
+{
+  "version": "0.1.0",
+  "purpose": "Map common client technology needs to packaged resources or optional registry packs.",
+  "categories": [
+    {
+      "id": "frontend-web",
+      "packagedResource": "frontend-web",
+      "commonTechnologies": ["Next.js", "React", "Vue", "Nuxt", "Angular", "SvelteKit", "Astro", "Remix"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "mobile",
+      "packagedResource": "expo",
+      "commonTechnologies": ["Expo", "React Native", "Flutter", "Ionic"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "backend-api",
+      "packagedResource": "backend-api",
+      "commonTechnologies": ["Node.js", "Express", "NestJS", "FastAPI", "Django", "Flask", "Rails", "Laravel", "Go", "Spring"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "databases",
+      "packagedResource": "databases",
+      "commonTechnologies": ["Postgres", "MySQL", "MariaDB", "MongoDB", "SQLite", "SQL Server", "DynamoDB", "Prisma", "Drizzle"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "auth",
+      "packagedResource": "auth-providers",
+      "commonTechnologies": ["Supabase Auth", "Clerk", "Auth.js", "Firebase Auth", "Cognito", "OAuth", "OIDC", "SAML"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "payments",
+      "packagedResource": "payments",
+      "commonTechnologies": ["Stripe", "Paddle", "MercadoPago", "PayPal"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "deployment",
+      "packagedResource": "deployment-cloud",
+      "commonTechnologies": ["Vercel", "Netlify", "Railway", "Render", "Fly.io", "Hostinger", "AWS", "GCP", "Azure", "Cloudflare", "Docker", "Kubernetes"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "ai",
+      "packagedResource": "ai-providers",
+      "commonTechnologies": ["OpenAI", "Anthropic", "Gemini", "Ollama", "Hugging Face", "Replicate", "Runpod"],
+      "fallbackResource": "missing-resource-resolution"
+    },
+    {
+      "id": "testing-quality",
+      "packagedResource": "testing-quality",
+      "commonTechnologies": ["Vitest", "Jest", "Cypress", "Playwright", "Testing Library", "Storybook", "ESLint", "Biome", "SonarQube", "k6"],
+      "fallbackResource": "missing-resource-resolution"
+    }
+  ]
+}
