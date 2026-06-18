@@ -33,7 +33,7 @@ El usuario puede corregir respuestas editando `Respuesta seleccionada` o agregan
 - Preguntas críticas pendientes: 0
 - Preguntas críticas sin respuesta: 0
 - Preguntas diferidas: activación MCP posterior al registro del cuestionario
-- Estado de aprobación para Spec: no aprobado
+- Estado de aprobación para Spec: aprobado
 
 Regla:
 Si `Aprobación del usuario` no es `aprobada`, este archivo no puede usarse para crear `artifacts/FROMZERO_SPEC.md`.
@@ -72,7 +72,7 @@ Si `Aprobación del usuario` no es `aprobada`, este archivo no puede usarse para
 | 19 | Eventos | Cerrar notificaciones, webhooks y reglas | In-app default, webhooks bidireccionales, datos/tiempo/webhooks |
 | 20 | Módulos | Cerrar Task, módulos shared y público | Task app ejemplo, shared framework, público mínimo |
 | 21 | Conflictos | Cerrar resolución de conflictos, MCP y modelo | Decisión caso por caso, MCP después, verificar modelo |
-| 22 | Billing | Cerrar códigos de plan, default y vencimiento | Free/Trial/Pro/Enterprise, Trial, read-only |
+| 22 | Billing | Cerrar códigos de plan, default y vencimiento | Free/Trial/Pro/Enterprise, Trial, degradar a Free (`degrade_to_free`) |
 | 23 | Export/abuso | Cerrar PDF, captcha e imágenes | PDF por registro individual, reCAPTCHA, WebP off |
 | 24 | Regional | Cerrar locale, timezone y moneda | `es`, UTC, USD |
 | 25 | Seguridad | Cerrar MFA, API keys y secretos | MFA configurable, expiración opcional, env store |
@@ -282,3 +282,4 @@ Cada fila registra la opción seleccionada o la respuesta abierta del usuario. L
 | 2026-06-18 | Correcciones de coherencia documental solicitadas por el usuario | Codex |
 | 2026-06-18 | Aprobación explícita del cuestionario por el usuario | Usuario |
 | 2026-06-18 | Alineación documental pre-SPEC: estructura, formatos, OpenRouter free, KPIs y accesibilidad | Codex |
+| 2026-06-18 | Corrección editorial de resumen para alinear aprobación de Spec y Trial vencido con D063/Q066 | Codex |

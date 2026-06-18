@@ -10,14 +10,14 @@
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | listo para revisión |
-| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-18 |
+| Frase literal de aprobación | Apruebo la especificación. |
 | Artefactos prerequisito | `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md` aprobado |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, recursos locales FromZero, OpenRouter |
-| Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, ADRs de diseño técnico si aplican |
+| Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md`, `artifacts/adr/` |
 | Commit asociado | pendiente |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. No se ejecutó código de aplicación. No se activaron servicios externos. |
 
@@ -121,6 +121,7 @@
 | 2026-06-18 | Creación de Spec desde contexto y cuestionario aprobado | Aprobación literal: "Apruebo el cuestionario." | `FROMZERO_QUESTIONNAIRE.md` |
 | 2026-06-18 | Se fijó `google/gemma-4-26b-a4b-it:free` como ID OpenRouter inicial verificado | OpenRouter oficial | C011, Q063 |
 | 2026-06-18 | Se alinearon conflictos documentales C001, C002, C003, C007, C010 y C012 antes de aprobar SPEC | Documentación corregida | `docs/`, `FROMZERO_QUESTIONNAIRE.md` |
+| 2026-06-18 | Aprobación explícita de la Spec y habilitación de diseño técnico, Plan y State | Aprobación literal: "Apruebo la especificación." | `FROMZERO_PLAN.md`, `FROMZERO_STATE.md`, `artifacts/adr/` |
 
 ## Matriz de cobertura del insumo
 
@@ -620,6 +621,7 @@ Evaluación de agentes futuros:
 
 ## Aprobación
 
-- Revisado por: pendiente.
-- Fecha: pendiente.
-- Estado: pendiente.
+- Revisado por: usuario.
+- Fecha: 2026-06-18.
+- Estado: aprobado.
+- Frase literal: Apruebo la especificación.
