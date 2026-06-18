@@ -12,8 +12,8 @@ Ruta de salida: `artifacts/adr/001-data-auth-rls-rbac.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | borrador |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: propagado guard RBAC server-side y patrón de auditoría, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -25,7 +25,7 @@ Ruta de salida: `artifacts/adr/001-data-auth-rls-rbac.md`
 
 ## Decisión
 
-Usar Supabase PostgreSQL como base principal, con SQL versionado, RLS obligatorio en toda tabla tenant-aware, RBAC server-side y `tenant_id` derivado de contexto seguro emitido por backend.
+Usar Supabase PostgreSQL como base principal, con SQL versionado, RLS obligatorio en toda tabla tenant-aware, RBAC server-side mediante un guard estándar como `requirePermission(action, moduleSlug)` contra `profile_permissions`, y `tenant_id` derivado de contexto seguro emitido por backend.
 
 El cliente puede expresar preferencia de tenant activo, pero no puede imponer autoridad de tenant mediante header, query param, body ni estado local. El backend debe validar membresía, tenant activo, rol, permisos, ownership y políticas RLS antes de leer o mutar datos.
 
@@ -50,9 +50,10 @@ La Spec exige SaaS multi-tenant, default `allow_multi_tenant_users = false`, Ten
 ## Impacto seguridad
 
 - RLS es control obligatorio, no defensa opcional.
+- RBAC se valida al inicio de cada Server Action/API Route antes de la mutación; la UI no es barrera única.
 - Service role queda limitado a backend seguro, jobs y bootstrap.
 - API keys usan hash, scopes por tenant/modulo/accion y expiración opcional recomendada.
-- Mutaciones críticas registran auditoría append-only.
+- Mutaciones críticas registran auditoría append-only mediante wrapper de Server Actions/API Routes y trigger PostgreSQL de respaldo.
 
 ## Impacto escalabilidad
 

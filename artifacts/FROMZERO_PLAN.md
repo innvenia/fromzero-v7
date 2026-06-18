@@ -11,7 +11,7 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -124,18 +124,18 @@
 | Settings | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/settings/` | CRUD/RBAC | RLS/API | settings global/tenant |
 | Module | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/module/` | registry tests | module registry | módulos registrables |
 | Plan | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/plan/` | feature tests | plan limits | planes base |
-| AI Model | módulo | Context | release candidate | Sprint 9 | `src/framework/modules/ai-model/`, `core-ai/` | adapter tests | OpenRouter | modelo configurable |
-| Log | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/log/` | audit tests | append-only | auditoría crítica |
-| Profile | módulo | Context | primer corte | Sprint 4 | `src/framework/modules/profile/` | permission tests | RBAC | permisos efectivos |
+| AI Model | módulo | Context | release candidate | Sprint 9 | `src/framework/modules/ai-model/`, `core-ai/` | adapter/guardrail tests | OpenRouter | modelo configurable con pricing, límites y fallback |
+| Log | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/log/` | audit tests | append-only + wrapper/trigger | auditoría crítica |
+| Profile | módulo | Context | primer corte | Sprint 4 | `src/framework/modules/profile/` | permission tests | RBAC guard | permisos efectivos |
 | Tenant | módulo | Context | primer corte | Sprint 3 | `src/framework/modules/tenant/` | RLS tests | isolation | tenant aislado |
 | User | módulo | Context | primer corte | Sprint 4 | `src/framework/modules/user/` | auth tests | membership | usuario/membresía |
 | Invitation | módulo | Context | release candidate | Sprint 4 | `src/framework/modules/invitation/` | invitation tests | token TTL | invitación segura |
 | Notification | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/notification/` | event tests | delivery | notificación in-app |
-| Rule | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/rule/` | Inngest tests | automation filter | reglas auditables |
+| Rule | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/rule/` | Inngest/rule grammar tests | automation filter + loop guard | reglas auditables |
 | Custom Field | módulo | Context | release candidate | Sprint 5 | `src/framework/modules/custom-field/` | validation tests | schema limits | campos permitidos |
 | Email Template | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/email-template/` | email adapter tests | Resend mock | plantilla enviada |
 | API Key | módulo | Context | release candidate | Sprint 4 | `src/framework/modules/api-key/` | scope tests | hash/scopes | API key segura |
-| Integration | módulo | Context | release candidate | Sprint 8 | `src/framework/integrations/` | SSRF tests | adapter contracts | integración segura |
+| Integration | módulo | Context | release candidate | Sprint 8 | `src/framework/integrations/` | SSRF/credentials tests | adapter contracts | integración segura con credentials cifradas |
 | Webhook | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/webhook/` | webhook tests | HMAC/replay | webhook firmado |
 | Document | módulo | Context | release candidate | Sprint 7 | `src/framework/modules/document/` | storage tests | versioning | documento versionado |
 | Import | módulo | Context | release candidate | Sprint 8 | `src/framework/modules/import/` | import tests | async jobs | CSV/XLSX validado |
@@ -150,11 +150,11 @@
 | Task | módulo | Context | release candidate | Sprint 10 | `src/web/modules/task/` | full triad tests | reference module | módulo ejemplo |
 | Record Relationship | transversal | Context | release candidate | Sprint 5 | `src/framework/relationships/` | relation tests | referential gates | relaciones transversales |
 | Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | resolver | primer corte | Sprint 3 | `supabase/` | migration/RLS tests | Supabase | base segura |
-| Core AI Python | servicio interno | docs | release candidate | Sprint 9 | `core-ai/` | Pydantic tests | internal-only | IA interna |
+| Core AI Python | servicio interno | docs | release candidate | Sprint 9 | `core-ai/` | Pydantic/guardrail tests | internal-only | IA interna con límites por petición |
 | Module Factory | transversal | docs | primer corte | Sprint 5 | `src/framework/factory/` | factory tests | contract | CRUD generado |
 | Grid Universal | UI/transversal | docs | release candidate | Sprint 5 | `src/framework/grid/` | grid tests | Playwright | grid reusable |
 | Bootstrap Tenant Zero | configuración | bootstrap | primer corte | Sprint 3 | `bootstrap.json`, scripts | bootstrap test | one-shot | Tenant Zero creado |
-| RBAC server-side | seguridad | security | primer corte | Sprint 4 | `src/framework/auth/` | API tests | RBAC | permisos server-side |
+| RBAC server-side | seguridad | security | primer corte | Sprint 4 | `src/framework/auth/` | API tests | `requirePermission` + RBAC | permisos server-side |
 | RLS tenant-aware | seguridad | schema/security | primer corte | Sprint 3 | SQL policies | RLS tests | isolation | acceso cross-tenant falla |
 | API `/api/v1/*` | API | architecture | primer corte | Sprint 3 | `docs/API_ENDPOINT_INVENTORY.md` | contract tests | versioning | rutas versionadas |
 | Event bus/Inngest | job | stack/resource | release candidate | Sprint 8 | `src/framework/jobs/` | Inngest tests | idempotency | eventos procesados |
@@ -184,7 +184,7 @@
 | REQ-011 | Supabase PostgreSQL base principal | databases | Stack | Backend | primer corte | Sprint 3 | `supabase/` | migration tests | DB | Supabase base |
 | REQ-012 | RLS en toda tabla tenant-aware | seguridad | Schema/Security | RLS | primer corte | Sprint 3 | SQL policies | RLS tests | isolation | RLS cubre tablas |
 | REQ-013 | `tenant_id` desde contexto seguro | auth-session | Security | Tenant | primer corte | Sprint 4 | auth/tenant context | BOLA tests | tenant | cliente no impone tenant |
-| REQ-014 | RBAC server-side | auth-session | Security | Auth | primer corte | Sprint 4 | auth/RBAC | API tests | permissions | RBAC server-side |
+| REQ-014 | RBAC server-side con guard estándar | auth-session | Security | Auth | primer corte | Sprint 4 | auth/RBAC | API tests | permissions | RBAC server-side contra `profile_permissions` |
 | REQ-015 | No versionar secretos ni leer `.env` reales | seguridad | Security | Secrets | primer corte | Sprint 1 | `.gitignore`, `.env.example` | secret scan | git | sin secretos |
 | REQ-016 | `bootstrap.json` un solo uso | bootstrap-order | Bootstrap | Bootstrap | primer corte | Sprint 3 | bootstrap config | bootstrap test | one-shot | segunda ejecución no muta |
 | REQ-017 | Crear Tenant Zero | configuración | Bootstrap | Bootstrap | primer corte | Sprint 3 | seeds/bootstrap | seed check | tenant | Tenant Zero existe |
@@ -194,18 +194,18 @@
 | REQ-021 | Settings global/tenant | módulo | Modules | Settings | primer corte | Sprint 3 | settings module | CRUD/RBAC | module | settings funcionan |
 | REQ-022 | Registrar módulos y disponibilidad | módulo | Modules | Module | primer corte | Sprint 3 | module registry | registry tests | module | disponibilidad por módulo |
 | REQ-023 | Planes, límites y features | billing-subscriptions | Modules | Plan | primer corte | Sprint 3 | plan module | feature tests | gating | límites aplican |
-| REQ-024 | Catálogo de modelos IA | módulo | Modules | AI Model | release candidate | Sprint 9 | AI model module | adapter tests | Core AI | modelos catalogados |
-| REQ-025 | Logs/auditoría | seguridad | Modules | Log | primer corte | Sprint 3 | log module | audit tests | audit | mutaciones registradas |
+| REQ-024 | Catálogo de modelos IA con pricing, límites y fallback | módulo | Modules | AI Model | release candidate | Sprint 9 | AI model module | adapter/guardrail tests | Core AI | modelos catalogados |
+| REQ-025 | Logs/auditoría con wrapper y respaldo PostgreSQL | seguridad | Modules | Log | primer corte | Sprint 3 | log module | audit tests | audit | mutaciones registradas |
 | REQ-026 | Perfiles/roles/permisos | auth-session | Modules | Profile | primer corte | Sprint 4 | profile/RBAC | permission tests | RBAC | matriz aplicada |
 | REQ-027 | Tenants con aislamiento | módulo | Modules | Tenant | primer corte | Sprint 3 | tenant module | RLS tests | isolation | tenant aislado |
 | REQ-028 | Usuarios y membresías | auth-session | Modules | User | primer corte | Sprint 4 | user module | auth tests | membership | membresías válidas |
 | REQ-029 | Invitaciones seguras | auth-session | Modules | Invitation | release candidate | Sprint 4 | invitation module | invitation tests | token TTL | invitación segura |
 | REQ-030 | Notificaciones por eventos | notifications | Modules | Notification | release candidate | Sprint 8 | notification module | event tests | delivery | eventos notifican |
-| REQ-031 | Reglas por datos, tiempo, webhooks | event-bus-rules | Modules/Q057 | Rule | release candidate | Sprint 8 | rule/jobs | Inngest tests | automation | reglas ejecutan |
+| REQ-031 | Reglas por datos, tiempo, webhooks y condiciones cerradas | event-bus-rules | Modules/Q057 | Rule | release candidate | Sprint 8 | rule/jobs | Inngest/rule grammar tests | automation | reglas ejecutan |
 | REQ-032 | Campos personalizados por módulo permitido | custom-fields | Modules/Q042 | Custom Field | release candidate | Sprint 5 | custom field module | validation tests | allowlist | campos restringidos |
 | REQ-033 | Plantillas email | notifications | Modules/Q014 | Email Template | release candidate | Sprint 8 | email template module | email tests | adapter | plantilla procesa |
 | REQ-034 | API keys con hash, scopes, expiración opcional | api-errors-security | Modules/Q074 | API Key | release candidate | Sprint 4 | API key module | scope tests | security | key no reversible |
-| REQ-035 | Integraciones externas | api-errors-security | Modules | Integration | release candidate | Sprint 8 | integration adapters | SSRF tests | adapters | integración segura |
+| REQ-035 | Integraciones externas con credentials cifradas por adapter | api-errors-security | Modules | Integration | release candidate | Sprint 8 | integration adapters | SSRF/credentials tests | adapters | integración segura |
 | REQ-036 | Webhooks firmados y anti-replay | api-errors-security | Modules | Webhook | release candidate | Sprint 8 | webhook module | webhook tests | HMAC | replay rechazado |
 | REQ-037 | Documentos versionados | storage-files | Modules | Document | release candidate | Sprint 7 | document module | storage tests | versioning | versiones controladas |
 | REQ-038 | Import CSV/XLSX con validación | import-export | PRD/Q036 | Import | release candidate | Sprint 8 | import module | import tests | CSV/XLSX | import validado |
@@ -224,7 +224,7 @@
 | REQ-051 | Consent records mínimos | consent-records | Schema/Q027 | Consent | release candidate | Sprint 7 | consent module | consent tests | legal | consentimiento auditable |
 | REQ-052 | API versionada `/api/v1/*` | api-errors-security | Architecture | API | primer corte | Sprint 3 | API inventory/routes | contract tests | versioning | rutas versionadas |
 | REQ-053 | Zod/Pydantic en trust boundaries | api-errors-security | Architecture | Validation | primer corte | Sprint 3 | validators | validation tests | boundary | validación obligatoria |
-| REQ-054 | Core AI como servicio interno | ai-providers | Architecture | Core AI | release candidate | Sprint 9 | `core-ai/` | integration tests | internal | no público directo |
+| REQ-054 | Core AI como servicio interno con guardrails técnicos | ai-providers | Architecture | Core AI | release candidate | Sprint 9 | `core-ai/` | integration/guardrail tests | internal | no público directo |
 | REQ-055 | FastAPI/Pydantic v2 para Core AI | ai-providers | Stack | Python | release candidate | Sprint 9 | `core-ai/` | API tests | Pydantic | servicio valida DTO |
 | REQ-056 | API p95 < 200ms salvo excepción | performance-budget | Scalability | Performance | release candidate | Sprint 11 | k6/APM | `k6 run` | p95 | budget cumplido |
 | REQ-071 | FCP < 1.5s Fast 3G | performance-budget | PRD/Architecture | Performance | release candidate | Sprint 11 | reports | Lighthouse/Playwright | FCP | budget cumplido |
@@ -237,7 +237,7 @@
 | REQ-063 | SSRF guard | api-errors-security | Security | SSRF | release candidate | Sprint 11 | SSRF guard | abuse tests | security | URL interna bloqueada |
 | REQ-064 | Webhook HMAC/replay | api-errors-security | Security | Webhooks | release candidate | Sprint 8 | webhook security | webhook tests | HMAC | replay bloqueado |
 | REQ-065 | Rate limiting | api-errors-security | Security | Rate limit | primer corte | Sprint 3 | rate limiter | rate tests | security | límite aplica |
-| REQ-066 | AI budgets | ai-providers | Security/Q045 | AI budgets | release candidate | Sprint 9 | AI budgets | budget tests | cost | presupuesto bloquea |
+| REQ-066 | AI budgets y topes por petición/modelo | ai-providers | Security/Q045 | AI budgets | release candidate | Sprint 9 | AI budgets | budget tests | cost | presupuesto bloquea |
 | REQ-067 | Estructura por módulos/capas | módulo | Structure | Estructura | primer corte | Sprint 1 | repo tree | tree check | structure | estructura creada |
 | REQ-068 | Fase 0 decisiones canónicas | release | Dependency | Fase 0 | primer corte | Sprint 1 | artifacts | approval review | decisions | fase 0 cerrada |
 | REQ-069 | Source-available comercial | comercial | Strategy/Q022 | Comercial | venta | Sprint 12 | license docs | legal review | commercial | licencia lista |

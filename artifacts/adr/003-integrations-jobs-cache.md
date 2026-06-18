@@ -13,7 +13,7 @@ Ruta de salida: `artifacts/adr/003-integrations-jobs-cache.md`
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: corregido a modelo dual pg_cron + Inngest, requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: corregido a modelo dual pg_cron + Inngest, requiere re-aprobación; 2026-06-18: propagado patrón de credentials cifradas por adapter, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -25,7 +25,7 @@ Ruta de salida: `artifacts/adr/003-integrations-jobs-cache.md`
 
 ## Decisión
 
-Implementar integraciones por adapters: Stripe default para pagos, Resend default para email, OpenRouter default para IA, pg_cron para jobs programados por tiempo, Inngest default para workflows/jobs disparados por usuario, reCAPTCHA como adapter anti-abuso y Redis default off. Toda integración debe tener placeholders en `.env.example`, wrapper interno, feature flag o setting de activación y gate de seguridad antes de producción.
+Implementar integraciones por adapters: Stripe default para pagos, Resend default para email, OpenRouter default para IA, pg_cron para jobs programados por tiempo, Inngest default para workflows/jobs disparados por usuario, reCAPTCHA como adapter anti-abuso, S3/R2 para storage externo cuando aplique y Redis default off. Toda integración debe tener placeholders en `.env.example`, wrapper interno, feature flag o setting de activación, credentials JSONB cifradas por adapter y gate de seguridad antes de producción.
 
 ## Contexto
 
@@ -48,6 +48,8 @@ La Spec activa billing, webhooks, notifications, rules, import/export, Core AI, 
 ## Impacto seguridad
 
 - No se leen ni imprimen `.env` reales.
+- `credentials` se cifra at rest por adapter, con clave fuera del repositorio y sin registrar valores completos en logs.
+- Los campos exactos de Stripe, Resend, OpenRouter, Inngest, reCAPTCHA y S3/R2 se validan contra documentación oficial en el Sprint correspondiente.
 - Webhooks deben validar HMAC y anti-replay.
 - Integraciones salientes deben incluir SSRF guard.
 - MCP Supabase/SonarQube queda prohibido hasta aprobación dedicada.

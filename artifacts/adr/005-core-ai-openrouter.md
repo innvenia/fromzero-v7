@@ -12,8 +12,8 @@ Ruta de salida: `artifacts/adr/005-core-ai-openrouter.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
-| Estado actual | borrador |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan |
+| Estado actual | requiere re-aprobación |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-18: propagados campos y guardrails de Core AI, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -25,7 +25,7 @@ Ruta de salida: `artifacts/adr/005-core-ai-openrouter.md`
 
 ## Decisión
 
-Diseñar Core AI como servicio interno multi-provider con OpenRouter como provider inicial y modelo fijado por configuración a `google/gemma-4-26b-a4b-it:free`. El modelo debe verificarse nuevamente antes de cualquier Spec ejecutable o implementación que dependa de disponibilidad, precio, límites o deprecación.
+Diseñar Core AI como servicio interno multi-provider con OpenRouter como provider inicial y modelo fijado por configuración a `google/gemma-4-26b-a4b-it:free`. El catálogo de modelos debe guardar pricing unit/currency, ventana de contexto, límites de input/output, modalidades, timeout, costo máximo por petición, fallback y deprecación. El modelo debe verificarse nuevamente antes de cualquier Spec ejecutable o implementación que dependa de disponibilidad, precio, límites o deprecación.
 
 ## Contexto
 
@@ -55,9 +55,9 @@ La Spec ya registró verificación externa del ID OpenRouter durante especificac
 ## Impacto escalabilidad
 
 - Budgets, rate limits y retries protegen costos.
-- Context window y pricing se tratan como datos configurables.
+- Context window, pricing unit, currency, input/output limits, modalities, timeouts y fallback se tratan como datos configurables.
 - Redis puede activarse después si throttling distribuido lo requiere.
 
 ## Resultado
 
-El Plan debe ubicar Core AI después de datos, auth, API e integraciones base. Sprint Core AI debe bloquearse si no se revalida el ID exacto de OpenRouter y si no existen tests de budgets, redacción, adapter errors y límites.
+El Plan debe ubicar Core AI después de datos, auth, API e integraciones base. Sprint Core AI debe bloquearse si no se revalida el ID exacto de OpenRouter y si no existen tests de budgets, redacción, adapter errors, pricing/currency, límites técnicos por petición, modalidades, fallback y deprecación.

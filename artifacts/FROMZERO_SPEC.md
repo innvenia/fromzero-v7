@@ -11,7 +11,7 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | requiere re-aprobación |
-| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar; 2026-06-18: corregida por Task path, pg_cron y FCP, requiere re-aprobación |
+| Historial de estados | 2026-06-18: creada desde `FROMZERO_CONTEXT.md` y cuestionario aprobado; 2026-06-18: aprobada explícitamente por el usuario para planificar; 2026-06-18: corregida por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones desde `docs/`, requiere re-aprobación |
 | Aprobación del usuario | pendiente |
 | Fecha de aprobación | pendiente |
 | Frase literal de aprobación | pendiente |
@@ -57,9 +57,9 @@
 | Supabase dev | D010/Q010 | `docs/REFERENCE_STACK.md` | Cloud directo | no | no aplica |
 | Tenant activo | D011/Q011/C004 | `docs/PRD.md`, `docs/SECURITY_ASSURANCE.md` | UI elige, backend valida | no | no aplica |
 | Auth default | D012/Q012 | `docs/BOOTSTRAP_REFERENCE.md` | Email/password, MFA configurable | no | no aplica |
-| Pagos | D013/Q013 | `docs/PRD.md`, recurso `stripe` | Multi-provider, Stripe default | no | no aplica |
-| Email | D014/Q014 | `docs/PRD.md` | Multi-provider, Resend default | no | no aplica |
-| Core AI | D015/Q015 | arquitectura, OpenRouter | Multi-provider, OpenRouter `google/gemma-4-26b-a4b-it:free` | no | no aplica |
+| Pagos | D013/Q013 | `docs/PRD.md`, recurso `stripe` | Multi-provider, Stripe default detrás de adapter con credentials cifradas | no | no aplica |
+| Email | D014/Q014 | `docs/PRD.md` | Multi-provider, Resend default detrás de adapter con credentials cifradas | no | no aplica |
+| Core AI | D015/Q015 | arquitectura, OpenRouter | Multi-provider, OpenRouter `google/gemma-4-26b-a4b-it:free`, catálogo por modelo con pricing, límites técnicos, modalidades, deprecación y fallback | no | no aplica |
 | Redis/colas | D016/Q016 | escalabilidad, recurso `redis` | Opcional default off | no | no aplica |
 | Event bus/jobs | D017/Q017, D9 | `docs/DOCUMENT_INVENTORY.md`, `docs/REFERENCE_STACK.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/SCALABILITY_ASSURANCE.md`, recurso `inngest` | pg_cron para jobs programados por tiempo; Inngest adapter para jobs disparados por usuario | no | no aplica |
 | Deploy | D018/Q018/Q053 | `docs/PRD.md` | Coolify sobre Docker VPS, genérico Docker | no | no aplica |
@@ -81,14 +81,14 @@
 | API | D034/Q034 | architecture | API versionada para todos los módulos | no | no aplica |
 | API key scopes | D035/Q035 | modules/security | Tenant, módulo, acción | no | no aplica |
 | Import/export | D036/Q036/Q067/C007/C012 | PRD/modules | Import CSV/XLSX; export CSV/XLSX; PDF por registro individual desde UI | resuelta en `docs/` | Q036/Q067 |
-| RBAC | D037/Q037 | modules | Roles base + perfiles | no | no aplica |
+| RBAC | D037/Q037 | modules | Roles base + perfiles, guard server-side contra `profile_permissions` | no | no aplica |
 | Super Admin | D038/Q038 | bootstrap | Global + Tenant Zero | no | no aplica |
-| Auditoría | D039/Q039 | security/modules | Seguridad y cambios críticos | no | no aplica |
+| Auditoría | D039/Q039 | security/modules | Seguridad y cambios críticos vía wrapper Server Actions/API Routes con respaldo PostgreSQL | no | no aplica |
 | Planes base | D040/Q040/Q064 | modules | Free, Trial, Pro, Enterprise sin precios | no | no aplica |
 | Feature control | D041/Q041 | PRD | Global, plan, tenant | no | no aplica |
 | Custom fields | D042/Q042 | modules | Solo módulos permitidos | no | no aplica |
 | IA privacidad | D043/Q044 | security | Opt-in y redacción | no | no aplica |
-| IA budgets | D044/Q045 | security | Tenant, usuario, feature | no | no aplica |
+| IA budgets | D044/Q045 | security | Tenant, usuario, feature y guardrails técnicos por petición/modelo | no | no aplica |
 | Cobertura | D045/Q046 | stack | 80% crítico | no | no aplica |
 | Performance | D046/Q047 | scalability | Bloqueante en release candidate | no | no aplica |
 | Carga | D047/Q048 | k6/scalability | Staging dedicado | no | no aplica |
@@ -98,8 +98,8 @@
 | Migraciones | D051/Q052 | structure | SQL versionado aplicado a cloud | no | no aplica |
 | MCP | D052/Q054/Q062 | mcp resources | Preparar/activar después, no en esta fase | diferido | sí, Q062 |
 | Notificaciones | D053/Q055 | PRD/modules | In-app default, otros por tenant | no | no aplica |
-| Webhooks | D054/Q056 | modules/security | Entrantes y salientes | no | no aplica |
-| Reglas | D055/Q057 | modules | Datos, tiempo, webhooks | no | no aplica |
+| Webhooks | D054/Q056 | modules/security | Entrantes y salientes, firma/anti-replay y secrets protegidos | no | no aplica |
+| Reglas | D055/Q057 | modules | Datos, tiempo, webhooks, gramática cerrada de condiciones y loop guard | no | no aplica |
 | Task | D056/Q058 | structure | Módulo ejemplo app final | no | no aplica |
 | Shared modules | D057/Q059 | modules | File, Tag, Bookmark, Filter en framework shared | no | no aplica |
 | Público | D058/Q060 | structure | Base mínima reemplazable | no | no aplica |
@@ -123,6 +123,7 @@
 | 2026-06-18 | Se alinearon conflictos documentales C001, C002, C003, C007, C010 y C012 antes de aprobar SPEC | Documentación corregida | `docs/`, `FROMZERO_QUESTIONNAIRE.md` |
 | 2026-06-18 | Aprobación explícita de la Spec y habilitación de diseño técnico, Plan y State | Aprobación literal: "Apruebo la especificación." | `FROMZERO_PLAN.md`, `FROMZERO_STATE.md`, `artifacts/adr/` |
 | 2026-06-18 | Corrección de Spec por Task path, modelo dual pg_cron/Inngest y presupuesto FCP | Solicitud del usuario, `docs/DOCUMENT_INVENTORY.md`, `docs/REFERENCE_STRUCTURE.md`, `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_STACK.md`, `docs/SCALABILITY_ASSURANCE.md` | `FROMZERO_PLAN.md`, `artifacts/adr/003-integrations-jobs-cache.md` |
+| 2026-06-18 | Propagación de ajustes Core AI, auditoría, RBAC, rules e integraciones | Solicitud del usuario, `docs/PRD.md`, `docs/REFERENCE_MODULES.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/SECURITY_ASSURANCE.md` | `FROMZERO_PLAN.md`, `artifacts/adr/001-data-auth-rls-rbac.md`, `artifacts/adr/003-integrations-jobs-cache.md`, `artifacts/adr/005-core-ai-openrouter.md` |
 
 ## Matriz de cobertura del insumo
 
@@ -204,7 +205,7 @@
 | REQ-011 | Supabase PostgreSQL base principal | databases | Stack | Backend | primer corte | cubierto | datos |  | migraciones SQL |
 | REQ-012 | RLS en toda tabla tenant-aware | seguridad | Schema/Security | RLS | primer corte | cubierto | seguridad |  | tests RLS |
 | REQ-013 | `tenant_id` desde contexto seguro | auth-session | Security | Tenant | primer corte | cubierto | seguridad/API |  | tests BOLA/IDOR |
-| REQ-014 | RBAC server-side | auth-session | Security | Auth | primer corte | cubierto | permisos/RBAC |  | tests API |
+| REQ-014 | RBAC server-side con guard estándar | auth-session | Security | Auth | primer corte | cubierto | permisos/RBAC |  | tests API contra `profile_permissions` |
 | REQ-015 | No versionar secretos ni leer `.env` reales | seguridad | Security | Secrets | primer corte | cubierto | variables |  | revisión git |
 | REQ-016 | `bootstrap.json` un solo uso | bootstrap-order | Bootstrap | Bootstrap | primer corte | cubierto | bootstrap |  | test bootstrap |
 | REQ-017 | Crear Tenant Zero | configuración | Bootstrap | Bootstrap | primer corte | cubierto | bootstrap |  | seed check |
@@ -214,18 +215,18 @@
 | REQ-021 | Settings global/tenant | módulo | Modules | Settings | primer corte | cubierto | módulos |  | CRUD/RBAC |
 | REQ-022 | Registrar módulos y disponibilidad | módulo | Modules | Module | primer corte | cubierto | módulos |  | module registry |
 | REQ-023 | Planes, límites y features | billing-subscriptions | Modules | Plan | primer corte | cubierto | billing |  | feature gating |
-| REQ-024 | Catálogo de modelos IA | módulo | Modules | AI Model | release candidate | cubierto | Core AI |  | adapter tests |
-| REQ-025 | Logs/auditoría | seguridad | Modules | Log | primer corte | cubierto | auditoría |  | audit tests |
+| REQ-024 | Catálogo de modelos IA con pricing, límites y fallback | módulo | Modules | AI Model | release candidate | cubierto | Core AI |  | adapter tests |
+| REQ-025 | Logs/auditoría con wrapper y respaldo PostgreSQL | seguridad | Modules | Log | primer corte | cubierto | auditoría |  | audit tests |
 | REQ-026 | Perfiles/roles/permisos | auth-session | Modules | Profile | primer corte | cubierto | RBAC |  | permission matrix |
 | REQ-027 | Tenants con aislamiento | módulo | Modules | Tenant | primer corte | cubierto | datos |  | RLS tests |
 | REQ-028 | Usuarios y membresías | auth-session | Modules | User | primer corte | cubierto | usuarios |  | auth tests |
 | REQ-029 | Invitaciones seguras | auth-session | Modules | Invitation | release candidate | cubierto | módulos/email |  | invitation tests |
 | REQ-030 | Notificaciones por eventos | notifications | Modules | Notification | release candidate | cubierto | notificaciones |  | event tests |
-| REQ-031 | Reglas por datos, tiempo, webhooks | event-bus-rules | Modules/Q057 | Rule | release candidate | cubierto | automatización |  | Inngest tests |
+| REQ-031 | Reglas por datos, tiempo, webhooks y condiciones cerradas | event-bus-rules | Modules/Q057 | Rule | release candidate | cubierto | automatización |  | Inngest tests |
 | REQ-032 | Campos personalizados por módulo permitido | custom-fields | Modules/Q042 | Custom Field | release candidate | cubierto | datos/UI |  | validation tests |
 | REQ-033 | Plantillas email | notifications | Modules/Q014 | Email Template | release candidate | cubierto | email |  | email adapter tests |
 | REQ-034 | API keys con hash, scopes, expiración opcional | api-errors-security | Modules/Q074 | API Key | release candidate | cubierto | API/security |  | scope tests |
-| REQ-035 | Integraciones externas | api-errors-security | Modules | Integration | release candidate | cubierto | integraciones |  | SSRF tests |
+| REQ-035 | Integraciones externas con credentials cifradas por adapter | api-errors-security | Modules | Integration | release candidate | cubierto | integraciones |  | SSRF tests |
 | REQ-036 | Webhooks firmados y anti-replay | api-errors-security | Modules | Webhook | release candidate | cubierto | webhooks |  | webhook tests |
 | REQ-037 | Documentos versionados | storage-files | Modules | Document | release candidate | cubierto | storage |  | storage tests |
 | REQ-038 | Import CSV/XLSX con validación | import-export | PRD/Q036 | Import | release candidate | cubierto | import/export | Formatos limitados a CSV/XLSX | import tests |
@@ -244,7 +245,7 @@
 | REQ-051 | Consent records mínimos | consent-records | Schema/Q027 | Consent | release candidate | cubierto | legal/security |  | consent tests |
 | REQ-052 | API versionada `/api/v1/*` | api-errors-security | Architecture | API | primer corte | cubierto | API |  | contract tests |
 | REQ-053 | Zod/Pydantic en trust boundaries | api-errors-security | Architecture | Validation | primer corte | cubierto | API/security |  | validation tests |
-| REQ-054 | Core AI como servicio interno | ai-providers | Architecture | Core AI | release candidate | cubierto | Core AI |  | integration tests |
+| REQ-054 | Core AI como servicio interno con guardrails técnicos | ai-providers | Architecture | Core AI | release candidate | cubierto | Core AI |  | integration tests |
 | REQ-055 | FastAPI/Pydantic v2 para Core AI | ai-providers | Stack | Python | release candidate | cubierto | Core AI |  | API tests |
 | REQ-056 | API p95 < 200ms salvo excepción | performance-budget | Scalability | Performance | release candidate | cubierto | KPIs |  | k6/APM |
 | REQ-071 | FCP < 1.5s Fast 3G | performance-budget | PRD/Architecture | Performance | release candidate | cubierto | KPIs |  | Lighthouse/Playwright |
@@ -257,7 +258,7 @@
 | REQ-063 | SSRF guard | api-errors-security | Security | SSRF | release candidate | cubierto | seguridad |  | abuse tests |
 | REQ-064 | Webhook HMAC/replay | api-errors-security | Security | Webhooks | release candidate | cubierto | webhooks |  | webhook tests |
 | REQ-065 | Rate limiting | api-errors-security | Security | Rate limit | primer corte | cubierto | API/security |  | rate limit tests |
-| REQ-066 | AI budgets | ai-providers | Security/Q045 | AI budgets | release candidate | cubierto | Core AI/KPIs |  | budget tests |
+| REQ-066 | AI budgets y topes por petición/modelo | ai-providers | Security/Q045 | AI budgets | release candidate | cubierto | Core AI/KPIs |  | budget tests |
 | REQ-067 | Estructura por módulos/capas | módulo | Structure | Estructura | primer corte | cubierto | estructura |  | tree check |
 | REQ-068 | Fase 0 decisiones canónicas | release | Dependency | Fase 0 | primer corte | cubierto | decisiones |  | questionnaire approval |
 | REQ-069 | Source-available comercial | comercial | Strategy/Q022 | Comercial | venta | cubierto | comercialización |  | legal review |
@@ -371,6 +372,7 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 ## Permisos y RBAC
 
 - RBAC se valida siempre server-side.
+- Cada Server Action/API Route usa un guard estándar como `requirePermission(action, moduleSlug)` contra `profile_permissions` antes de ejecutar la operación.
 - Perfiles base: Super Admin, Admin, Member, Guest.
 - Acciones estándar: `view`, `create`, `update`, `delete`, `import`, `export`, `notify`.
 - API keys operan con scopes por tenant, módulo y acción; las acciones se auditan con `auth_method: "api_key"`.
@@ -391,6 +393,8 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 ## Integraciones
 
 - Activas por contrato: Supabase cloud, SQL versionado, adapters para Stripe, Resend, OpenRouter, Inngest, reCAPTCHA.
+- `credentials` se almacena como JSONB cifrado por adapter, con campos comunes genéricos y sin exponer valores completos en UI, logs ni repositorio.
+- Adapters default: Stripe, Resend, OpenRouter, Inngest, reCAPTCHA, S3/R2; los campos exactos de cada proveedor se verifican contra documentación oficial en el Sprint correspondiente.
 - Diferidas con placeholders: Redis, observabilidad Sentry/PostHog, MCP Supabase/SonarQube, app mobile Expo, Hostinger como proveedor alterno.
 - Condición de activación: configuración explícita por instalación, tenant o acción posterior aprobada.
 - Variables documentadas en `.env.example`: todas las públicas y placeholders; secretos en panel/env store.
@@ -407,13 +411,14 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 - RLS cross-tenant: obligatorio en tablas con `tenant_id`.
 - RLS dentro del tenant por permisos/ownership: obligatorio cuando el módulo tenga autoría o scopes.
 - RBAC server-side: obligatorio en Server Actions y API Routes.
+- RBAC se evalúa antes de la mutación; RLS actúa como barrera de datos posterior.
 - Consentimiento/cookies: términos, privacidad y marketing registrados; analytics/marketing por app derivada.
-- Auditoría mínima por acción: fecha/hora, actor, tenant, entidad, acción, auth method, IP/user agent cuando aplique.
+- Auditoría mínima por acción: wrapper estándar de Server Actions/API Routes, trigger PostgreSQL de respaldo, fecha/hora, actor, tenant, entidad, acción, auth method, IP/user agent, request ID y metadata 5W cuando aplique.
 - MFA: configurable para todos; `mfa_policy = optional` por default.
 - API keys: expiración opcional compatible, pero la UI debe recomendar expiración.
 - Webhooks: HMAC, timestamp/replay protection, idempotency, retries y auditoría.
 - Integraciones externas: SSRF guard, allowlists, validación URL, timeouts y rate limits.
-- Core AI: opt-in por tenant, redacción/minimización, budget caps por tenant/usuario/feature.
+- Core AI: opt-in por tenant, redacción/minimización, budget caps por tenant/usuario/feature, pricing por unidad/moneda y guardrails por contexto, input, salida, costo, timeout, modalidad, deprecación y fallback.
 
 ## Escalabilidad
 
@@ -542,8 +547,8 @@ Evaluación de agentes futuros:
 | Import/export async | si | no | Medio/alto: datos corruptos o fuga | job logs, preview, audit | cancelar job, purge output | import/export history | aprobado para especificar |
 | Billing cycle jobs | si | no | Alto: cobro incorrecto | reconciliation, webhooks | adjustment/refund | statements/invoices | aprobado para especificar |
 | Cleanup/purge | si | no | Alto: borrado irreversible | purge preview/log | backup restore | purge_log | requiere aprobación |
-| AI invocation | si | no | Medio/alto: costo o fuga datos | usage log, budgets | disable tenant AI | ai.invocation logs | aprobado para especificar |
-| Notification/event rules | si | no | Medio: acciones no deseadas | event logs/retries | disable rule | rule execution logs | aprobado para especificar |
+| AI invocation | si | no | Medio/alto: costo o fuga datos | usage log, budgets, guardrails por petición | disable tenant AI | ai.invocation logs con pricing/currency | aprobado para especificar |
+| Notification/event rules | si | no | Medio: acciones no deseadas | event logs/retries/loop guard | disable rule | rule execution logs | aprobado para especificar |
 
 ## KPIs y SLOs
 
@@ -555,12 +560,12 @@ Evaluación de agentes futuros:
 | Lighthouse | > 90 | `SCALABILITY_ASSURANCE.md` | Lighthouse en RC | cubierto |
 | Cobertura crítica | 80% lógica crítica | cuestionario Q046 | CI test coverage | cubierto |
 | Playwright viewports | 375, 768, 1920 | recurso Playwright | E2E visual | cubierto |
-| OpenRouter context | 262K para `google/gemma-4-26b-a4b-it:free` | OpenRouter | AI adapter tests | cubierto |
-| OpenRouter pricing | sujeto a proveedor/modelo | OpenRouter pricing | budget tests | cubierto |
+| OpenRouter context | 262K para `google/gemma-4-26b-a4b-it:free`, validado contra `context_window` | OpenRouter | AI adapter tests | cubierto |
+| OpenRouter pricing | sujeto a proveedor/modelo, `pricing_unit` y `currency` | OpenRouter pricing | budget tests | cubierto |
 
 ## Pruebas esperadas
 
-- Unit: validaciones Zod/Pydantic, helpers RBAC, feature gating, DTO, pricing logic, AI budgets.
+- Unit: validaciones Zod/Pydantic, helpers RBAC, feature gating, DTO, pricing logic con `pricing_unit`/`currency`, AI budgets y guardrails.
 - Integration: Supabase RLS, Server Actions, API Routes, migrations, webhooks, event bus, email/payment adapters.
 - E2E: auth, tenant selection, settings, modules, grid, import/export, billing, API keys, notifications.
 - Visual: shell UI, responsive 375/768/1920, modals/drawers, tables, forms, empty/loading/error/success.
@@ -579,13 +584,13 @@ Evaluación de agentes futuros:
 | Log | append-only/read scope | indexed filters | audit tests | Modules |
 | Invitation | TTL, token hash | email queue | invitation tests | Modules |
 | Notification | recipient scope | async channels | event tests | PRD |
-| Rule/Webhook | signatures, SSRF | retries/idempotency | webhook/rule tests | Modules |
+| Rule/Webhook | signatures, SSRF, loop guard | retries/idempotency | webhook/rule tests | Modules |
 | Custom Field | validation, module allowlist | JSONB size limit | validation tests | PRD |
 | Import/Export | RBAC, signed URLs | async jobs | file/job tests | PRD/Q036/Q067 |
 | Document/File | signed URLs, MIME/size | storage layout | storage tests | PRD |
 | Tags/Bookmarks/Filters | tenant/user scope | indexes | CRUD/user tests | Modules |
 | Task | app module boundaries | reference pattern | full triad tests | Structure |
-| Core AI | opt-in, redaction, budgets | provider adapters | AI integration tests | PRD/Q063 |
+| Core AI | opt-in, redaction, budgets, guardrails por modelo | provider adapters con pricing/fallback | AI integration tests | PRD/Q063 |
 
 ## Riesgos
 
