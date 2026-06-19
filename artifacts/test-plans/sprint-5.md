@@ -20,7 +20,7 @@ Ruta de salida: `artifacts/test-plans/sprint-5.md`
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md` |
 | Documentos o fuentes asociadas | `docs/REFERENCE_MODULES.md`, `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md`, `artifacts/adr/002-api-module-contracts.md` |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `artifacts/handoffs/` |
-| Commit asociado | pendiente |
+| Commit asociado | `f7b3b86 feat(factory): add module factory grid contracts` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. |
 
 ## Unit
