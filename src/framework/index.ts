@@ -1,1 +1,1 @@
-export {};
+export { themeContract } from "./theme";

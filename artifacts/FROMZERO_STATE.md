@@ -11,24 +11,24 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado sin commit automático por cambio previo ajeno en `artifacts/START_HERE.md`; 2026-06-18: commit de Sprint 1 solicitado explícitamente por el usuario |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado sin commit automático por cambio previo ajeno en `artifacts/START_HERE.md`; 2026-06-18: commit de Sprint 1 solicitado explícitamente por el usuario; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado con UI shell, i18n, Next build, Playwright y evidencia visual |
 | Aprobación del usuario | no aplica |
 | Fecha de aprobación | no aplica |
 | Frase literal de aprobación | no aplica |
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` creado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | commit de Sprint 1 solicitado explícitamente; hash reportado en cierre |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: commit pendiente, hash reportado en cierre |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. |
 
 ## Resumen para el dueño
 
-- Estado actual: Sprint 1 completado.
-- Último avance: estructura base, `.env.example`, inventario API, lockfile npm y verificaciones creadas.
+- Estado actual: Sprint 2 completado.
+- Último avance: UI shell responsive, i18n es/en, App Router, Tailwind v4, Playwright y capturas visuales.
 - Sprint actual: ninguno en ejecución.
-- Siguiente acción: revisar cierre y aprobar Sprint 2 si corresponde.
-- Bloqueos o riesgos: `artifacts/START_HERE.md` contiene un cambio previo ajeno y queda fuera del commit de Sprint 1.
-- Qué necesita decidir o aprobar el dueño: confirmar si se debe continuar con Sprint 2 o corregir algo de Sprint 1.
+- Siguiente acción: revisar cierre y aprobar Sprint 3 si corresponde.
+- Bloqueos o riesgos: `artifacts/START_HERE.md` contiene un cambio previo ajeno y queda fuera del Sprint 2.
+- Qué necesita decidir o aprobar el dueño: aprobar explícitamente Sprint 3 antes de migraciones, RLS/RBAC y bootstrap.
 
 ## 1. Estado general
 
@@ -40,7 +40,7 @@
 - ADRs afectados: 001, 003 y 005 aprobados.
 - Git: inicializado.
 - Branch: `main`.
-- Working tree: commit de Sprint 1 en preparación; `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera de alcance.
+- Working tree: Sprint 2 listo para commit; `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera de alcance.
 - Commit base: `7b35435 docs(fromzero): registra aprobación del plan`.
 - Último commit FromZero: `7b35435 docs(fromzero): registra aprobación del plan`.
 
@@ -57,18 +57,18 @@
 ## 3. Sprint actual
 
 - Sprint actual: ninguno.
-- Estado: Sprint 1 completado.
-- Objetivo completado: preparación, base inicial, estructura, placeholders, inventario API y verificaciones.
-- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 1 - Preparación y base inicial`.
-- Commit asociado: commit de cierre solicitado por el usuario.
+- Estado: Sprint 2 completado.
+- Objetivo completado: Stack web, UI shell, i18n, navegación y pruebas visuales iniciales.
+- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 2 - Stack web y UI shell`.
+- Commit asociado: pendiente; hash reportado en cierre.
 
 ## 4. Último Sprint completado
 
-- Sprint: Sprint 1.
+- Sprint: Sprint 2.
 - Fecha: 2026-06-18.
-- Evidencia: `package.json`, `package-lock.json`, `.env.example`, `README.md`, `tsconfig.json`, `docs/API_ENDPOINT_INVENTORY.md`, estructura `src/`, `core-ai/`, `supabase/migrations/`, `public/` y `tests/`.
-- Tests/comandos: `node --version` -> `v24.13.1`; `npm --version` -> `11.14.0`; `npm install --ignore-scripts`; `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; secret scan con `rg`.
-- Commit: creado por solicitud explícita posterior al cierre; hash reportado en respuesta del agente.
+- Evidencia: App Router `src/app/[locale]/`, UI shell `src/framework/ui/`, i18n `src/framework/i18n/` y `src/web/i18n/`, dashboard `src/web/dashboard/`, Playwright `tests/e2e/`, capturas `artifacts/test-plans/sprint-2-*.png`.
+- Tests/comandos: `npm install --ignore-scripts`; `npm run check`; `npm audit --audit-level=moderate`; `npm run test:e2e`; `npx playwright install chromium`; capturas Playwright 375/768/1920 contra `http://127.0.0.1:3001/es`.
+- Commit: pendiente; hash reportado en respuesta del agente.
 
 ## 4.1 Commits previos relevantes
 
@@ -85,15 +85,16 @@
 | 0350528 | docs(core-ai): enriquece schema ai_models y aclara patrones de auditoria, rbac, rules e integraciones | Docs | cerrado | Ajustes documentales previos |
 | 0b47791 | docs(fromzero): propaga ajustes de core-ai y patrones a spec y plan | Plan | cerrado | Propagación a artefactos FromZero |
 | 7b35435 | docs(fromzero): registra aprobación del plan | Plan | cerrado | Aprobación vigente antes de Build |
+| 6d158ff | chore(fromzero): completa sprint 1 base inicial | Sprint 1 | cerrado | Base inicial y lockfile |
 
 ## 5. Siguiente Sprint
 
-- Sprint: Sprint 2.
-- Objetivo: crear base Next.js App Router, TypeScript strict, Tailwind v4, UI FromZero, i18n es/en, shell operacional, navegación, layout y pruebas visuales iniciales.
-- Dependencias: Sprint 1 completado; revisar working tree antes de iniciar por cambio previo ajeno en `artifacts/START_HERE.md`.
-- Verificaciones requeridas: UI responsive, Playwright 375/768/1920, sin marcas/deuda UI heredada, tokens centralizados, controles accesibles.
-- Archivos objetivo: `src/app/`, `src/web/`, `src/framework/ui/`, `src/framework/theme/`, `messages/`, `tests/e2e/`.
-- Tests/comandos previstos: `npm run lint` si se configura, `npm run typecheck`, `npm run build`, `npx playwright test`, verificación visual.
+- Sprint: Sprint 3.
+- Objetivo: crear schema base, migraciones SQL versionadas, RLS, Tenant Zero, Super Admin, settings, modules, plans, log, tenant, rate limit base, API inventory y validación Zod.
+- Dependencias: Sprint 2 completado; aprobación humana antes de migraciones cloud.
+- Verificaciones requeridas: RLS tenant-aware, bootstrap one-shot, `app.mode = SaaS`, plans base, logs append-only.
+- Archivos objetivo: `supabase/migrations/`, `bootstrap.json`, `src/framework/db/`, `src/framework/modules/settings/`, `src/framework/modules/module/`, `src/framework/modules/plan/`, `src/framework/modules/log/`, `src/framework/modules/tenant/`.
+- Tests/comandos previstos: Supabase migration test, RLS tests, Vitest, contract tests.
 
 ## 6. Verificaciones y decisiones
 
@@ -103,6 +104,8 @@
 | Confirmación pre-código Sprint 1 | aprobada | antes de modificar código | frase literal `Apruebo el plan. Ejecuta el siguiente Sprint aprobado` |
 | Sprint 1 | completado | antes de Sprint 2 | `npm run check`, `npm audit --audit-level=moderate`, secret scan, `git diff --check` |
 | Commit Sprint 1 | creado por solicitud explícita | cierre Sprint 1 | `artifacts/START_HERE.md` queda fuera por cambio previo ajeno |
+| Sprint 2 | completado | antes de Sprint 3 | `npm run check`, `npm audit --audit-level=moderate`, `npm run test:e2e`, capturas 375/768/1920 |
+| Sprint 3 permisos/RLS/RBAC | requiere aprobación | antes de Build Sprint 3 | confirmar ejecución de migraciones/RLS/RBAC/bootstrap |
 | MCP Supabase/SonarQube | diferido | turno dedicado | aprobación explícita y tokens fuera del repo |
 | OpenRouter ID | pendiente | Sprint 9 | revalidación del modelo exacto |
 | Servicios cloud | pendiente | Sprint que los use | aprobación por servicio |
@@ -138,29 +141,29 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: `artifacts/START_HERE.md` mantiene un cambio previo ajeno; Sprint 2 requiere revisar working tree antes de iniciar.
+- Bloqueos actuales: Sprint 3 requiere aprobación humana antes de migraciones/RLS/RBAC/bootstrap; `artifacts/START_HERE.md` mantiene un cambio previo ajeno fuera de alcance.
 - Riesgos activos: RLS/RBAC, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export, performance FCP/LCP/API p95, revisión legal.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales.
 - Secretos o accesos requeridos: ninguno para revisar Plan; serán requeridos por Sprint con aprobación separada.
-- Estado de aprobación humana requerido: aprobar continuar a Sprint 2 o pedir correcciones de Sprint 1.
+- Estado de aprobación humana requerido: revisar Sprint 2 y aprobar explícitamente Sprint 3 si corresponde.
 
 ## 8. Próxima acción
 
-Revisar el cierre de Sprint 1 y decidir si se corrige algo o se continúa con Sprint 2.
+Revisar el cierre de Sprint 2 y decidir si se corrige algo o se continúa con Sprint 3.
 
 Frase recomendada para continuar:
 
 ```text
-Apruebo continuar con Sprint 2.
+Apruebo continuar con Sprint 3.
 ```
 
-También es válido reanudar con esta frase si el cierre de Sprint 1 queda aceptado:
+También es válido reanudar con esta frase si el cierre de Sprint 2 queda aceptado:
 
 ```text
 Continua con la ejecucion del proyecto.
 ```
 
-Antes de iniciar Sprint 2, revisar el working tree porque `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera del commit de Sprint 1.
+Antes de iniciar Sprint 3, confirmar la zona humana de permisos/RLS/RBAC y migraciones. `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera de Sprint 2.
 
 ## 9. Reglas de actualización
 

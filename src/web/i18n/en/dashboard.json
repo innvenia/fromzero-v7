@@ -1,0 +1,32 @@
+{
+  "actions": {
+    "primary": "New module",
+    "secondary": "Export view"
+  },
+  "breadcrumb": "Framework / Operations",
+  "empty": {
+    "description": "The shell is ready to host real modules in later Sprints. Business data, permissions, and APIs remain blocked until their owning Sprints.",
+    "title": "No application data yet"
+  },
+  "heading": "Operations dashboard",
+  "metrics": {
+    "activeUsers": {
+      "label": "Active users",
+      "value": "Pending"
+    },
+    "apiLatency": {
+      "label": "API p95",
+      "value": "< 200 ms"
+    },
+    "billing": {
+      "label": "Billing",
+      "value": "Adapter"
+    },
+    "buildStatus": {
+      "label": "Status",
+      "value": "Sprint 2"
+    }
+  },
+  "status": "UI base",
+  "subtitle": "Responsive shell with navigation, topbar, actions, metrics, and empty states prepared for tenant-aware modules."
+}

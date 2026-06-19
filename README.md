@@ -6,8 +6,8 @@ Base reutilizable para construir aplicaciones SaaS/corporate multi-tenant con Ne
 
 - Metodologia: FromZero local del proyecto.
 - Plan: aprobado.
-- Sprint 1: completado, preparacion y base inicial.
-- Codigo de aplicacion: no implementado todavia.
+- Sprint 2: completado, stack web y UI shell.
+- Codigo de aplicacion: shell UI base implementada; datos reales y modulos pendientes.
 - Servicios externos: no activados.
 
 ## Requisitos
@@ -38,6 +38,14 @@ npm install
 npm run check
 ```
 
+## Desarrollo web
+
+```powershell
+npm run dev
+```
+
+Abrir `http://localhost:3000/es` para revisar la shell en español o `http://localhost:3000/en` para inglés.
+
 ## Variables de entorno
 
 Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos `.env.*` con valores reales.
@@ -53,4 +61,4 @@ Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos
 
 ## Siguiente Sprint
 
-Sprint 2 creara la base web y UI shell. Hasta entonces no hay paginas Next.js funcionales ni endpoints implementados.
+Sprint 3 creara datos fundacionales, migraciones, bootstrap y modulos base. Requiere aprobacion humana antes de ejecutar migraciones cloud.

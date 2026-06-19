@@ -1,0 +1,32 @@
+{
+  "actions": {
+    "primary": "Nuevo módulo",
+    "secondary": "Exportar vista"
+  },
+  "breadcrumb": "Framework / Operación",
+  "empty": {
+    "description": "La shell ya está lista para montar módulos reales en los siguientes Sprints. Los datos de negocio, permisos y APIs quedan bloqueados hasta sus Sprints correspondientes.",
+    "title": "Sin datos de aplicación todavía"
+  },
+  "heading": "Panel operativo",
+  "metrics": {
+    "activeUsers": {
+      "label": "Usuarios activos",
+      "value": "Pendiente"
+    },
+    "apiLatency": {
+      "label": "API p95",
+      "value": "< 200 ms"
+    },
+    "billing": {
+      "label": "Billing",
+      "value": "Adapter"
+    },
+    "buildStatus": {
+      "label": "Estado",
+      "value": "Sprint 2"
+    }
+  },
+  "status": "Base UI",
+  "subtitle": "Shell responsive con navegación, topbar, acciones, métricas y estados vacíos preparados para módulos tenant-aware."
+}

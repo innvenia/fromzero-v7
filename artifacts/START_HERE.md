@@ -60,14 +60,15 @@ Si decides continuar sin Git, dilo explícitamente. FromZero puede avanzar, pero
 
 ## 2. Elige como quieres empezar
 
-Usa uno de estos prompts. No tienes que indicar rutas ni nombres de artefactos internos; el agente debe buscar, crear o actualizar lo necesario.
+Antes de usar cualquiera de estos prompts, crea o usa `docs/` como directorio estándar de insumos del proyecto. Coloca ahí la idea inicial, el PRD o la documentación disponible. Si usas otra ubicación, reemplaza los placeholders con la ruta real.
 
 ### Tengo una idea vaga
 
 ```text
 Quiero crear una aplicacion para [tipo de usuario] que resuelva [problema].
-No tengo documentos todavia.
-Usa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar el contexto.
+No tengo PRD ni documentacion adicional todavia.
+Registra esta idea inicial en docs/PROJECT_BRIEF.md.
+Usa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar artifacts/FROMZERO_CONTEXT.md.
 No implementes codigo de aplicacion todavia.
 No avances de fase sin mi aprobación.
 ```
@@ -75,7 +76,8 @@ No avances de fase sin mi aprobación.
 ### Tengo una idea con PRD
 
 ```text
-Tengo un PRD para este proyecto.
+Tengo un PRD para este proyecto en [ruta-del-prd].
+Si todavía no defini una ruta, usa docs/PRD.md.
 Usa FromZero para localizarlo, revisarlo criticamente, detectar gaps, contradicciones, riesgos, supuestos débiles y oportunidades de mejora, y preparar el contexto.
 No implementes codigo de aplicacion todavia.
 No avances de fase sin mi aprobación.
@@ -84,7 +86,7 @@ No avances de fase sin mi aprobación.
 ### Tengo documentación en una carpeta
 
 ```text
-Tengo documentacion para este proyecto.
+Tengo documentacion para este proyecto en [ruta-de-docs].
 Usa FromZero para localizarla, revisarla, analizar criticamente el proyecto, detectar faltantes, contradicciones, riesgos y mejoras, y decirme que decisiones faltan antes de especificar.
 No implementes codigo de aplicacion todavia.
 No avances de fase sin mi aprobación.
@@ -92,9 +94,9 @@ No avances de fase sin mi aprobación.
 
 ## 3. Revisa el primer resultado
 
-FromZero debe preparar el contexto inicial.
+FromZero debe preparar el contexto inicial en `artifacts/FROMZERO_CONTEXT.md`.
 
-Ese archivo resume:
+Ese archivo es el primer resultado que debes revisar. Resume:
 
 - que entendio del proyecto;
 - que documentos leyo;
@@ -108,12 +110,10 @@ Si detecta decisiones críticas, FromZero debe detenerse después del contexto y
 
 ## 4. Ejecuta el cuestionario en modo plan
 
-Si faltan decisiones importantes, FromZero debe pedirte activar el modo plan del agente y mostrar:
+Si faltan decisiones importantes, FromZero debe pedirte activar el modo plan del agente con un mensaje como este:
 
-```text
-Activa el modo plan de Codex antes de continuar.
-El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
-```
+> Activa el modo plan de Codex antes de continuar.
+> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
 
 El cuestionario debe hacerse como Q&A real usando la UI o herramientas nativas del agente. Activa el modo plan o abre una conversación en modo plan y usa este prompt:
 
@@ -149,11 +149,9 @@ Apruebo el cuestionario.
 
 Con esa aprobación, FromZero debe crear o actualizar la especificación como siguiente fase si tiene escritura y no hay bloqueos. No debe quedarse solo en "spec habilitada". Si no puede crearla, debe explicar el bloqueo concreto y el siguiente paso. No debe preparar el plan todavía.
 
-Al terminar esta fase, FromZero debe decirte claramente qué revisar y qué responder. Debe dejarte acceso a la especificación, mostrar el commit automático con hash y mensaje completo, y cerrar con:
+Al terminar esta fase, FromZero debe decirte claramente qué revisar y qué responder. Debe dejarte acceso a la especificación, mostrar el commit automático con hash y mensaje completo, y cerrar con un mensaje como este:
 
-```text
-Siguiente paso para ti: revisa y valida la especificación. Si todo está correcto, responde "Apruebo la especificación". Si quieres cambiar algo, dime qué ajuste hago.
-```
+> Siguiente paso para ti: revisa y valida la especificación. Si todo está correcto, responde "Apruebo la especificación". Si quieres cambiar algo, dime qué ajuste hago.
 
 ## 6. Crea el plan
 
@@ -176,7 +174,6 @@ Cuando el plan esté listo y revisado:
 ```text
 Apruebo el plan.
 Ejecuta el siguiente Sprint aprobado.
-Antes de modificar codigo, confirma alcance, pruebas, verificaciones y riesgos.
 ```
 
 Para continuar en otra sesión:
