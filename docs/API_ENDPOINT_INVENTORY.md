@@ -7,7 +7,7 @@
 | Proyecto | From Zero Framework v7.4 |
 | Fecha de creacion | 2026-06-18 |
 | Ultima actualizacion | 2026-06-18 |
-| Estado | inicial, sin endpoints implementados |
+| Estado | Sprint 3: health implementado; contratos fundacionales versionados |
 | Fuente | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
 
 ## Reglas base
@@ -27,11 +27,11 @@
 
 | Dominio | Ruta base prevista | Estado Sprint 1 | Sprint dueno | Notas |
 |---|---|---|---|---|
-| Health | `/api/v1/health` | reservado, no implementado | Sprint 3 | Contrato tecnico para readiness/liveness. |
-| Settings | `/api/v1/settings` | reservado, no implementado | Sprint 3 | Global y tenant-aware segun permisos. |
-| Modules | `/api/v1/modules` | reservado, no implementado | Sprint 3 | Registry de modulos. |
-| Plans | `/api/v1/plans` | reservado, no implementado | Sprint 3 | Planes base y feature gates. |
-| Tenants | `/api/v1/tenants` | reservado, no implementado | Sprint 3 | Contexto seguro y aislamiento. |
+| Health | `/api/v1/health` | implementado | Sprint 3 | Readiness/liveness sin datos sensibles. |
+| Settings | `/api/v1/settings` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Global y tenant-aware segun permisos. |
+| Modules | `/api/v1/modules` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Registry de modulos. |
+| Plans | `/api/v1/plans` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Planes base y feature gates. |
+| Tenants | `/api/v1/tenants` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Contexto seguro y aislamiento. |
 | Users | `/api/v1/users` | reservado, no implementado | Sprint 4 | Usuarios y membresias. |
 | Profiles | `/api/v1/profiles` | reservado, no implementado | Sprint 4 | RBAC efectivo. |
 | Invitations | `/api/v1/invitations` | reservado, no implementado | Sprint 4 | Tokens con TTL y auditoria. |
@@ -59,6 +59,6 @@
 
 ## Pendiente
 
-- Definir DTOs por modulo en Sprint 3 y Sprints dueno posteriores.
+- Implementar handlers autenticados de Settings, Modules, Plans y Tenants en Sprints posteriores.
 - Agregar metodos, codigos de respuesta y contratos de error al implementar cada dominio.
 - Confirmar rate limits y scopes concretos por endpoint antes de exponer rutas.

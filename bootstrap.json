@@ -1,0 +1,71 @@
+{
+  "_metadata": {
+    "version": "7.4.0",
+    "generated_at": "2026-06-18T00:00:00Z",
+    "prd_reference": "docs/PRD.md"
+  },
+  "app": {
+    "mode": "saas",
+    "name": "From Zero Framework",
+    "url": "http://localhost:3000",
+    "allow_multi_tenant_users": false,
+    "licensing_model": "per_tenant"
+  },
+  "infrastructure": {
+    "ports": {
+      "frontend": 3000,
+      "core_ai": 8000
+    },
+    "features": {
+      "billing_enabled": true,
+      "ai_enabled": true,
+      "event_bus_enabled": true,
+      "inngest_enabled": true,
+      "redis_enabled": false
+    }
+  },
+  "security": {
+    "mfa_policy": "optional",
+    "session_timeout_minutes": 30,
+    "absolute_timeout_minutes": 1440,
+    "max_login_attempts": 5,
+    "rate_limit_enabled": true
+  },
+  "initial_data": {
+    "tenant_zero": {
+      "name": "Main Account",
+      "slug": "main"
+    },
+    "super_admin": {
+      "first_name": "System",
+      "last_name": "Admin",
+      "email": "admin@example.com"
+    },
+    "profiles": [
+      "super_admin",
+      "admin",
+      "member",
+      "guest"
+    ],
+    "plans": [
+      {
+        "code": "free",
+        "name": "Free",
+        "is_freemium": true
+      },
+      {
+        "code": "trial",
+        "name": "Trial",
+        "trial_days": 14
+      },
+      {
+        "code": "pro",
+        "name": "Pro"
+      },
+      {
+        "code": "enterprise",
+        "name": "Enterprise"
+      }
+    ]
+  }
+}

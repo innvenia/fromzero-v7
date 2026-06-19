@@ -11,24 +11,24 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-18 |
 | Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado sin commit automático por cambio previo ajeno en `artifacts/START_HERE.md`; 2026-06-18: commit de Sprint 1 solicitado explícitamente por el usuario; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado con UI shell, i18n, Next build, Playwright y evidencia visual |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas |
 | Aprobación del usuario | no aplica |
 | Fecha de aprobación | no aplica |
 | Frase literal de aprobación | no aplica |
-| Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` creado |
+| Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: commit pendiente, hash reportado en cierre |
-| Restricciones de seguridad | Sin secretos ni `.env` reales. |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: pendiente, hash reportado en cierre |
+| Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. Sin MCP Supabase. |
 
 ## Resumen para el dueño
 
-- Estado actual: Sprint 2 completado.
-- Último avance: UI shell responsive, i18n es/en, App Router, Tailwind v4, Playwright y capturas visuales.
+- Estado actual: Sprint 3 completado localmente.
+- Último avance: schema fundacional, bootstrap, contratos Zod/API, rate limit base, health API y pruebas.
 - Sprint actual: ninguno en ejecución.
-- Siguiente acción: revisar cierre y aprobar Sprint 3 si corresponde.
-- Bloqueos o riesgos: `artifacts/START_HERE.md` contiene un cambio previo ajeno y queda fuera del Sprint 2.
-- Qué necesita decidir o aprobar el dueño: aprobar explícitamente Sprint 3 antes de migraciones, RLS/RBAC y bootstrap.
+- Siguiente acción: revisar cierre y aprobar Sprint 4 si corresponde.
+- Bloqueos o riesgos: Supabase CLI no está instalado; migración no fue aplicada contra Supabase local/cloud.
+- Qué necesita decidir o aprobar el dueño: aprobar explícitamente Sprint 4 antes de auth, sesiones, tenant context, RBAC efectivo y API keys.
 
 ## 1. Estado general
 
@@ -40,35 +40,37 @@
 - ADRs afectados: 001, 003 y 005 aprobados.
 - Git: inicializado.
 - Branch: `main`.
-- Working tree: Sprint 2 listo para commit; `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera de alcance.
-- Commit base: `7b35435 docs(fromzero): registra aprobación del plan`.
-- Último commit FromZero: `7b35435 docs(fromzero): registra aprobación del plan`.
+- Working tree: Sprint 3 listo para commit automático.
+- Commit base antes de Sprint 3: `1133fad feat(shell): add localized app shell`.
+- Último commit FromZero: `1133fad feat(shell): add localized app shell`.
 
 ## 2. Artefactos vigentes
 
 - Cuestionario: `artifacts/FROMZERO_QUESTIONNAIRE.md`.
 - Contexto: `artifacts/FROMZERO_CONTEXT.md`.
 - Spec: `artifacts/FROMZERO_SPEC.md`.
-- Diseño técnico: `artifacts/adr/`; `artifacts/adr/001-data-auth-rls-rbac.md`, `artifacts/adr/003-integrations-jobs-cache.md` y `artifacts/adr/005-core-ai-openrouter.md` aprobados.
+- Diseño técnico: `artifacts/adr/`.
 - Plan: `artifacts/FROMZERO_PLAN.md`.
 - Recursos instalados: plugin local FromZero en `.codex/plugins/fromzero`.
-- Lockfile FromZero: no creado; no se instalaron recursos FromZero empaquetados en Sprint 1.
+- Lockfile FromZero: no creado; no se instalaron recursos FromZero empaquetados.
 
 ## 3. Sprint actual
 
 - Sprint actual: ninguno.
-- Estado: Sprint 2 completado.
-- Objetivo completado: Stack web, UI shell, i18n, navegación y pruebas visuales iniciales.
-- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 2 - Stack web y UI shell`.
-- Commit asociado: pendiente; hash reportado en cierre.
+- Estado: Sprint 3 completado.
+- Objetivo completado: datos fundacionales, bootstrap declarativo, contratos Zod/API, rate limit base y health API.
+- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 3 - Datos, bootstrap y módulos fundacionales`.
+- Commit asociado: pendiente; hash reportado en respuesta del agente.
 
 ## 4. Último Sprint completado
 
-- Sprint: Sprint 2.
+- Sprint: Sprint 3.
 - Fecha: 2026-06-18.
-- Evidencia: App Router `src/app/[locale]/`, UI shell `src/framework/ui/`, i18n `src/framework/i18n/` y `src/web/i18n/`, dashboard `src/web/dashboard/`, Playwright `tests/e2e/`, capturas `artifacts/test-plans/sprint-2-*.png`.
-- Tests/comandos: `npm install --ignore-scripts`; `npm run check`; `npm audit --audit-level=moderate`; `npm run test:e2e`; `npx playwright install chromium`; capturas Playwright 375/768/1920 contra `http://127.0.0.1:3001/es`.
-- Commit: pendiente; hash reportado en respuesta del agente.
+- Evidencia: `supabase/migrations/20260618000300_foundation_schema.sql`, `bootstrap.json`, `src/framework/db/`, `src/framework/bootstrap/`, `src/framework/api/`, `src/framework/modules/{settings,module,plan,log,tenant}/`, `src/app/api/v1/health/route.ts`, `tests/unit/`, `artifacts/test-plans/sprint-3.md`.
+- Tests/comandos: `npm run lint`; `npm run typecheck`; `npm test`; `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; `npm run test:e2e`; secret scan con solo placeholders/documentación detectados.
+- Limitación: `supabase` CLI no existe en PATH; no se ejecutó `supabase migration new`, `supabase db reset`, migración cloud ni MCP.
+- Verificación visual: no aplica; Sprint 3 no cambió UI visual. E2E existente pasó.
+- Commit: pendiente; hash reportado en cierre.
 
 ## 4.1 Commits previos relevantes
 
@@ -86,30 +88,30 @@
 | 0b47791 | docs(fromzero): propaga ajustes de core-ai y patrones a spec y plan | Plan | cerrado | Propagación a artefactos FromZero |
 | 7b35435 | docs(fromzero): registra aprobación del plan | Plan | cerrado | Aprobación vigente antes de Build |
 | 6d158ff | chore(fromzero): completa sprint 1 base inicial | Sprint 1 | cerrado | Base inicial y lockfile |
+| 1133fad | feat(shell): add localized app shell | Sprint 2 | cerrado | UI shell, i18n, Playwright y START_HERE autorizado |
 
 ## 5. Siguiente Sprint
 
-- Sprint: Sprint 3.
-- Objetivo: crear schema base, migraciones SQL versionadas, RLS, Tenant Zero, Super Admin, settings, modules, plans, log, tenant, rate limit base, API inventory y validación Zod.
-- Dependencias: Sprint 2 completado; aprobación humana antes de migraciones cloud.
-- Verificaciones requeridas: RLS tenant-aware, bootstrap one-shot, `app.mode = SaaS`, plans base, logs append-only.
-- Archivos objetivo: `supabase/migrations/`, `bootstrap.json`, `src/framework/db/`, `src/framework/modules/settings/`, `src/framework/modules/module/`, `src/framework/modules/plan/`, `src/framework/modules/log/`, `src/framework/modules/tenant/`.
-- Tests/comandos previstos: Supabase migration test, RLS tests, Vitest, contract tests.
+- Sprint: Sprint 4.
+- Objetivo: implementar auth email/password, MFA configurable, tenant context seguro, usuarios, membresías, perfiles, roles, permisos, invitaciones y API keys.
+- Dependencias: Sprint 3 completado; aprobación humana antes de auth/sesiones/RBAC efectivo/API keys.
+- Verificaciones requeridas: cliente no impone tenant, service role server-only, API keys con hash/scopes, BOLA/IDOR, matriz de permisos server-side.
+- Archivos objetivo: `src/framework/auth/`, `src/framework/modules/user/`, `src/framework/modules/profile/`, `src/framework/modules/invitation/`, `src/framework/modules/api-key/`.
+- Tests/comandos previstos: auth tests, permission matrix tests, BOLA/IDOR tests, API key scope tests, Vitest, build.
 
 ## 6. Verificaciones y decisiones
 
 | Item | Estado | Condición de activación | Evidencia requerida |
 |---|---|---|---|
 | Aprobación de Plan | aprobada | antes de Sprint 1 | frase literal `Apruebo el plan.` |
-| Confirmación pre-código Sprint 1 | aprobada | antes de modificar código | frase literal `Apruebo el plan. Ejecuta el siguiente Sprint aprobado` |
 | Sprint 1 | completado | antes de Sprint 2 | `npm run check`, `npm audit --audit-level=moderate`, secret scan, `git diff --check` |
-| Commit Sprint 1 | creado por solicitud explícita | cierre Sprint 1 | `artifacts/START_HERE.md` queda fuera por cambio previo ajeno |
 | Sprint 2 | completado | antes de Sprint 3 | `npm run check`, `npm audit --audit-level=moderate`, `npm run test:e2e`, capturas 375/768/1920 |
-| Sprint 3 permisos/RLS/RBAC | requiere aprobación | antes de Build Sprint 3 | confirmar ejecución de migraciones/RLS/RBAC/bootstrap |
+| Sprint 3 permisos/RLS/RBAC | completado local | antes de Sprint 4 | SQL versionado, RLS estático, bootstrap, contratos, sin cloud |
+| Sprint 4 auth/sesiones/RBAC efectivo | requiere aprobación | antes de Build Sprint 4 | confirmar ejecución de auth, sesiones, tenant context, RBAC y API keys |
 | MCP Supabase/SonarQube | diferido | turno dedicado | aprobación explícita y tokens fuera del repo |
 | OpenRouter ID | pendiente | Sprint 9 | revalidación del modelo exacto |
 | Servicios cloud | pendiente | Sprint que los use | aprobación por servicio |
-| Migraciones cloud | pendiente | Sprint 3 | aprobación antes de ejecutar |
+| Migraciones cloud | pendiente | Sprint que las ejecute | aprobación antes de ejecutar |
 | Billing real | pendiente | Sprint 6 | aprobación antes de provider real |
 | Legal comercial | pendiente | Sprint 12 | revisión legal externa |
 
@@ -118,11 +120,11 @@
 | Artefacto | Estado | Fecha | Frase literal | Commit |
 |---|---|---|---|---|
 | `artifacts/FROMZERO_QUESTIONNAIRE.md` | aprobado | 2026-06-18 | Apruebo el cuestionario. | 4c960be |
-| `artifacts/FROMZERO_SPEC.md` | aprobado | 2026-06-18 | Apruebo el plan. | pendiente |
-| `artifacts/adr/001-data-auth-rls-rbac.md` | aprobado | 2026-06-18 | Apruebo el plan. | pendiente |
-| `artifacts/adr/003-integrations-jobs-cache.md` | aprobado | 2026-06-18 | Apruebo el plan. | pendiente |
-| `artifacts/adr/005-core-ai-openrouter.md` | aprobado | 2026-06-18 | Apruebo el plan. | pendiente |
-| `artifacts/FROMZERO_PLAN.md` | aprobado | 2026-06-18 | Apruebo el plan. | pendiente |
+| `artifacts/FROMZERO_SPEC.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
+| `artifacts/adr/001-data-auth-rls-rbac.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
+| `artifacts/adr/003-integrations-jobs-cache.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
+| `artifacts/adr/005-core-ai-openrouter.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
+| `artifacts/FROMZERO_PLAN.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
@@ -141,29 +143,23 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: Sprint 3 requiere aprobación humana antes de migraciones/RLS/RBAC/bootstrap; `artifacts/START_HERE.md` mantiene un cambio previo ajeno fuera de alcance.
-- Riesgos activos: RLS/RBAC, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export, performance FCP/LCP/API p95, revisión legal.
+- Bloqueos actuales: ninguno para revisar Sprint 3; Sprint 4 requiere aprobación humana antes de auth/sesiones/RBAC efectivo/API keys.
+- Riesgos activos: RLS/RBAC real pendiente de ejecución en Supabase, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export, performance FCP/LCP/API p95, revisión legal.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales.
-- Secretos o accesos requeridos: ninguno para revisar Plan; serán requeridos por Sprint con aprobación separada.
-- Estado de aprobación humana requerido: revisar Sprint 2 y aprobar explícitamente Sprint 3 si corresponde.
+- Secretos o accesos requeridos: ninguno para revisar Sprint 3; serán requeridos por Sprint con aprobación separada.
+- Estado de aprobación humana requerido: revisar Sprint 3 y aprobar explícitamente Sprint 4 si corresponde.
 
 ## 8. Próxima acción
 
-Revisar el cierre de Sprint 2 y decidir si se corrige algo o se continúa con Sprint 3.
+Revisar el cierre de Sprint 3 y decidir si se corrige algo o se continúa con Sprint 4.
 
 Frase recomendada para continuar:
 
 ```text
-Apruebo continuar con Sprint 3.
+Apruebo continuar con Sprint 4.
 ```
 
-También es válido reanudar con esta frase si el cierre de Sprint 2 queda aceptado:
-
-```text
-Continua con la ejecucion del proyecto.
-```
-
-Antes de iniciar Sprint 3, confirmar la zona humana de permisos/RLS/RBAC y migraciones. `artifacts/START_HERE.md` contiene un cambio previo ajeno fuera de Sprint 2.
+Antes de iniciar Sprint 4, confirmar la zona humana de auth/sesiones, tenant context, RBAC efectivo y API keys.
 
 ## 9. Reglas de actualización
 

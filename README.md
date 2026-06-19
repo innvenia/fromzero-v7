@@ -6,8 +6,8 @@ Base reutilizable para construir aplicaciones SaaS/corporate multi-tenant con Ne
 
 - Metodologia: FromZero local del proyecto.
 - Plan: aprobado.
-- Sprint 2: completado, stack web y UI shell.
-- Codigo de aplicacion: shell UI base implementada; datos reales y modulos pendientes.
+- Sprint 3: completado localmente, datos fundacionales y contratos.
+- Codigo de aplicacion: shell UI base y health API implementados; handlers autenticados pendientes.
 - Servicios externos: no activados.
 
 ## Requisitos
@@ -56,9 +56,10 @@ Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos
 - `src/framework/`: base reusable del framework.
 - `src/web/`: experiencia web construida sobre el framework.
 - `core-ai/`: runtime independiente futuro para IA.
-- `supabase/migrations/`: SQL versionado futuro.
-- `docs/API_ENDPOINT_INVENTORY.md`: inventario inicial de contratos API.
+- `supabase/migrations/`: SQL versionado local, sin ejecucion cloud automatica.
+- `docs/API_ENDPOINT_INVENTORY.md`: inventario de contratos API.
+- `bootstrap.json`: genesis declarativa de un solo uso.
 
 ## Siguiente Sprint
 
-Sprint 3 creara datos fundacionales, migraciones, bootstrap y modulos base. Requiere aprobacion humana antes de ejecutar migraciones cloud.
+Sprint 4 implementara auth, tenant context, RBAC efectivo y API keys. Requiere aprobacion humana antes de tocar flujos de acceso.

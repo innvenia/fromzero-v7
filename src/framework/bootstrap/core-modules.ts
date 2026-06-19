@@ -1,0 +1,31 @@
+export const coreModuleDefinitions = [
+  { code: "settings", name: "Settings", slug: "settings", tableName: "settings", icon: "Settings" },
+  { code: "module", name: "Module", slug: "module", tableName: "modules", icon: "LayoutGrid" },
+  { code: "plan", name: "Plan", slug: "plan", tableName: "plans", icon: "BadgeDollarSign" },
+  { code: "ai-model", name: "AI Model", slug: "ai-model", tableName: "ai_models", icon: "Bot" },
+  { code: "log", name: "Log", slug: "log", tableName: "logs", icon: "ScrollText" },
+  { code: "profile", name: "Profile", slug: "profile", tableName: "profiles", icon: "Shield" },
+  { code: "tenant", name: "Tenant", slug: "tenant", tableName: "tenants", icon: "Building2" },
+  { code: "user", name: "User", slug: "user", tableName: "users", icon: "Users" },
+  { code: "invitation", name: "Invitation", slug: "invitation", tableName: "invitations", icon: "MailPlus" },
+  { code: "notification", name: "Notification", slug: "notification", tableName: "notifications", icon: "Bell" },
+  { code: "rule", name: "Rule", slug: "rule", tableName: "rules", icon: "Workflow" },
+  { code: "custom-field", name: "Custom Field", slug: "custom-field", tableName: "custom_fields", icon: "ListPlus" },
+  { code: "email-template", name: "Email Template", slug: "email-template", tableName: "email_templates", icon: "Mail" },
+  { code: "api-key", name: "API Key", slug: "api-key", tableName: "api_keys", icon: "KeyRound" },
+  { code: "integration", name: "Integration", slug: "integration", tableName: "integrations", icon: "Plug" },
+  { code: "webhook", name: "Webhook", slug: "webhook", tableName: "webhooks", icon: "Webhook" },
+  { code: "document", name: "Document", slug: "document", tableName: "documents", icon: "FileText" },
+  { code: "import", name: "Import", slug: "import", tableName: "imports", icon: "Upload" },
+  { code: "export", name: "Export", slug: "export", tableName: "exports", icon: "Download" },
+  { code: "subscription", name: "Subscription", slug: "subscription", tableName: "subscriptions", icon: "CreditCard" },
+  { code: "statement", name: "Statement", slug: "statement", tableName: "statements", icon: "ReceiptText" },
+  { code: "invoice", name: "Invoice", slug: "invoice", tableName: "invoices", icon: "Receipt" },
+  { code: "file", name: "File", slug: "file", tableName: "files", icon: "FolderOpen" },
+  { code: "tag", name: "Tag", slug: "tag", tableName: "tags", icon: "Tag" },
+  { code: "bookmark", name: "Bookmark", slug: "bookmark", tableName: "bookmarks", icon: "Bookmark" },
+  { code: "filter", name: "Filter", slug: "filter", tableName: "filters", icon: "Filter" },
+  { code: "task", name: "Task", slug: "task", tableName: "tasks", icon: "CheckSquare" }
+] as const;
+
+export type CoreModuleCode = (typeof coreModuleDefinitions)[number]["code"];
