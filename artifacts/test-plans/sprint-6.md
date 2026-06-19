@@ -20,7 +20,7 @@ Ruta de salida: `artifacts/test-plans/sprint-6.md`
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md` |
 | Documentos o fuentes asociadas | `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_DATABASE_SCHEMA.md`, `artifacts/FROMZERO_PLAN.md` |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `supabase/migrations/` |
-| Commit asociado | pendiente |
+| Commit asociado | `66b458e feat(billing): add billing core contracts` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin cobros reales. Sin migraciones cloud. |
 
 ## Unit

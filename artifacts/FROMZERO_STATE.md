@@ -18,7 +18,7 @@
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
 
 ## Resumen para el dueño
@@ -42,7 +42,7 @@
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: `f7b3b86 feat(factory): add module factory grid contracts`.
+- Último commit FromZero: `66b458e feat(billing): add billing core contracts`.
 
 ## 2. Artefactos vigentes
 
@@ -60,17 +60,17 @@
 - Estado: completado localmente.
 - Objetivo completado: contratos y lógica local de billing core, suscripciones, statements, invoices, adapter Stripe mockeable, webhooks HMAC, `degrade_to_free`, schedules pg_cron y PDF individual.
 - Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 6 - Billing, suscripciones, statements y PDF individual`.
-- Commit asociado: pendiente.
+- Commit asociado: `66b458e feat(billing): add billing core contracts`.
 
 ## 4. Último Sprint completado
 
 - Sprint: Sprint 6.
 - Fecha: 2026-06-19.
 - Evidencia: `src/framework/billing/`, `src/framework/integrations/stripe/`, `src/framework/modules/{subscription,statement,invoice}/`, `src/framework/api/contracts.ts`, `supabase/migrations/20260619000600_billing_core.sql`, `tests/unit/sprint6-contracts.test.ts`, `tests/unit/sprint6-sql.test.ts`, `artifacts/test-plans/sprint-6.md`, `docs/API_ENDPOINT_INVENTORY.md`.
-- Tests/comandos: `npm run typecheck`; `npm run lint`; `npm test`; `git diff --check`; `npm test -- tests/unit/sprint6-contracts.test.ts tests/unit/sprint6-sql.test.ts`.
+- Tests/comandos: `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; `npm test -- tests/unit/sprint6-contracts.test.ts tests/unit/sprint6-sql.test.ts`; secret scan estricto sin coincidencias.
 - Limitación: no se ejecutó `supabase db reset`, migración cloud, provider Stripe real, cobros reales ni MCP; los jobs pg_cron quedan versionados y no aplicados.
 - Verificación visual: no aplica; Sprint 6 no agrega pantalla nueva. PDF individual se valida como artefacto binario mínimo.
-- Commit: pendiente.
+- Commit: `66b458e feat(billing): add billing core contracts`.
 
 ## 4.1 Commits previos relevantes
 
@@ -92,6 +92,7 @@
 | b57c807 | feat(db): add foundation schema and bootstrap | Sprint 3 | cerrado | Schema fundacional, bootstrap y contratos |
 | b1bc9a4 | feat(auth): add tenant rbac and api key contracts | Sprint 4 | cerrado | Auth, RBAC, API keys y contratos |
 | f7b3b86 | feat(factory): add module factory grid contracts | Sprint 5 | cerrado | Factory, Grid, filtros, custom fields y relaciones |
+| 66b458e | feat(billing): add billing core contracts | Sprint 6 | cerrado | Billing core, Stripe mock, webhooks, PDF y SQL versionado |
 
 ## 5. Siguiente Sprint
 
@@ -132,7 +133,7 @@
 | `artifacts/FROMZERO_PLAN.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 | Sprint 4 | aprobado | 2026-06-19 | apruebo continuar con el sprint 4 | b1bc9a4 |
 | Sprint 5 | aprobado | 2026-06-19 | apruebo ejecución de sprint 5. | f7b3b86 |
-| Sprint 6 | aprobado | 2026-06-19 | apruebo sprint 6 | pendiente |
+| Sprint 6 | aprobado | 2026-06-19 | apruebo sprint 6 | 66b458e |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
