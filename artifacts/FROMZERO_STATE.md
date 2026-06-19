@@ -18,7 +18,7 @@
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; Sprint 8: pendiente de commit; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; Sprint 8: `c124575 feat(events): add automation and data exchange contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
 
 ## Resumen para el dueño
@@ -42,7 +42,7 @@
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: pendiente de commit Sprint 8.
+- Último commit FromZero: `c124575 feat(events): add automation and data exchange contracts`.
 
 ## 2. Artefactos vigentes
 
@@ -60,7 +60,7 @@
 - Estado: completado localmente.
 - Objetivo completado: configuración base de jobs, Inngest adapter, rules, notifications, email templates, integration/webhook modules, SSRF guard, import CSV/XLSX y export CSV/XLSX.
 - Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 8 - Eventos, notificaciones, webhooks, import/export`.
-- Commit asociado: pendiente.
+- Commit asociado: `c124575 feat(events): add automation and data exchange contracts`.
 
 ## 4. Último Sprint completado
 
@@ -70,7 +70,7 @@
 - Tests/comandos: `npm test -- tests/unit/sprint8-contracts.test.ts tests/unit/sprint8-sql.test.ts`; `npm run typecheck`; `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; secret scan con coincidencias solo en placeholders/fixtures.
 - Limitación: no se ejecutó `supabase db reset`, migración cloud, Inngest cloud, envío email real, webhook real, import real ni export real.
 - Verificación visual: no aplica; Sprint 8 no agrega ruta web final.
-- Commit: pendiente.
+- Commit: `c124575 feat(events): add automation and data exchange contracts`.
 
 ## 4.1 Commits previos relevantes
 
@@ -94,7 +94,7 @@
 | f7b3b86 | feat(factory): add module factory grid contracts | Sprint 5 | cerrado | Factory, Grid, filtros, custom fields y relaciones |
 | 66b458e | feat(billing): add billing core contracts | Sprint 6 | cerrado | Billing core, Stripe mock, webhooks, PDF y SQL versionado |
 | bf4478c | feat(storage): add document file shared module contracts | Sprint 7 | cerrado local | Storage, documents, tags, bookmarks, consent y SQL versionado |
-| pendiente | feat(events): add automation and data exchange contracts | Sprint 8 | cerrado local | Event outbox, jobs, rules, notifications, webhooks, import/export y SQL versionado |
+| c124575 | feat(events): add automation and data exchange contracts | Sprint 8 | cerrado local | Event outbox, jobs, rules, notifications, webhooks, import/export y SQL versionado |
 
 ## 5. Siguiente Sprint
 
@@ -139,7 +139,7 @@
 | Sprint 5 | aprobado | 2026-06-19 | apruebo ejecución de sprint 5. | f7b3b86 |
 | Sprint 6 | aprobado | 2026-06-19 | apruebo sprint 6 | 66b458e |
 | Sprint 7 | aprobado | 2026-06-19 | aprobar inicio sprint 7 | bf4478c |
-| Sprint 8 | aprobado | 2026-06-19 | aprubo iniciar sprint 8 | pendiente |
+| Sprint 8 | aprobado | 2026-06-19 | aprubo iniciar sprint 8 | c124575 |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
