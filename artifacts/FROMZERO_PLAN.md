@@ -515,7 +515,7 @@ Sprints 3, 4 y 5 completados.
 
 ### Sprint 8 - Eventos, notificaciones, webhooks, import/export
 
-Estado: pendiente
+Estado: completado localmente
 
 Objetivo:
 Implementar configuración base de jobs, pg_cron para schedules por tiempo, Inngest adapter para workflows disparados por usuario, rules, notifications, email templates, integration/webhook modules, SSRF guard, import CSV/XLSX y export CSV/XLSX.

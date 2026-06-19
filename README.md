@@ -6,7 +6,7 @@ Base reutilizable para construir aplicaciones SaaS/corporate multi-tenant con Ne
 
 - Metodologia: FromZero local del proyecto.
 - Plan: aprobado.
-- Sprint 7: completado localmente, storage/documentos/shared modules.
+- Sprint 8: completado localmente, eventos/jobs/notificaciones/rules/webhooks/import-export.
 - Codigo de aplicacion: shell UI base, DataGrid, health API y contratos core implementados; handlers autenticados pendientes.
 - Servicios externos: no activados.
 
@@ -62,4 +62,4 @@ Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos
 
 ## Siguiente Sprint
 
-Sprint 7 implementa storage, documentos, tags, bookmarks, consent records y purga soft-delete versionada. Migraciones cloud y purgas reales requieren aprobacion separada.
+Sprint 9 implementa Core AI y OpenRouter por adapter. Migraciones cloud, Inngest cloud, proveedores reales y secretos reales requieren aprobacion separada.

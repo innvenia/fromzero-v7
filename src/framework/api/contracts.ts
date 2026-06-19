@@ -192,12 +192,88 @@ export const sprintSevenApiContracts = [
   }
 ] as const;
 
+export const sprintEightApiContracts = [
+  {
+    domain: "events",
+    basePath: "/api/v1/events",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "jobs",
+    basePath: "/api/v1/jobs",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "notifications",
+    basePath: "/api/v1/notifications",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "rules",
+    basePath: "/api/v1/rules",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "email-templates",
+    basePath: "/api/v1/email-templates",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "integrations",
+    basePath: "/api/v1/integrations",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "webhooks",
+    basePath: "/api/v1/webhooks",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "imports",
+    basePath: "/api/v1/import-jobs",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "exports",
+    basePath: "/api/v1/export-jobs",
+    ownerSprint: "Sprint 8",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  }
+] as const;
+
 export const apiEndpointContracts = [
   ...sprintThreeApiContracts,
   ...sprintFourApiContracts,
   ...sprintFiveApiContracts,
   ...sprintSixApiContracts,
-  ...sprintSevenApiContracts
+  ...sprintSevenApiContracts,
+  ...sprintEightApiContracts
 ] as const;
 
 export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;

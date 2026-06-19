@@ -2,6 +2,7 @@ export const foundationMigration = "20260618000300_foundation_schema.sql";
 export const sprintFourMigration = "20260619000400_auth_rbac_api_keys.sql";
 export const sprintSixMigration = "20260619000600_billing_core.sql";
 export const sprintSevenMigration = "20260619050821_sprint7_storage_documents_shared.sql";
+export const sprintEightMigration = "20260619110800_events_jobs_integrations.sql";
 
 export const moduleActions = [
   "view",
@@ -76,6 +77,20 @@ export const sprintSevenRlsTables = [
   "taggables",
   "bookmarks",
   "consent_records"
+] as const;
+
+export const sprintEightRlsTables = [
+  "event_outbox",
+  "job_runs",
+  "notifications",
+  "rules",
+  "rule_runs",
+  "email_templates",
+  "integrations",
+  "webhooks",
+  "webhook_deliveries",
+  "imports",
+  "exports"
 ] as const;
 
 export const baseProfileCodes = [
