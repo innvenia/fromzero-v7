@@ -18,7 +18,7 @@
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: pendiente de checkpoint; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
 
 ## Resumen para el dueño
@@ -42,7 +42,7 @@
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: pendiente de checkpoint Sprint 7.
+- Último commit FromZero: `bf4478c feat(storage): add document file shared module contracts`.
 
 ## 2. Artefactos vigentes
 
@@ -60,7 +60,7 @@
 - Estado: completado localmente.
 - Objetivo completado: File, Document, Tag, Bookmark, consent records, versionado acotado, signed URL intent, soft delete, pg_cron para purga de soft-deletes y storage browser base.
 - Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 7 - Storage, documentos y módulos shared`.
-- Commit asociado: pendiente.
+- Commit asociado: `bf4478c feat(storage): add document file shared module contracts`.
 
 ## 4. Último Sprint completado
 
@@ -70,7 +70,7 @@
 - Tests/comandos: `npm test -- tests/unit/sprint7-contracts.test.ts tests/unit/sprint7-sql.test.ts`; `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; secret scan sin coincidencias fuera de fixtures de prueba.
 - Limitación: `npx supabase migration list --local` no pudo conectar a `127.0.0.1:54322`; no se ejecutó `supabase db reset`, migración cloud, signed URL real contra Storage ni purga real.
 - Verificación visual: no aplica; Sprint 7 no agrega ruta web final. Storage browser queda como lógica base cubierta por unit tests.
-- Commit: pendiente de checkpoint.
+- Commit: `bf4478c feat(storage): add document file shared module contracts`.
 
 ## 4.1 Commits previos relevantes
 
@@ -93,7 +93,7 @@
 | b1bc9a4 | feat(auth): add tenant rbac and api key contracts | Sprint 4 | cerrado | Auth, RBAC, API keys y contratos |
 | f7b3b86 | feat(factory): add module factory grid contracts | Sprint 5 | cerrado | Factory, Grid, filtros, custom fields y relaciones |
 | 66b458e | feat(billing): add billing core contracts | Sprint 6 | cerrado | Billing core, Stripe mock, webhooks, PDF y SQL versionado |
-| pendiente | feat(storage): add document file shared module contracts | Sprint 7 | cerrado local | Storage, documents, tags, bookmarks, consent y SQL versionado |
+| bf4478c | feat(storage): add document file shared module contracts | Sprint 7 | cerrado local | Storage, documents, tags, bookmarks, consent y SQL versionado |
 
 ## 5. Siguiente Sprint
 
@@ -136,7 +136,7 @@
 | Sprint 4 | aprobado | 2026-06-19 | apruebo continuar con el sprint 4 | b1bc9a4 |
 | Sprint 5 | aprobado | 2026-06-19 | apruebo ejecución de sprint 5. | f7b3b86 |
 | Sprint 6 | aprobado | 2026-06-19 | apruebo sprint 6 | 66b458e |
-| Sprint 7 | aprobado | 2026-06-19 | aprobar inicio sprint 7 | pendiente de checkpoint |
+| Sprint 7 | aprobado | 2026-06-19 | aprobar inicio sprint 7 | bf4478c |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 

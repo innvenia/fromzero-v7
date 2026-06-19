@@ -20,7 +20,7 @@ Ruta de salida: `artifacts/test-plans/sprint-7.md`
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_STATE.md` |
 | Documentos o fuentes asociadas | `docs/PRD.md`, `docs/REFERENCE_MODULES.md`, `docs/REFERENCE_DATABASE_SCHEMA.md`, `docs/REFERENCE_THREAT_MODEL.md`, `artifacts/FROMZERO_PLAN.md` |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `supabase/migrations/` |
-| Commit asociado | pendiente |
+| Commit asociado | `bf4478c feat(storage): add document file shared module contracts` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. Sin purgas reales ejecutadas. |
 
 ## Unit
