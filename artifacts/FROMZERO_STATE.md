@@ -9,26 +9,26 @@
 | Proyecto | From Zero Framework |
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
-| Última actualización | 2026-06-18 |
+| Última actualización | 2026-06-19 |
 | Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline |
-| Aprobación del usuario | no aplica |
-| Fecha de aprobación | no aplica |
-| Frase literal de aprobación | no aplica |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline; 2026-06-19: Sprint 4 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 4 completado localmente con auth/RBAC/API keys, migración SQL versionada, contratos Zod y pruebas |
+| Aprobación del usuario | aprobada para Sprint 4 |
+| Fecha de aprobación | 2026-06-19 |
+| Frase literal de aprobación | apruebo continuar con el sprint 4 |
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: pendiente de commit de implementación; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
 
 ## Resumen para el dueño
 
-- Estado actual: Sprint 3 completado localmente.
-- Último avance: schema fundacional, bootstrap, contratos Zod/API, rate limit base, health API y pruebas.
-- Sprint actual: ninguno en ejecución.
-- Siguiente acción: revisar cierre y aprobar Sprint 4 si corresponde.
-- Bloqueos o riesgos: Supabase CLI no está instalado; migración no fue aplicada contra Supabase local/cloud; MCP preparado pero no autenticado ni conectado.
-- Qué necesita decidir o aprobar el dueño: aprobar explícitamente Sprint 4 antes de auth, sesiones, tenant context, RBAC efectivo y API keys.
+- Estado actual: Sprint 4 completado localmente.
+- Último avance: auth Supabase SSR, tenant context, RBAC server-side, módulos user/profile/invitation/API key, migración SQL y pruebas.
+- Sprint actual: Sprint 4 cerrado localmente.
+- Siguiente acción: preparar Sprint 5 cuando el dueño solicite continuar.
+- Bloqueos o riesgos: migración Sprint 4 no fue aplicada contra Supabase local/cloud; MCP preparado pero no autenticado ni conectado.
+- Qué necesita decidir o aprobar el dueño: aplicar migraciones reales o activar MCP requiere aprobación separada.
 
 ## 1. Estado general
 
@@ -42,7 +42,7 @@
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: `b57c807 feat(db): add foundation schema and bootstrap`.
+- Último commit FromZero: pendiente de commit Sprint 4.
 
 ## 2. Artefactos vigentes
 
@@ -56,21 +56,21 @@
 
 ## 3. Sprint actual
 
-- Sprint actual: ninguno.
-- Estado: Sprint 3 completado.
-- Objetivo completado: datos fundacionales, bootstrap declarativo, contratos Zod/API, rate limit base y health API.
-- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 3 - Datos, bootstrap y módulos fundacionales`.
-- Commit asociado: `b57c807 feat(db): add foundation schema and bootstrap`.
+- Sprint actual: Sprint 4.
+- Estado: completado localmente.
+- Objetivo completado: auth email/password, MFA configurable, tenant context seguro, usuarios, membresías, perfiles, roles, permisos, invitaciones y API keys.
+- Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 4 - Auth, tenant context, RBAC y API keys`.
+- Commit asociado: pendiente de cierre.
 
 ## 4. Último Sprint completado
 
-- Sprint: Sprint 3.
-- Fecha: 2026-06-18.
-- Evidencia: `supabase/migrations/20260618000300_foundation_schema.sql`, `bootstrap.json`, `src/framework/db/`, `src/framework/bootstrap/`, `src/framework/api/`, `src/framework/modules/{settings,module,plan,log,tenant}/`, `src/app/api/v1/health/route.ts`, `tests/unit/`, `artifacts/test-plans/sprint-3.md`.
-- Tests/comandos: `npm run lint`; `npm run typecheck`; `npm test`; `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; `npm run test:e2e`; secret scan con solo placeholders/documentación detectados.
-- Limitación: `supabase` CLI no existe en PATH; no se ejecutó `supabase migration new`, `supabase db reset`, migración cloud ni MCP.
-- Verificación visual: no aplica; Sprint 3 no cambió UI visual. E2E existente pasó.
-- Commit: `b57c807 feat(db): add foundation schema and bootstrap`.
+- Sprint: Sprint 4.
+- Fecha: 2026-06-19.
+- Evidencia: `supabase/migrations/20260619000400_auth_rbac_api_keys.sql`, `src/framework/auth/`, `src/framework/modules/{user,profile,invitation,api-key}/`, `src/framework/api/contracts.ts`, `tests/unit/{auth-context,api-key,sprint4-contracts,sprint4-sql}.test.ts`, `artifacts/test-plans/sprint-4.md`.
+- Tests/comandos: `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; `npm run test:e2e`; secret scan sin patrones de secretos reales.
+- Limitación: `supabase` CLI existe como devDependency local `2.107.0`, pero no se ejecutó `supabase db reset`, migración cloud ni MCP.
+- Verificación visual: no aplica; Sprint 4 no cambió UI visual. E2E existente pasó.
+- Commit: pendiente de cierre.
 
 ## 4.1 Commits previos relevantes
 
@@ -93,12 +93,12 @@
 
 ## 5. Siguiente Sprint
 
-- Sprint: Sprint 4.
-- Objetivo: implementar auth email/password, MFA configurable, tenant context seguro, usuarios, membresías, perfiles, roles, permisos, invitaciones y API keys.
-- Dependencias: Sprint 3 completado; aprobación humana antes de auth/sesiones/RBAC efectivo/API keys.
-- Verificaciones requeridas: cliente no impone tenant, service role server-only, API keys con hash/scopes, BOLA/IDOR, matriz de permisos server-side.
-- Archivos objetivo: `src/framework/auth/`, `src/framework/modules/user/`, `src/framework/modules/profile/`, `src/framework/modules/invitation/`, `src/framework/modules/api-key/`.
-- Tests/comandos previstos: auth tests, permission matrix tests, BOLA/IDOR tests, API key scope tests, Vitest, build.
+- Sprint: Sprint 5.
+- Objetivo: construir contratos del Module Factory, Grid Universal, filtros guardados, custom fields, record relationships y patrones CRUD reutilizables.
+- Dependencias: Sprints 3 y 4 completados.
+- Verificaciones requeridas: no queries sin límite, ownership validado, módulos respetan allowlist.
+- Archivos objetivo: `src/framework/factory/`, `src/framework/grid/`, `src/framework/relationships/`, `src/framework/modules/filter/`, `src/framework/modules/custom-field/`.
+- Tests/comandos previstos: factory tests, grid tests, validation tests, relation tests, Playwright para tablas.
 
 ## 6. Verificaciones y decisiones
 
@@ -108,7 +108,7 @@
 | Sprint 1 | completado | antes de Sprint 2 | `npm run check`, `npm audit --audit-level=moderate`, secret scan, `git diff --check` |
 | Sprint 2 | completado | antes de Sprint 3 | `npm run check`, `npm audit --audit-level=moderate`, `npm run test:e2e`, capturas 375/768/1920 |
 | Sprint 3 permisos/RLS/RBAC | completado local | antes de Sprint 4 | SQL versionado, RLS estático, bootstrap, contratos, sin cloud |
-| Sprint 4 auth/sesiones/RBAC efectivo | requiere aprobación | antes de Build Sprint 4 | confirmar ejecución de auth, sesiones, tenant context, RBAC y API keys |
+| Sprint 4 auth/sesiones/RBAC efectivo | completado local | antes de Build Sprint 4 | frase literal `apruebo continuar con el sprint 4`; `npm run check`; `npm run test:e2e`; SQL versionado |
 | MCP Supabase/SonarQube | preparado/deshabilitado | turno dedicado | `.mcp.json` local sin secretos inline; falta autenticación/conexión explícita |
 | OpenRouter ID | pendiente | Sprint 9 | revalidación del modelo exacto |
 | Servicios cloud | pendiente | Sprint que los use | aprobación por servicio |
@@ -126,6 +126,7 @@
 | `artifacts/adr/003-integrations-jobs-cache.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 | `artifacts/adr/005-core-ai-openrouter.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 | `artifacts/FROMZERO_PLAN.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
+| Sprint 4 | aprobado | 2026-06-19 | apruebo continuar con el sprint 4 | pendiente de cierre |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
@@ -144,23 +145,17 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: ninguno para revisar Sprint 3; Sprint 4 requiere aprobación humana antes de auth/sesiones/RBAC efectivo/API keys; MCP requiere activación explícita separada.
+- Bloqueos actuales: ninguno para Sprint 4 local; MCP requiere activación explícita separada.
 - Riesgos activos: RLS/RBAC real pendiente de ejecución en Supabase, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export, performance FCP/LCP/API p95, revisión legal.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales.
-- Secretos o accesos requeridos: ninguno para revisar Sprint 3; serán requeridos por Sprint con aprobación separada.
-- Estado de aprobación humana requerido: revisar Sprint 3 y aprobar explícitamente Sprint 4 si corresponde.
+- Secretos o accesos requeridos: ninguno para revisar Sprint 4; serán requeridos por Sprint con aprobación separada.
+- Estado de aprobación humana requerido: no requerido para el alcance local de Sprint 4 ya completado.
 
 ## 8. Próxima acción
 
-Revisar el cierre de Sprint 3 y decidir si se corrige algo o se continúa con Sprint 4.
+Preparar Sprint 5 cuando el dueño solicite continuar.
 
-Frase recomendada para continuar:
-
-```text
-Apruebo continuar con Sprint 4.
-```
-
-Antes de iniciar Sprint 4, confirmar la zona humana de auth/sesiones, tenant context, RBAC efectivo y API keys.
+No aplicar migraciones cloud ni activar MCP sin aprobación separada.
 
 ## 9. Reglas de actualización
 

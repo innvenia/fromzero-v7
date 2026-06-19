@@ -52,4 +52,44 @@ export const sprintThreeApiContracts = [
   }
 ] as const;
 
+export const sprintFourApiContracts = [
+  {
+    domain: "users",
+    basePath: "/api/v1/users",
+    ownerSprint: "Sprint 4",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "profiles",
+    basePath: "/api/v1/profiles",
+    ownerSprint: "Sprint 4",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "invitations",
+    basePath: "/api/v1/invitations",
+    ownerSprint: "Sprint 4",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "api-keys",
+    basePath: "/api/v1/api-keys",
+    ownerSprint: "Sprint 4",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  }
+] as const;
+
+export const apiEndpointContracts = [
+  ...sprintThreeApiContracts,
+  ...sprintFourApiContracts
+] as const;
+
 export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;

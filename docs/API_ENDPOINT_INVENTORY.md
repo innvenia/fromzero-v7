@@ -6,8 +6,8 @@
 |---|---|
 | Proyecto | From Zero Framework v7.4 |
 | Fecha de creacion | 2026-06-18 |
-| Ultima actualizacion | 2026-06-18 |
-| Estado | Sprint 3: health implementado; contratos fundacionales versionados |
+| Ultima actualizacion | 2026-06-19 |
+| Estado | Sprint 4: auth/RBAC/API keys versionados localmente; handlers CRUD pendientes |
 | Fuente | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
 
 ## Reglas base
@@ -32,10 +32,10 @@
 | Modules | `/api/v1/modules` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Registry de modulos. |
 | Plans | `/api/v1/plans` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Planes base y feature gates. |
 | Tenants | `/api/v1/tenants` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Contexto seguro y aislamiento. |
-| Users | `/api/v1/users` | reservado, no implementado | Sprint 4 | Usuarios y membresias. |
-| Profiles | `/api/v1/profiles` | reservado, no implementado | Sprint 4 | RBAC efectivo. |
-| Invitations | `/api/v1/invitations` | reservado, no implementado | Sprint 4 | Tokens con TTL y auditoria. |
-| API keys | `/api/v1/api-keys` | reservado, no implementado | Sprint 4 | Hash, scopes y expiracion opcional. |
+| Users | `/api/v1/users` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Usuarios y membresias. |
+| Profiles | `/api/v1/profiles` | contrato Zod versionado, endpoint pendiente | Sprint 4 | RBAC efectivo. |
+| Invitations | `/api/v1/invitations` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Tokens con TTL y auditoria. |
+| API keys | `/api/v1/api-keys` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Hash, scopes y expiracion opcional. |
 | Custom fields | `/api/v1/custom-fields` | reservado, no implementado | Sprint 5 | Solo modulos permitidos. |
 | Filters | `/api/v1/filters` | reservado, no implementado | Sprint 5 | Filtros guardados por usuario/tenant. |
 | Relationships | `/api/v1/relationships` | reservado, no implementado | Sprint 5 | Extremos dentro del mismo tenant. |
@@ -59,6 +59,6 @@
 
 ## Pendiente
 
-- Implementar handlers autenticados de Settings, Modules, Plans y Tenants en Sprints posteriores.
+- Implementar handlers autenticados de Settings, Modules, Plans, Tenants, Users, Profiles, Invitations y API keys en Sprints posteriores.
 - Agregar metodos, codigos de respuesta y contratos de error al implementar cada dominio.
 - Confirmar rate limits y scopes concretos por endpoint antes de exponer rutas.

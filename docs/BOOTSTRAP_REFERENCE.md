@@ -166,8 +166,11 @@ Variables documentadas en los tres archivos:
 | Variable | Uso | Exposición permitida |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | URL pública de Supabase. | Cliente y servidor. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave pública recomendada para clientes Supabase modernos. | Cliente y servidor, protegida por RLS. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima pública. | Cliente y servidor, protegida por RLS. |
+| `SUPABASE_SECRET_KEY` | Clave server-only recomendada para operaciones administrativas. | Solo servidor/background jobs. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Operaciones administrativas. | Solo servidor/background jobs. |
+| `SUPABASE_ACCESS_TOKEN` | CLI/MCP Supabase cuando se apruebe explícitamente. | Solo entorno local/CI seguro. |
 | `DATABASE_URL` / `DIRECT_URL` | Migraciones y procesos server-side. | Solo servidor/CI seguro. |
 | `CORE_AI_SECRET` | Autenticación Node.js -> Core AI. | Solo servidor. |
 | `PAYMENT_PROVIDER_SECRET_KEY` | Credencial server-side del proveedor de pagos configurado. | Solo servidor. |

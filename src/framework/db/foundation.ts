@@ -1,4 +1,5 @@
 export const foundationMigration = "20260618000300_foundation_schema.sql";
+export const sprintFourMigration = "20260619000400_auth_rbac_api_keys.sql";
 
 export const moduleActions = [
   "view",
@@ -20,7 +21,11 @@ export const foundationTables = [
   "profiles",
   "profile_permissions",
   "tenants",
-  "user_memberships"
+  "user_memberships",
+  "users",
+  "user_preferences",
+  "invitations",
+  "api_keys"
 ] as const;
 
 export type FoundationTable = (typeof foundationTables)[number];
@@ -42,7 +47,17 @@ export const rlsFoundationTables = [
 export const tenantScopedFoundationTables = [
   "logs",
   "tenants",
-  "user_memberships"
+  "user_memberships",
+  "user_preferences",
+  "invitations",
+  "api_keys"
+] as const;
+
+export const sprintFourRlsTables = [
+  "users",
+  "user_preferences",
+  "invitations",
+  "api_keys"
 ] as const;
 
 export const baseProfileCodes = [
