@@ -1,6 +1,10 @@
 export * from "./log";
 export * from "./api-key";
 export * from "./custom-field";
+export * from "./bookmark";
+export * from "./consent";
+export * from "./document";
+export * from "./file";
 export * from "./filter";
 export * from "./invitation";
 export * from "./invoice";
@@ -10,5 +14,6 @@ export * from "./profile";
 export * from "./settings";
 export * from "./statement";
 export * from "./subscription";
+export * from "./tag";
 export * from "./tenant";
 export * from "./user";

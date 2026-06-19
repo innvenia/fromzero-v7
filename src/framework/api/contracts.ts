@@ -149,11 +149,55 @@ export const sprintSixApiContracts = [
   }
 ] as const;
 
+export const sprintSevenApiContracts = [
+  {
+    domain: "files",
+    basePath: "/api/v1/files",
+    ownerSprint: "Sprint 7",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "documents",
+    basePath: "/api/v1/documents",
+    ownerSprint: "Sprint 7",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "tags",
+    basePath: "/api/v1/tags",
+    ownerSprint: "Sprint 7",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "bookmarks",
+    basePath: "/api/v1/bookmarks",
+    ownerSprint: "Sprint 7",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "consent-records",
+    basePath: "/api/v1/consent-records",
+    ownerSprint: "Sprint 7",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  }
+] as const;
+
 export const apiEndpointContracts = [
   ...sprintThreeApiContracts,
   ...sprintFourApiContracts,
   ...sprintFiveApiContracts,
-  ...sprintSixApiContracts
+  ...sprintSixApiContracts,
+  ...sprintSevenApiContracts
 ] as const;
 
 export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;
