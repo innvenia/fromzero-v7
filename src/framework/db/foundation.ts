@@ -1,5 +1,6 @@
 export const foundationMigration = "20260618000300_foundation_schema.sql";
 export const sprintFourMigration = "20260619000400_auth_rbac_api_keys.sql";
+export const sprintSixMigration = "20260619000600_billing_core.sql";
 
 export const moduleActions = [
   "view",
@@ -58,6 +59,12 @@ export const sprintFourRlsTables = [
   "user_preferences",
   "invitations",
   "api_keys"
+] as const;
+
+export const sprintSixRlsTables = [
+  "subscriptions",
+  "statements",
+  "invoices"
 ] as const;
 
 export const baseProfileCodes = [

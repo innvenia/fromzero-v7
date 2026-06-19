@@ -7,7 +7,7 @@
 | Proyecto | From Zero Framework v7.4 |
 | Fecha de creacion | 2026-06-18 |
 | Ultima actualizacion | 2026-06-19 |
-| Estado | Sprint 5: factory/grid/custom fields/filters/relationships versionados localmente; handlers CRUD pendientes |
+| Estado | Sprint 6: billing/subscriptions/statements/invoices/webhook Stripe versionados localmente; handlers CRUD pendientes |
 | Fuente | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
 
 ## Reglas base
@@ -39,9 +39,10 @@
 | Custom fields | `/api/v1/custom-fields` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Solo modulos permitidos. |
 | Filters | `/api/v1/filters` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Filtros guardados por usuario/tenant. |
 | Relationships | `/api/v1/relationships` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Extremos dentro del mismo tenant. |
-| Subscriptions | `/api/v1/billing/subscriptions` | reservado, no implementado | Sprint 6 | Provider por adapter, sin cobros reales sin aprobacion. |
-| Statements | `/api/v1/billing/statements` | reservado, no implementado | Sprint 6 | Jobs y conciliacion. |
-| Invoices | `/api/v1/billing/invoices` | reservado, no implementado | Sprint 6 | PDF individual desde UI. |
+| Subscriptions | `/api/v1/billing/subscriptions` | contrato Zod versionado, endpoint pendiente | Sprint 6 | Provider por adapter, sin cobros reales sin aprobacion. |
+| Statements | `/api/v1/billing/statements` | contrato Zod versionado, endpoint pendiente | Sprint 6 | Jobs y conciliacion. |
+| Invoices | `/api/v1/billing/invoices` | contrato Zod versionado, endpoint pendiente | Sprint 6 | PDF individual desde UI. |
+| Stripe billing webhook | `/api/v1/billing/webhooks/stripe` | contrato HMAC versionado, endpoint pendiente | Sprint 6 | Firma obligatoria, adapter mockeable, sin provider real. |
 | Files | `/api/v1/files` | reservado, no implementado | Sprint 7 | Storage, MIME, size y signed URLs. |
 | Documents | `/api/v1/documents` | reservado, no implementado | Sprint 7 | Versionado acotado. |
 | Tags | `/api/v1/tags` | reservado, no implementado | Sprint 7 | Scope tenant. |
