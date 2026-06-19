@@ -23,6 +23,7 @@ pnpm-debug.log*
 .env.*
 !.env.example
 !.env.*.example
+.mcp.json
 
 # Node/Next.js/React/TypeScript
 node_modules/
