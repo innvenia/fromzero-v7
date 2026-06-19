@@ -25,17 +25,19 @@ Configuracion preparada:
 
 - Runtime: Docker.
 - Imagen: `mcp/sonarqube`.
-- Modo inicial: read-only.
-- Telemetria del servidor MCP: deshabilitada con `TELEMETRY_DISABLED=true`.
-- Workspace montado: `C:/Develop/Apps/framework/fw_v7.4:/app/mcp-workspace`.
+- Transporte: `stdio`.
+- URL configurada: `https://sonarqube.innvenia.ai`.
+- Organizacion configurada: vacia, porque la instancia es SonarQube Server.
+- Herramientas administrativas y de fuente raw deshabilitadas en `.mcp.json`.
 
 Variables requeridas fuera del repo:
 
 | Variable | Uso |
 |---|---|
-| `SONARQUBE_URL` | URL de la instancia SonarQube Server. |
-| `SONARQUBE_TOKEN` | Token de usuario SonarQube. |
-| `SONARQUBE_PROJECT_KEY` | Project key por defecto para este repo. |
+| `SONARQUBE_TOKEN` | Token de usuario SonarQube. Debe existir fuera del repo y fuera del chat. |
+| `SONARQUBE_PROJECT_KEY` | Project key por defecto para este repo, si se quiere fijar por entorno. |
+
+El token pegado en cualquier chat debe considerarse comprometido y rotarse antes de activar el servidor.
 
 Variables legacy del proyecto:
 
@@ -61,4 +63,4 @@ Para activar, se requiere una aprobacion explicita adicional. La activacion mini
 - No versionar `.env.local`.
 - No leer ni imprimir `.env` reales.
 - No activar escritura remota sin aprobacion puntual.
-- Mantener SonarQube MCP en read-only salvo aprobacion contraria.
+- Mantener deshabilitadas las herramientas administrativas de SonarQube salvo aprobacion contraria.

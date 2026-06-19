@@ -9,29 +9,34 @@
       "command": "docker",
       "args": [
         "run",
-        "--init",
-        "--pull=always",
         "-i",
         "--rm",
         "-e",
         "SONARQUBE_TOKEN",
         "-e",
+        "SONARQUBE_ORG",
+        "-e",
         "SONARQUBE_URL",
-        "-e",
-        "SONARQUBE_PROJECT_KEY",
-        "-e",
-        "SONARQUBE_READ_ONLY",
-        "-e",
-        "TELEMETRY_DISABLED",
-        "-v",
-        "C:/Develop/Apps/framework/fw_v7.4:/app/mcp-workspace",
-        "mcp/sonarqube"
+        "mcp/sonarqube",
+        "stdio"
       ],
       "env": {
-        "SONARQUBE_READ_ONLY": "true",
-        "TELEMETRY_DISABLED": "true"
+        "SONARQUBE_ORG": "",
+        "SONARQUBE_URL": "https://sonarqube.innvenia.ai"
       },
       "disabled": true,
+      "disabledTools": [
+        "change_sonar_issue_status",
+        "get_system_health",
+        "get_system_info",
+        "get_system_logs",
+        "ping_system",
+        "get_system_status",
+        "create_webhook",
+        "list_webhooks",
+        "get_raw_source",
+        "get_scm_info"
+      ],
       "autoApprove": []
     }
   }
