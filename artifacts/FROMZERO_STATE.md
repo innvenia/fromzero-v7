@@ -18,7 +18,7 @@
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: pendiente de commit de implementación; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
 | Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
 
 ## Resumen para el dueño
@@ -42,7 +42,7 @@
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: pendiente de commit Sprint 4.
+- Último commit FromZero: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`.
 
 ## 2. Artefactos vigentes
 
@@ -60,7 +60,7 @@
 - Estado: completado localmente.
 - Objetivo completado: auth email/password, MFA configurable, tenant context seguro, usuarios, membresías, perfiles, roles, permisos, invitaciones y API keys.
 - Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 4 - Auth, tenant context, RBAC y API keys`.
-- Commit asociado: pendiente de cierre.
+- Commit asociado: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`.
 
 ## 4. Último Sprint completado
 
@@ -70,7 +70,7 @@
 - Tests/comandos: `npm run check`; `npm audit --audit-level=moderate`; `git diff --check`; `npm run test:e2e`; secret scan sin patrones de secretos reales.
 - Limitación: `supabase` CLI existe como devDependency local `2.107.0`, pero no se ejecutó `supabase db reset`, migración cloud ni MCP.
 - Verificación visual: no aplica; Sprint 4 no cambió UI visual. E2E existente pasó.
-- Commit: pendiente de cierre.
+- Commit: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`.
 
 ## 4.1 Commits previos relevantes
 
@@ -126,7 +126,7 @@
 | `artifacts/adr/003-integrations-jobs-cache.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 | `artifacts/adr/005-core-ai-openrouter.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
 | `artifacts/FROMZERO_PLAN.md` | aprobado | 2026-06-18 | Apruebo el plan. | 7b35435 |
-| Sprint 4 | aprobado | 2026-06-19 | apruebo continuar con el sprint 4 | pendiente de cierre |
+| Sprint 4 | aprobado | 2026-06-19 | apruebo continuar con el sprint 4 | b1bc9a4 |
 
 ## 6.2 Compatibilidad de estados y aprobaciones
 
