@@ -87,9 +87,37 @@ export const sprintFourApiContracts = [
   }
 ] as const;
 
+export const sprintFiveApiContracts = [
+  {
+    domain: "custom-fields",
+    basePath: "/api/v1/custom-fields",
+    ownerSprint: "Sprint 5",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "filters",
+    basePath: "/api/v1/filters",
+    ownerSprint: "Sprint 5",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  },
+  {
+    domain: "relationships",
+    basePath: "/api/v1/relationships",
+    ownerSprint: "Sprint 5",
+    implemented: false,
+    requiresAuth: true,
+    rateLimited: true
+  }
+] as const;
+
 export const apiEndpointContracts = [
   ...sprintThreeApiContracts,
-  ...sprintFourApiContracts
+  ...sprintFourApiContracts,
+  ...sprintFiveApiContracts
 ] as const;
 
 export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;

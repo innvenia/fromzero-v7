@@ -7,7 +7,7 @@
 | Proyecto | From Zero Framework v7.4 |
 | Fecha de creacion | 2026-06-18 |
 | Ultima actualizacion | 2026-06-19 |
-| Estado | Sprint 4: auth/RBAC/API keys versionados localmente; handlers CRUD pendientes |
+| Estado | Sprint 5: factory/grid/custom fields/filters/relationships versionados localmente; handlers CRUD pendientes |
 | Fuente | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
 
 ## Reglas base
@@ -36,9 +36,9 @@
 | Profiles | `/api/v1/profiles` | contrato Zod versionado, endpoint pendiente | Sprint 4 | RBAC efectivo. |
 | Invitations | `/api/v1/invitations` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Tokens con TTL y auditoria. |
 | API keys | `/api/v1/api-keys` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Hash, scopes y expiracion opcional. |
-| Custom fields | `/api/v1/custom-fields` | reservado, no implementado | Sprint 5 | Solo modulos permitidos. |
-| Filters | `/api/v1/filters` | reservado, no implementado | Sprint 5 | Filtros guardados por usuario/tenant. |
-| Relationships | `/api/v1/relationships` | reservado, no implementado | Sprint 5 | Extremos dentro del mismo tenant. |
+| Custom fields | `/api/v1/custom-fields` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Solo modulos permitidos. |
+| Filters | `/api/v1/filters` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Filtros guardados por usuario/tenant. |
+| Relationships | `/api/v1/relationships` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Extremos dentro del mismo tenant. |
 | Subscriptions | `/api/v1/billing/subscriptions` | reservado, no implementado | Sprint 6 | Provider por adapter, sin cobros reales sin aprobacion. |
 | Statements | `/api/v1/billing/statements` | reservado, no implementado | Sprint 6 | Jobs y conciliacion. |
 | Invoices | `/api/v1/billing/invoices` | reservado, no implementado | Sprint 6 | PDF individual desde UI. |

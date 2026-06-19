@@ -9,6 +9,25 @@
     "title": "Sin datos de aplicación todavía"
   },
   "heading": "Panel operativo",
+  "grid": {
+    "ariaLabel": "Módulos framework",
+    "columns": {
+      "actions": "Acciones",
+      "code": "Código",
+      "name": "Módulo",
+      "table": "Tabla"
+    },
+    "emptyCell": "Sin dato",
+    "loading": "Cargando registros",
+    "nextPage": "Siguiente",
+    "pageSummary": "Página 1 de 1 · 3 registros",
+    "previousPage": "Anterior",
+    "selectAllRows": "Seleccionar filas",
+    "selectRow": "Seleccionar fila",
+    "status": {
+      "active": "Activo"
+    }
+  },
   "metrics": {
     "activeUsers": {
       "label": "Usuarios activos",

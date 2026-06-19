@@ -6,8 +6,8 @@ Base reutilizable para construir aplicaciones SaaS/corporate multi-tenant con Ne
 
 - Metodologia: FromZero local del proyecto.
 - Plan: aprobado.
-- Sprint 3: completado localmente, datos fundacionales y contratos.
-- Codigo de aplicacion: shell UI base y health API implementados; handlers autenticados pendientes.
+- Sprint 5: completado localmente, factory/grid/relaciones y contratos shared.
+- Codigo de aplicacion: shell UI base, DataGrid y health API implementados; handlers autenticados pendientes.
 - Servicios externos: no activados.
 
 ## Requisitos
@@ -62,4 +62,4 @@ Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos
 
 ## Siguiente Sprint
 
-Sprint 4 implementara auth, tenant context, RBAC efectivo y API keys. Requiere aprobacion humana antes de tocar flujos de acceso.
+Sprint 6 implementara billing, suscripciones, statements y PDF individual. Requiere aprobacion humana antes de cualquier integracion real de pagos.

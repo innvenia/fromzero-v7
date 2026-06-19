@@ -9,6 +9,25 @@
     "title": "No application data yet"
   },
   "heading": "Operations dashboard",
+  "grid": {
+    "ariaLabel": "Framework modules",
+    "columns": {
+      "actions": "Actions",
+      "code": "Code",
+      "name": "Module",
+      "table": "Table"
+    },
+    "emptyCell": "No data",
+    "loading": "Loading records",
+    "nextPage": "Next",
+    "pageSummary": "Page 1 of 1 · 3 records",
+    "previousPage": "Previous",
+    "selectAllRows": "Select rows",
+    "selectRow": "Select row",
+    "status": {
+      "active": "Active"
+    }
+  },
   "metrics": {
     "activeUsers": {
       "label": "Active users",
