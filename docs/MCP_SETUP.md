@@ -4,7 +4,7 @@
 
 El proyecto contiene `.mcp.json` local con servidores preparados y deshabilitados:
 
-- `supabase`: MCP remoto oficial de Supabase por HTTP.
+- `supabase-mcp-server`: MCP oficial de Supabase mediante `npx`.
 - `sonarqube`: MCP oficial de SonarQube mediante Docker.
 
 No contiene secretos inline y no conecta servicios por si solo mientras los servidores sigan con `disabled: true`.
@@ -13,11 +13,16 @@ No contiene secretos inline y no conecta servicios por si solo mientras los serv
 
 Configuracion preparada:
 
-- Tipo: `http`.
-- URL: `https://mcp.supabase.com/mcp`.
-- Autenticacion: OAuth del cliente MCP.
+- Runtime: `npx`.
+- Paquete: `@supabase/mcp-server-supabase@latest`.
+- Transporte: `stdio`.
+- Modo inicial: `--read-only`.
+- Features habilitadas: `docs,database,debugging,development`.
+- Token: variable externa `SUPABASE_ACCESS_TOKEN`.
 
-El MCP remoto oficial de Supabase ya no requiere generar un PAT para el flujo principal. Al activarlo, el cliente MCP debe abrir el flujo OAuth y pedir autorizacion de la organizacion/proyecto.
+La configuracion recibida incluia `--access-token` inline. Ese valor no debe versionarse ni pegarse en chats. El token debe existir solo fuera del repo y ser leido por el proceso MCP desde `SUPABASE_ACCESS_TOKEN`.
+
+Antes de activar, se recomienda agregar `--project-ref <project-ref>` a los argumentos para limitar el alcance a un unico proyecto Supabase. Si no se fija `project-ref`, el token puede exponer mas proyectos de los necesarios segun sus permisos.
 
 ## SonarQube MCP
 
@@ -54,7 +59,7 @@ Para activar, se requiere una aprobacion explicita adicional. La activacion mini
 1. Configurar las variables reales fuera del repo y fuera del chat.
 2. Cambiar `disabled` a `false` solo para el servidor autorizado.
 3. Recargar el cliente MCP o la sesion Codex.
-4. Autenticar Supabase por OAuth si aplica.
+4. Verificar que `SUPABASE_ACCESS_TOKEN` exista en el entorno del proceso si se activa Supabase.
 5. Verificar herramientas disponibles sin ejecutar cambios destructivos.
 
 ## Reglas
@@ -63,4 +68,5 @@ Para activar, se requiere una aprobacion explicita adicional. La activacion mini
 - No versionar `.env.local`.
 - No leer ni imprimir `.env` reales.
 - No activar escritura remota sin aprobacion puntual.
+- Mantener Supabase en `--read-only` salvo aprobacion contraria.
 - Mantener deshabilitadas las herramientas administrativas de SonarQube salvo aprobacion contraria.

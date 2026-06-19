@@ -1,9 +1,17 @@
 {
   "mcpServers": {
-    "supabase": {
-      "type": "http",
-      "url": "https://mcp.supabase.com/mcp",
-      "disabled": true
+    "supabase-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--read-only",
+        "--features",
+        "docs,database,debugging,development"
+      ],
+      "env": {},
+      "disabled": true,
+      "autoApprove": []
     },
     "sonarqube": {
       "command": "docker",
