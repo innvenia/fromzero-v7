@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp",
+      "disabled": true
+    },
+    "sonarqube": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--init",
+        "--pull=always",
+        "-i",
+        "--rm",
+        "-e",
+        "SONARQUBE_TOKEN",
+        "-e",
+        "SONARQUBE_URL",
+        "-e",
+        "SONARQUBE_PROJECT_KEY",
+        "-e",
+        "SONARQUBE_READ_ONLY",
+        "-e",
+        "TELEMETRY_DISABLED",
+        "-v",
+        "C:/Develop/Apps/framework/fw_v7.4:/app/mcp-workspace",
+        "mcp/sonarqube"
+      ],
+      "env": {
+        "SONARQUBE_READ_ONLY": "true",
+        "TELEMETRY_DISABLED": "true"
+      },
+      "disabled": true,
+      "autoApprove": []
+    }
+  }
+}
