@@ -165,7 +165,7 @@ Excepciones documentadas:
 - **Singleton** (Settings): Formulario de tabs sin Grid.
 - **UI inyectable** (Tags, Bookmarks): Tabla + Grid + formulario embebido en otros módulos.
 
-27 módulos de sistema pre-registrados en la inicialización.
+28 módulos de sistema pre-registrados en la inicialización.
 
 ### 4.3 Module Factory: Bootstrap → Base de Datos
 
@@ -194,6 +194,15 @@ Mismo schema Zod compartido; el servidor SIEMPRE revalida.
 #### RBAC Server-Side
 
 Toda Server Action y API Route invoca un guard estándar, por ejemplo `requirePermission(action, moduleSlug)`, antes de ejecutar consultas o mutaciones. El guard resuelve el Profile activo y valida contra `profile_permissions` del módulo solicitado. El orden obligatorio es RBAC para autorizar la acción y RLS para aislar los datos; la UI solo oculta acciones, nunca es la barrera única de seguridad.
+
+#### Handlers públicos vs privados
+
+El framework distingue dos tipos de handlers HTTP:
+
+- **Privados:** autenticados (Supabase JWT de usuario o API key bearer M2M), con contexto de tenant, RBAC server-side y auditoría. Se activan por módulo. Son la mayoría de los endpoints.
+- **Públicos:** sin autenticación de usuario, expuestos deliberadamente. Ejemplos: `health`, la recepción de **webhooks entrantes** (verificados por firma HMAC, timestamp y anti-replay) y la **API pública de plantillas legales** (obtener documento publicado por código/versión). No exponen datos tenant-aware sin verificación propia y aplican rate limit.
+
+Cada ruta declara su nivel de auth en `API_ENDPOINT_INVENTORY.md`.
 
 ### 4.6 Presigned URLs (File Upload)
 ```
@@ -375,7 +384,7 @@ Sentry sugerido, inyectando el DSN en el bootstrap o variables de entorno. Si se
 | Documento | Contenido |
 |:----------|:----------|
 | [`PRD.md`](./PRD.md) | Fuente de Verdad - especificaciones funcionales |
-| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación técnica de los 27 módulos |
+| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación técnica de los 28 módulos |
 | [`REFERENCE_STRUCTURE.md`](./REFERENCE_STRUCTURE.md) | Anatomía física del proyecto |
 | [`REFERENCE_THREAT_MODEL.md`](./REFERENCE_THREAT_MODEL.md) | Modelo de amenazas y requisitos de seguridad |
 | [`BOOTSTRAP_REFERENCE.md`](./BOOTSTRAP_REFERENCE.md) | Schema del bootstrap de configuración |

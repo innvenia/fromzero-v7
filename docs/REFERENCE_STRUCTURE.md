@@ -55,7 +55,7 @@ El proyecto sigue un enfoque **Next.js + Supabase** como stack principal. La ló
 │   │   │   ├── storage/          #     Upload engine
 │   │   │   └── .../              #     (search, mailer, payments)
 │   │   ├── modules/               #   Módulos de sistema (Triada: Tabla + Form + Grid)
-│   │   │   ├── settings/  ├── tenant/  ├── user/  ├── log/  ├── file/  └── ...
+│   │   │   ├── settings/  ├── tenant/  ├── user/  ├── log/  ├── file/  ├── legal-template/  └── ...
 │   │   ├── ui/                    #   Design System propietario (compartido)
 │   │   │   ├── components/  ├── grid/  ├── forms/  └── layout/
 │   │   ├── lib/                   #   Utilidades puras (incl. formatters.ts)
@@ -222,7 +222,7 @@ Se usan Route Groups (carpetas entre paréntesis) para aplicar diferentes layout
 |:----------|:----------|
 | [`PRD.md`](./PRD.md) | Especificaciones funcionales (Fuente de Verdad) |
 | [`REFERENCE_ARCHITECTURE.md`](./REFERENCE_ARCHITECTURE.md) | Arquitectura lógica, capas y patrones |
-| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación técnica de los 27 módulos |
+| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación técnica de los 28 módulos |
 | [`REFERENCE_DESIGN_SYSTEM.md`](./REFERENCE_DESIGN_SYSTEM.md) | Design System activo |
 | [`BOOTSTRAP_REFERENCE.md`](./BOOTSTRAP_REFERENCE.md) | Bootstrap inicial del framework |
 | [`REFERENCE_STACK.md`](./REFERENCE_STACK.md) | Stack, versiones, herramientas y conectores |

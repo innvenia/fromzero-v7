@@ -4,7 +4,7 @@
 > **Versión:** 7.4.0
 > **Última actualización:** 2026-06-06
 > **Fuente de verdad:** [`PRD.md`](./PRD.md) - Secciones §1.3, §3.A–§3.D
-> **Propósito:** Especificación técnica canónica de los **27 módulos core** del framework. Cada entrada define schema de BD, server actions, estructura de UI, integraciones y parámetros configurables. Este documento complementa al PRD: el PRD describe **qué** y **por qué**; este documento especifica **cómo** se implementa técnicamente.
+> **Propósito:** Especificación técnica canónica de los **28 módulos core** del framework. Cada entrada define schema de BD, server actions, estructura de UI, integraciones y parámetros configurables. Este documento complementa al PRD: el PRD describe **qué** y **por qué**; este documento especifica **cómo** se implementa técnicamente.
 > **Referencias de implementación:** Dependencias y aceptación en [`DEPENDENCY_MATRIX.md`](./DEPENDENCY_MATRIX.md). Controles verificables de seguridad en [`SECURITY_ASSURANCE.md`](./SECURITY_ASSURANCE.md).
 
 > [!IMPORTANT]
@@ -263,7 +263,7 @@ Registra y configura todos los módulos del sistema. Define cómo cada módulo s
 
 #### Notas de Implementación
 
-- Los 27 módulos core se pre-registran automáticamente durante la inicialización desde una lista canónica interna del framework. `initial_modules` en `bootstrap.json` se usa para overrides o módulos adicionales, no para definir si existe o no la base core.
+- Los 28 módulos core se pre-registran automáticamente durante la inicialización desde una lista canónica interna del framework. `initial_modules` en `bootstrap.json` se usa para overrides o módulos adicionales, no para definir si existe o no la base core.
 - Módulos adicionales de la aplicación derivada se registran aquí al momento de su creación.
 - El registro debe existir **antes** de implementar la lógica del módulo.
 - **Restricción:** El Módulo de Módulos NO tiene tab de "Formulario" porque los formularios se diseñan manualmente en código.
@@ -428,11 +428,37 @@ Configura el catálogo multi-proveedor de modelos de LLM disponibles para el Cor
 #### Notas de Implementación
 
 - Los modelos se registran a nivel global (no por Tenant). Las credenciales sí son por Tenant (tabla `integrations`).
+- **Multi-proveedor y multi-instancia:** se registran múltiples filas para distintos proveedores y también **varias filas del mismo proveedor con `model_id` distintos** (p. ej. varios modelos vía un mismo adapter tipo OpenRouter, además de un proveedor directo). Cada fila es una instancia independiente con sus parámetros, pricing y guardrails; el motor solo ejecuta, el comportamiento depende del proveedor/modelo de cada fila.
 - El costo estimado por invocación respeta `pricing_unit`: para `per_1k`, `(tokens_input / 1000 * cost_per_1k_tokens_input) + (tokens_output / 1000 * cost_per_1k_tokens_output)`; para `per_1m`, usa el mismo cálculo dividiendo entre 1,000,000. `currency` identifica la moneda usada para registrar el costo.
 - Guardrails por petición: el motor valida `context_window`, `max_input_tokens`, `max_tokens` como máximo de salida, `max_cost_per_request`, `request_timeout_seconds` e `input_modalities` antes de invocar al proveedor. Si el input, la salida solicitada, la modalidad o el costo estimado exceden los límites, retorna error controlado y no ejecuta la llamada externa.
 - `fallback_model_id` se usa cuando el modelo principal falla, no está disponible o tiene `deprecated_at` informado; el fallback debe pasar los mismos guardrails antes de ejecutarse.
-- Separación de responsabilidades: el motor provee catálogo con pricing, medición de consumo por petición y guardrails técnicos por modelo/proveedor. Las cuotas de negocio (caps por Tenant, usuario o feature) las define la aplicación derivada.
+- Separación de responsabilidades: el motor provee catálogo con pricing, medición de consumo por petición, guardrails técnicos por modelo/proveedor **y topes de presupuesto acumulado** (tabla `ai_budgets`, ver abajo). El motor **bloquea** la invocación si excedería un tope activo. La aplicación derivada puede añadir cuotas de negocio adicionales por usuario o feature sobre esta base.
 - Si `ai_enabled = false` en Parámetros, el módulo sigue visible para configuración pero las invocaciones IA retornan error controlado.
+
+#### Presupuestos y topes de gasto (`ai_budgets`)
+
+El motor del framework aplica **topes de presupuesto acumulado** además de los guardrails por petición. Antes de cada invocación calcula el costo estimado y lo suma al gasto del periodo; si excediera un tope activo, **bloquea** la llamada (o avisa, según `on_exceed`). Esto evita que una aplicación supere su presupuesto por abuso o por error de programación.
+
+**Tabla `ai_budgets`:**
+
+| Campo | Tipo | Constraints | Descripción |
+|:------|:-----|:------------|:------------|
+| `id` | `UUID` | PK | Identificador único |
+| `tenant_id` | `UUID FK tenants` | nullable | `NULL` = tope global del framework; con valor = tope por Tenant |
+| `scope` | `enum` | `global`, `tenant`, `provider`, `model` | Alcance del tope |
+| `provider` | `varchar(50)` | nullable | Proveedor al que aplica (scope `provider`/`model`) |
+| `ai_model_id` | `UUID FK ai_models` | nullable | Modelo/instancia al que aplica (scope `model`) |
+| `period` | `enum` | `day`, `month`, `total` | Ventana de acumulación |
+| `max_spend` | `decimal(12,6)` | NOT NULL | Tope de gasto en `currency` |
+| `currency` | `varchar(3)` | DEFAULT `USD` | Moneda del tope |
+| `spend_to_date` | `decimal(12,6)` | DEFAULT `0` | Gasto acumulado del periodo vigente |
+| `on_exceed` | `enum` | DEFAULT `block`; `block`, `warn` | Acción al exceder |
+| `is_active` | `boolean` | DEFAULT `true` | Toggle |
+
+**RLS:** topes globales (`tenant_id IS NULL`) gestionados por Super Admin; topes por Tenant aislados por `tenant_id`.
+
+- El tope puede aplicarse a una **instancia/modelo** específico, a un **proveedor** completo, a un **Tenant** o **global**, y son combinables (gana el más restrictivo).
+- Cada invocación registra el costo en `logs` y actualiza `spend_to_date` de los topes aplicables de forma transaccional.
 
 ---
 
@@ -1105,7 +1131,7 @@ Loop guard: toda ejecución de regla propaga `origin_rule_id`, `origin_rule_run_
 
 #### Descripción Técnica
 
-Permite al Admin extender el schema de cualquier módulo CRUD agregando campos personalizados. Los campos se almacenan como JSONB dentro de un campo `custom_data` en la tabla del módulo destino. La UI renderiza dinámicamente estos campos en una sección dedicada del formulario.
+Módulo para crear **definiciones de campos personalizados reutilizables** que extienden el formulario de cualquier módulo CRUD. Cada definición describe un campo (nombre, tipo, labels, validación) que se renderiza dinámicamente en una sección dedicada del formulario del módulo destino; los valores se almacenan como JSONB en `custom_data`. El módulo permite crear **múltiples** definiciones. La **cantidad de definiciones** y la cantidad de campos por módulo destino son **parametrizables por aplicación y por plan** (ver Límites).
 
 #### Schema de Base de Datos
 
@@ -1131,6 +1157,12 @@ Permite al Admin extender el schema de cualquier módulo CRUD agregando campos p
 **Almacenamiento de valores:** Los valores se almacenan en el campo `custom_data` (JSONB) de la tabla del módulo destino (ej: `tasks.custom_data`).
 
 **RLS:** Aplica. Admin solo ve campos de su Tenant.
+
+**Límites (parametrizables por aplicación y por plan):**
+- `max_custom_fields` (en `plans.features`) define el tope **por plan** de definiciones de campo por Tenant.
+- La aplicación puede fijar un override **a nivel de aplicación/Tenant** (en `settings`/`tenants.settings`) dentro del tope del plan.
+- Opcionalmente se puede limitar la cantidad de campos **por módulo destino** (`entity_type`).
+- Gana el límite más restrictivo entre plan, aplicación y módulo.
 
 #### Server Actions
 
@@ -1315,7 +1347,7 @@ Registra conexiones con servicios externos a nivel Tenant: proveedores AI (OpenA
 
 `credentials` es un JSONB cifrado por adapter. Los campos genéricos comunes son `auth_type`, `api_key`, `client_id`, `client_secret`, `access_token`, `refresh_token`, `webhook_secret`, `region`, `base_url`, `expires_at` y `scopes`; cada adapter usa solo los que correspondan. Estos valores nunca se muestran completos en UI ni se escriben en `logs`.
 
-Adapters default documentados: `stripe`, `resend`, `openrouter`, `inngest`, `recaptcha`, `s3` y `r2`. Los campos exactos de cada proveedor se verifican contra su documentación oficial en el Sprint donde se implemente o actualice el adapter; este documento define el patrón, no contratos específicos de terceros.
+Adapters default documentados: `stripe`, `resend`, `openrouter`, `inngest`, `recaptcha`, `s3` y `r2`. Los campos exactos de cada proveedor se verifican contra su documentación oficial al implementar o actualizar el adapter; este documento define el patrón, no contratos específicos de terceros.
 
 El cifrado at rest debe usar AES-256 o un mecanismo equivalente provisto por Supabase Vault/KMS, con la clave fuera del repositorio. La validación de conexión es opcional por adapter; cuando existe, actualiza `last_tested_at` y `status` sin persistir respuestas sensibles del proveedor.
 
@@ -1334,7 +1366,7 @@ El cifrado at rest debe usar AES-256 o un mecanismo equivalente provisto por Sup
 
 #### Descripción Técnica
 
-Permite registrar endpoints HTTP que reciben notificaciones push cuando ocurren eventos específicos del sistema. El Tenant configura URLs destino, selecciona eventos de interés, y el framework entrega payloads firmados con HMAC-SHA256.
+Da gestión y **visibilidad** de los webhooks **entrantes y salientes** de cada Tenant. **Salientes:** el framework envía notificaciones push firmadas con HMAC-SHA256 a URLs externas cuando ocurren eventos del sistema. **Entrantes:** el framework expone endpoints receptores que sistemas externos invocan; cada uno verifica firma, timestamp y anti-replay antes de procesar. Un mismo módulo administra ambas direcciones y muestra cuáles están activos/inactivos.
 
 #### Schema de Base de Datos
 
@@ -1345,9 +1377,11 @@ Permite registrar endpoints HTTP que reciben notificaciones push cuando ocurren 
 | `id` | `UUID` | PK | Identificador único |
 | `tenant_id` | `UUID FK tenants` | NOT NULL | Tenant propietario |
 | `name` | `varchar(200)` | NOT NULL | Nombre descriptivo |
-| `url` | `text` | NOT NULL | URL destino (HTTPS requerido en producción) |
-| `secret` | `text` | NOT NULL | Secret para firma HMAC-SHA256 del payload |
-| `events` | `text[]` | NOT NULL | Lista de eventos suscritos (ej: `["task.created", "task.updated"]`) |
+| `direction` | `enum` | DEFAULT `outbound`; `outbound`, `inbound` | Dirección del webhook |
+| `url` | `text` | | **Saliente:** URL destino (HTTPS en producción). **Entrante:** ruta receptora expuesta por el framework (`/api/v1/webhooks/inbound/{id}`) |
+| `secret` | `text` | NOT NULL | Secret HMAC-SHA256. **Saliente:** firma el payload emitido. **Entrante:** verifica la firma del payload recibido |
+| `events` | `text[]` | NOT NULL | Eventos suscritos (salientes) o tipos aceptados (entrantes), ej: `["task.created", "task.updated"]` |
+| `allowlist` | `text[]` | nullable | **Saliente:** dominios destino permitidos (anti-SSRF). **Entrante:** orígenes/IP permitidos |
 | `is_active` | `boolean` | DEFAULT `true` | Toggle |
 | `last_triggered_at` | `timestamptz` | | Último disparo |
 | `failure_count` | `integer` | DEFAULT `0` | Contador de fallos consecutivos |
@@ -1368,6 +1402,12 @@ Permite registrar endpoints HTTP que reciben notificaciones push cuando ocurren 
 | `delivered_at` | `timestamptz` | NULL | Timestamp de entrega exitosa; `NULL` en fallos o reintentos |
 
 **RLS:** Aplica. Admin solo ve webhooks de su Tenant.
+
+**Direcciones, visibilidad y seguridad:**
+- Un mismo módulo `webhook` administra y da **visibilidad** de los webhooks **entrantes** y **salientes** activos/inactivos por Tenant.
+- **Salientes:** payload firmado con HMAC-SHA256; reintentos con backoff exponencial; desactivación automática tras fallos consecutivos; `allowlist` de dominios destino (anti-SSRF).
+- **Entrantes:** cada endpoint receptor verifica firma HMAC, `timestamp` y **anti-replay** antes de procesar; `allowlist` de orígenes permitidos.
+- **Rotación de secretos:** `secret` es rotable; al rotar se admite un periodo de gracia con doble verificación para no perder entregas.
 
 #### Server Actions
 
@@ -1511,6 +1551,7 @@ Grafo genérico para modelar relaciones entre registros de cualquier módulo usa
 | `is_acyclic` | `boolean` | DEFAULT `true` | Si debe bloquear ciclos |
 | `inverse_code` | `varchar(50)` | | Código inverso para UI |
 | `applies_to_entity_types` | `text[]` | | Lista de `module.code`; NULL permite cualquier módulo |
+| `max_depth` | `integer` | nullable | Límite opcional de profundidad para este tipo; `NULL` = sin límite (lo decide la app derivada) |
 | `is_active` | `boolean` | DEFAULT `true` | Toggle de uso |
 
 **Tabla `record_relationships`:**
@@ -1562,6 +1603,7 @@ Grafo genérico para modelar relaciones entre registros de cualquier módulo usa
 - La creación debe validar que ambos extremos pertenezcan al mismo `tenant_id`.
 - `record_relationship_paths` se mantiene por Server Action o trigger transaccional; no se edita desde UI.
 - Los módulos derivados heredan esta capacidad sin crear tablas relacionales propias.
+- **Sin límite de niveles:** el framework no impone un máximo de profundidad de relación; la cantidad de niveles la define la lógica de la aplicación derivada (p. ej. cuenta → contacto → oportunidad → mensaje). Solo se restringen los ciclos (`is_acyclic`) y el alcance por `tenant_id`. Un tipo puede declarar `max_depth` para autolimitarse (default `NULL` = sin límite).
 
 ---
 
@@ -1857,6 +1899,83 @@ Facturas generadas automáticamente por el ciclo de facturación de la suscripci
 - PDF generado con branding del Tenant (`tenant_branding.logo_url`, `tenant_branding.primary_color`).
 - `invoice_number` es secuencial: formato configurable (ej: `INV-2026-0001`).
 - Si `billing_enabled = false` en Parámetros, los módulos subscription, statement e invoice no aparecen en el menú.
+
+---
+
+### B17. `legal-template` - Plantillas Legales
+
+> **PRD:** §1.5 | **Tablas:** `legal_templates`, `legal_template_versions` | **Ruta:** `/legal-template` | **i18n:** `legal_template`
+> **Clasificación:** Módulo CRUD core con publicación pública versionada.
+
+#### Descripción Técnica
+
+Permite a cada Tenant crear y versionar **documentos legales públicos** (política de privacidad, términos y condiciones, política de cookies, etc.) mediante un **editor WYSIWYG que produce HTML**. Cada documento depende de la **jurisdicción/país y locale** del Tenant (la normativa aplicable varía por país). Las versiones publicadas se obtienen por **código y versión** a través de una API **pública** (sin autenticación), de modo que páginas internas, páginas externas y la aplicación móvil puedan renderizar el documento vigente. Todo SaaS necesita esta capacidad, por eso es un módulo core.
+
+#### Schema de Base de Datos
+
+**Tabla `legal_templates`:**
+
+| Campo | Tipo | Constraints | Descripción |
+|:------|:-----|:------------|:------------|
+| `id` | `UUID` | PK | Identificador único |
+| `tenant_id` | `UUID FK tenants` | NOT NULL | Tenant propietario |
+| `code` | `varchar(50)` | NOT NULL | Código estable: `privacy_policy`, `terms_of_service`, `cookie_policy`, etc. |
+| `name` | `varchar(200)` | NOT NULL | Nombre administrativo |
+| `locale` | `varchar(10)` | NOT NULL | Idioma/locale (ej. `es`, `en`, `es-GT`) |
+| `jurisdiction` | `varchar(10)` | nullable | País/jurisdicción ISO (ej. `GT`, `MX`) según normativa aplicable |
+| `current_version_id` | `UUID FK legal_template_versions` | nullable | Versión publicada vigente |
+| `is_active` | `boolean` | DEFAULT `true` | Toggle |
+
+**Constraint unique:** `(tenant_id, code, locale, jurisdiction)`.
+
+**Tabla `legal_template_versions`:**
+
+| Campo | Tipo | Constraints | Descripción |
+|:------|:-----|:------------|:------------|
+| `id` | `UUID` | PK | Identificador único |
+| `legal_template_id` | `UUID FK legal_templates` | NOT NULL | Documento al que pertenece |
+| `version_number` | `integer` | NOT NULL | Secuencial por documento |
+| `content_html` | `text` | NOT NULL | Contenido HTML producido por el editor WYSIWYG |
+| `status` | `enum` | DEFAULT `draft`; `draft`, `published`, `archived` | Estado de la versión |
+| `effective_from` | `timestamptz` | | Inicio de vigencia |
+| `effective_to` | `timestamptz` | | Fin de vigencia |
+| `published_at` | `timestamptz` | | Marca de publicación |
+| `created_by` | `UUID FK users` | | Autor de la versión |
+| `created_at` | `timestamptz` | NOT NULL | Timestamp de creación |
+
+**Constraint unique:** `(legal_template_id, version_number)`.
+
+**RLS:** la gestión (crear/editar/publicar) está aislada por `tenant_id` y requiere RBAC. La **lectura pública** sirve únicamente versiones `published` y solo el HTML del documento, sin exponer otros datos tenant-aware.
+
+#### Server Actions
+
+| Función | Descripción |
+|:--------|:------------|
+| `getLegalTemplates(filters)` | Lista documentos del Tenant |
+| `createLegalTemplate(data)` | Crea un documento (code, locale, jurisdiction) |
+| `createLegalTemplateVersion(id, contentHtml)` | Crea una nueva versión en `draft` |
+| `publishLegalTemplateVersion(versionId)` | Publica una versión y actualiza `current_version_id` |
+| `getPublishedLegalDocument(code, locale, jurisdiction)` | **Público:** devuelve el HTML de la versión publicada vigente |
+
+#### Estructura de UI
+
+**Formulario:** editor **WYSIWYG** que genera HTML por versión, con metadatos (`code`, `locale`, `jurisdiction`, vigencia) e historial de versiones. Acciones: guardar borrador, publicar, archivar.
+
+**Grid:** Columnas: `code`, `name`, `locale`, `jurisdiction`, versión vigente, `is_active`.
+
+#### Integraciones
+
+| Sistema | Relación |
+|:--------|:---------|
+| **API pública** | `GET /api/v1/legal/templates?code=&locale=&jurisdiction=` devuelve el HTML publicado para web/móvil, autenticado o anónimo |
+| **Consentimiento Legal (`consent_records`)** | `consent_records.document_id` referencia la versión exacta aceptada en `legal_template_versions` |
+| **Parámetros (`settings`)** | `legal.terms_version` referencia la versión vigente de términos |
+
+#### Notas de Implementación
+
+- El contenido es **HTML versionado**; cada cambio publicado crea una versión inmutable nueva, conservando el historial para auditoría legal.
+- La obtención pública sirve solo versiones `published`; los borradores nunca son accesibles sin autenticación.
+- La combinación `code + locale + jurisdiction` permite servir el documento correcto según el país y el idioma del usuario final.
 
 ---
 
@@ -2206,5 +2325,8 @@ Módulo demostrativo y de referencia que implementa la Triada completa del frame
 | 36 | `filters` | C4. Filtros | Principal |
 | 37 | `tasks` | D1. Tasks | Principal |
 | 38 | `consent_records` | Compliance (PRD §1.5) | Soporte |
+| 39 | `legal_templates` | B17. Plantillas Legales | Principal |
+| 40 | `legal_template_versions` | B17. Plantillas Legales | Versionado |
+| 41 | `ai_budgets` | A4. Modelos AI | Soporte |
 
-> **Nota:** 38 tablas = 27 módulos core + 11 tablas de soporte/pivote/versionado/relaciones. La tabla `consent_records` almacena registros de aceptación de términos legales (GDPR, CCPA). No tiene módulo propio; se genera automáticamente durante registro/aceptación de términos y se consulta vía el módulo Log.
+> **Nota:** 41 tablas = 28 módulos core + 13 tablas de soporte/pivote/versionado/relaciones. La tabla `consent_records` almacena registros de aceptación de términos legales (GDPR, CCPA); no tiene módulo propio, se genera durante la aceptación de términos y su `document_id` referencia la versión exacta aceptada en `legal_template_versions` (módulo B17). La tabla `ai_budgets` define los topes de gasto del Core AI (módulo A4).

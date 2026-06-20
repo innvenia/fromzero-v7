@@ -41,13 +41,13 @@ Reglas:
 | Billing | Adapter de pagos configurable | Checkout, billing, webhooks y conciliación. | Stripe puede ser default inicial; el contrato no depende de un proveedor único. |
 | Core AI | Python + FastAPI + Pydantic v2 | IA, RAG, embeddings, LLM orchestration. | Python final compatible, sin beta. |
 | Jobs programados | `pg_cron` | Purga, trials, tareas temporales. | Extensión soportada por Supabase. |
-| Jobs asíncronos | Inngest | Import/export, workflows, retries. | Base sin Redis. |
+| Jobs asíncronos | Inngest | Import/export, workflows, retries. | SDK en código; motor ejecutable en local (Dev Server) o self-hosted (Docker/Coolify). No requiere SaaS; base sin Redis. |
 | Cache/colas opcionales | Redis + BullMQ | Cache compartida, rate limits, quotas, locks, invalidación y colas dedicadas. | Opcional, pero sugerido para producción multi-instancia. |
 | Unit/integration | Vitest | Lógica TS y Server Actions. | Compatible con Node LTS. |
 | E2E/visual | Playwright | Flujos reales y responsive. | Compatible con browsers soportados. |
-| Load testing | k6 | Flujos críticos y release candidates. | Obligatorio antes de release crítico. |
+| Load testing | k6 | Flujos críticos. | CLI local open source (AGPL-3.0), ejecución bajo demanda; no es servicio hosteado ni requiere registro. |
 | Contenedores | Docker + Compose | Local reproducible y despliegue. | Imágenes mantenidas. |
-| Calidad | SonarQube/SonarCloud | Quality gates, seguridad, deuda técnica. | Gate obligatorio antes de release. |
+| Calidad | SonarQube/SonarCloud | Quality gates, seguridad, deuda técnica. | Configurable/opt-in por proyecto; recomendado, no obligatorio para todo proyecto. |
 
 ---
 
@@ -62,7 +62,7 @@ Reglas:
 | Inngest + `pg_cron` | Cubre jobs sin hacer Redis obligatorio. |
 | Redis opcional, pero sugerido | Acelera lecturas frecuentes, habilita cache compartida, rate limits distribuidos, quotas tenant, locks, invalidación y BullMQ en despliegues multi-instancia. |
 | Adapter de pagos configurable | Permite iniciar con Stripe y sustituir o extender proveedor sin cambiar el contrato del framework. |
-| SonarQube/SonarCloud | Convierte calidad y seguridad en gate medible. |
+| SonarQube/SonarCloud | Convierte calidad y seguridad en una métrica accionable; se habilita por proyecto. |
 
 ---
 

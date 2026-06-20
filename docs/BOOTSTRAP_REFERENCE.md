@@ -25,8 +25,9 @@ Reglas:
 - Después del proceso `init`, la fuente de verdad es la base de datos.
 - La parametrización viva se gestiona desde `settings`, `modules`, `tenants.settings`, `integrations`, `plans` y el setup wizard posterior al primer login.
 - Las aplicaciones derivadas no se crean editando un archivo plano; se adaptan desde la interfaz administrativa del framework y su propio PRD.
-- Los 27 módulos core se registran desde una lista canónica interna del framework, no desde una lista editable en `bootstrap.json`.
+- Los 28 módulos core se registran desde una lista canónica interna del framework, no desde una lista editable en `bootstrap.json`.
 - El archivo puede conservarse como evidencia histórica, pero no vuelve a gobernar runtime ni despliegues posteriores.
+- Los datos creados por el bootstrap son **fundacionales** (no eliminables). Los datos de demostración se marcan con `is_demo = true` y pueden eliminarse en bloque sin afectar lo fundacional ni los datos reales (ver `REFERENCE_DATABASE_SCHEMA.md`, principio 9).
 
 ---
 
@@ -161,15 +162,15 @@ Todo proyecto generado debe crear `.env`, `.env.local` y `.env.example` con exac
 
 Los agentes y procesos automatizados nunca deben leer, imprimir ni copiar valores reales desde `.env` o `.env.local`.
 
-Variables documentadas en los tres archivos:
+Variables documentadas en los tres archivos. El par canónico moderno de Supabase es `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (cliente) + `SUPABASE_SECRET_KEY` (servidor); `ANON_KEY` y `SERVICE_ROLE_KEY` son **legacy** (sistema clásico JWT), mantenidas solo por compatibilidad:
 
 | Variable | Uso | Exposición permitida |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | URL pública de Supabase. | Cliente y servidor. |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave pública recomendada para clientes Supabase modernos. | Cliente y servidor, protegida por RLS. |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima pública. | Cliente y servidor, protegida por RLS. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Legacy.** Clave anónima del sistema clásico JWT; preferir `PUBLISHABLE_KEY`. | Cliente y servidor, protegida por RLS. |
 | `SUPABASE_SECRET_KEY` | Clave server-only recomendada para operaciones administrativas. | Solo servidor/background jobs. |
-| `SUPABASE_SERVICE_ROLE_KEY` | Operaciones administrativas. | Solo servidor/background jobs. |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Legacy.** Operaciones administrativas del sistema clásico; preferir `SECRET_KEY`. | Solo servidor/background jobs. |
 | `SUPABASE_ACCESS_TOKEN` | CLI/MCP Supabase cuando se apruebe explícitamente. | Solo entorno local/CI seguro. |
 | `DATABASE_URL` / `DIRECT_URL` | Migraciones y procesos server-side. | Solo servidor/CI seguro. |
 | `CORE_AI_SECRET` | Autenticación Node.js -> Core AI. | Solo servidor. |

@@ -12,22 +12,25 @@
 
 > Leyendo **únicamente** este directorio se obtiene la visión completa del producto: qué es (`STRATEGY`), qué debe hacer (`PRD`) y las especificaciones técnicas de referencia (`REFERENCE_*`, `BOOTSTRAP_REFERENCE`).
 
-| # | Archivo | Propósito |
-|---|---------|-----------|
-| 1 | `README.md` | Visión general del producto y arranque. |
-| 2 | `STRATEGY.md` | Estrategia de producto: visión, identidad, propuesta de valor, motor técnico, modelo comercial. |
-| 3 | `PRD.md` | Product Requirements Document. Fuente de verdad técnica primaria. |
-| 4 | `REFERENCE_MODULES.md` | Especificación técnica de los 27 módulos core (schema BD, server actions, UI). |
-| 5 | `REFERENCE_ARCHITECTURE.md` | Arquitectura lógica: capas, flujos y patrones. |
-| 6 | `REFERENCE_STRUCTURE.md` | Estructura física de directorios (separación base/aplicación). |
-| 7 | `REFERENCE_DESIGN_SYSTEM.md` | Contrato documental del Design System objetivo del framework. |
-| 8 | `REFERENCE_THREAT_MODEL.md` | Modelado de amenazas STRIDE y requisitos de seguridad. |
-| 9 | `BOOTSTRAP_REFERENCE.md` | Referencia del bootstrap `bootstrap.json` para genesis inicial del framework. |
-| 10 | `REFERENCE_DATABASE_SCHEMA.md` | Contrato consolidado de tablas, ownership, RLS y soft delete. |
-| 11 | `REFERENCE_STACK.md` | Stack tecnológico canónico, política de versiones, herramientas y conectores. |
-| 12 | `SECURITY_ASSURANCE.md` | Controles verificables de seguridad, OWASP, SSDLC, RLS, API keys y anti-abuso. |
-| 13 | `DEPENDENCY_MATRIX.md` | Dependencias por fase/módulo, paralelización y criterios de aceptación. |
-| 14 | `SCALABILITY_ASSURANCE.md` | Controles verificables de escalabilidad, cache, async, queries, k6, horizontal scaling, cuotas y observabilidad. |
+| # | Archivo | Tipo / Estado normativo | Propósito |
+|---|---------|-------------------------|-----------|
+| 1 | `README.md` | Visión / arranque | Visión general del producto y arranque. |
+| 2 | `STRATEGY.md` | Visión / estrategia | Estrategia de producto: visión, identidad, propuesta de valor, motor técnico, modelo comercial. |
+| 3 | `PRD.md` | **Fuente primaria** | Product Requirements Document. Fuente de verdad técnica primaria. |
+| 4 | `REFERENCE_MODULES.md` | Referencia técnica | Especificación técnica de los 28 módulos core (schema BD, server actions, UI). |
+| 5 | `REFERENCE_ARCHITECTURE.md` | Referencia técnica | Arquitectura lógica: capas, flujos y patrones. |
+| 6 | `REFERENCE_STRUCTURE.md` | Referencia técnica | Estructura física de directorios (separación base/aplicación). |
+| 7 | `REFERENCE_DESIGN_SYSTEM.md` | Referencia técnica | Contrato documental del Design System objetivo del framework. |
+| 8 | `REFERENCE_THREAT_MODEL.md` | Referencia técnica | Modelado de amenazas STRIDE y requisitos de seguridad. |
+| 9 | `BOOTSTRAP_REFERENCE.md` | Guía de configuración | Referencia del bootstrap `bootstrap.json` para genesis inicial del framework. |
+| 10 | `REFERENCE_DATABASE_SCHEMA.md` | Referencia técnica | Contrato consolidado de tablas, ownership, RLS y soft delete. |
+| 11 | `REFERENCE_STACK.md` | Referencia técnica | Stack tecnológico canónico, política de versiones, herramientas y conectores. |
+| 12 | `SECURITY_ASSURANCE.md` | Aseguramiento | Controles verificables de seguridad, OWASP, SSDLC, RLS, API keys y anti-abuso. |
+| 13 | `DEPENDENCY_MATRIX.md` | Inventario operativo | Dependencias entre módulos, paralelización y criterios de aceptación. |
+| 14 | `SCALABILITY_ASSURANCE.md` | Aseguramiento | Controles verificables de escalabilidad, cache, async, queries, k6, horizontal scaling, cuotas y observabilidad. |
+| 15 | `API_ENDPOINT_INVENTORY.md` | Inventario operativo | Inventario de endpoints HTTP del framework: dominio, ruta, nivel de autenticación y notas. |
+| 16 | `MCP_SETUP.md` | Guía de configuración (dependiente de entorno) | Configuración de servidores MCP (Supabase, SonarQube) y manejo de secretos del entorno local. |
+| 17 | `GLOSSARY.md` | Apoyo / glosario | Definiciones en lenguaje simple de los términos técnicos del framework. |
 
 ---
 
@@ -60,6 +63,6 @@
 1. **Source of Truth técnico:** `PRD.md` es la fuente de verdad técnica primaria y absoluta.
 2. **Prioridad de lectura:** `STRATEGY` → `PRD` → `REFERENCE_MODULES` → resto.
 3. **Modificación:** cualquier cambio en un documento DEBE verificar consistencia cruzada con los demás.
-4. **Independencia documental:** este conjunto describe el producto y no depende de plugins, templates externos, procesos externos o rutas locales inexistentes.
+4. **Independencia documental:** este conjunto describe el producto y no depende de plugins, templates externos, procesos externos o rutas locales inexistentes. La documentación es **abstracta de la metodología de construcción**: describe qué es el framework y cómo funciona, sin referenciar fases, sprints ni gates de ningún proceso de desarrollo.
 5. **Seguridad y escalabilidad:** todo cambio relevante debe validar `SECURITY_ASSURANCE.md` y `SCALABILITY_ASSURANCE.md`.
 6. **Framework vs app final:** las apps finales toman decisiones de dominio; el framework provee contratos, defaults seguros, adapters y configuración.

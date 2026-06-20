@@ -7,8 +7,8 @@
 | Proyecto | From Zero Framework v7.4 |
 | Fecha de creacion | 2026-06-18 |
 | Ultima actualizacion | 2026-06-19 |
-| Estado | Sprint 8: eventos/jobs/notificaciones/rules/webhooks/import-export versionados localmente; handlers CRUD pendientes |
-| Fuente | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
+| Estado | Inventario de la superficie HTTP prevista del framework, por dominio y nivel de auth. |
+| Fuente | `docs/PRD.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_MODULES.md` |
 
 ## Reglas base
 
@@ -25,44 +25,49 @@
 
 ## Inventario inicial
 
-| Dominio | Ruta base prevista | Estado Sprint 1 | Sprint dueno | Notas |
-|---|---|---|---|---|
-| Health | `/api/v1/health` | implementado | Sprint 3 | Readiness/liveness sin datos sensibles. |
-| Settings | `/api/v1/settings` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Global y tenant-aware segun permisos. |
-| Modules | `/api/v1/modules` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Registry de modulos. |
-| Plans | `/api/v1/plans` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Planes base y feature gates. |
-| Tenants | `/api/v1/tenants` | contrato Zod versionado, endpoint pendiente | Sprint 3 | Contexto seguro y aislamiento. |
-| Users | `/api/v1/users` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Usuarios y membresias. |
-| Profiles | `/api/v1/profiles` | contrato Zod versionado, endpoint pendiente | Sprint 4 | RBAC efectivo. |
-| Invitations | `/api/v1/invitations` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Tokens con TTL y auditoria. |
-| API keys | `/api/v1/api-keys` | contrato Zod versionado, endpoint pendiente | Sprint 4 | Hash, scopes y expiracion opcional. |
-| Custom fields | `/api/v1/custom-fields` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Solo modulos permitidos. |
-| Filters | `/api/v1/filters` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Filtros guardados por usuario/tenant. |
-| Relationships | `/api/v1/relationships` | contrato Zod versionado, endpoint pendiente | Sprint 5 | Extremos dentro del mismo tenant. |
-| Subscriptions | `/api/v1/billing/subscriptions` | contrato Zod versionado, endpoint pendiente | Sprint 6 | Provider por adapter, sin cobros reales sin aprobacion. |
-| Statements | `/api/v1/billing/statements` | contrato Zod versionado, endpoint pendiente | Sprint 6 | Jobs y conciliacion. |
-| Invoices | `/api/v1/billing/invoices` | contrato Zod versionado, endpoint pendiente | Sprint 6 | PDF individual desde UI. |
-| Stripe billing webhook | `/api/v1/billing/webhooks/stripe` | contrato HMAC versionado, endpoint pendiente | Sprint 6 | Firma obligatoria, adapter mockeable, sin provider real. |
-| Files | `/api/v1/files` | contrato Zod versionado, endpoint pendiente | Sprint 7 | Storage, MIME, size y signed URLs. |
-| Documents | `/api/v1/documents` | contrato Zod versionado, endpoint pendiente | Sprint 7 | Versionado acotado. |
-| Tags | `/api/v1/tags` | contrato Zod versionado, endpoint pendiente | Sprint 7 | Scope tenant. |
-| Bookmarks | `/api/v1/bookmarks` | contrato Zod versionado, endpoint pendiente | Sprint 7 | Scope usuario. |
-| Consent records | `/api/v1/consent-records` | contrato Zod versionado, endpoint pendiente | Sprint 7 | Registro legal auditable. |
-| Events | `/api/v1/events` | contrato Zod versionado, endpoint pendiente | Sprint 8 | Event outbox e idempotency key. |
-| Jobs | `/api/v1/jobs` | contrato Zod versionado, endpoint pendiente | Sprint 8 | Inngest adapter local y pg_cron separado. |
-| Notifications | `/api/v1/notifications` | contrato Zod versionado, endpoint pendiente | Sprint 8 | In-app default. |
-| Rules | `/api/v1/rules` | contrato Zod versionado, endpoint pendiente | Sprint 8 | Gramatica cerrada y loop guard. |
-| Email templates | `/api/v1/email-templates` | contrato Zod versionado, endpoint pendiente | Sprint 8 | Adapter email. |
-| Integrations | `/api/v1/integrations` | contrato Zod versionado, endpoint pendiente | Sprint 8 | Credenciales cifradas por adapter. |
-| Webhooks | `/api/v1/webhooks` | contrato Zod versionado, endpoint pendiente | Sprint 8 | HMAC, timestamp y anti-replay. |
-| Imports | `/api/v1/import-jobs` | contrato Zod versionado, endpoint pendiente | Sprint 8 | CSV/XLSX, no JSON import. |
-| Exports | `/api/v1/export-jobs` | contrato Zod versionado, endpoint pendiente | Sprint 8 | CSV/XLSX y URLs firmadas. |
-| AI models | `/api/v1/ai/models` | reservado, no implementado | Sprint 9 | Catalogo, pricing y fallback. |
-| AI invocations | `/api/v1/ai/invocations` | reservado, no implementado | Sprint 9 | Opt-in, redaccion y budgets. |
-| Task | `/api/v1/tasks` | reservado, no implementado | Sprint 10 | Modulo ejemplo en `src/web/modules/task`. |
+| Dominio | Ruta base | Nivel de auth | Notas |
+|---|---|---|---|
+| Health | `/api/v1/health` | Público | Readiness/liveness sin datos sensibles. |
+| Settings | `/api/v1/settings` | Privado (RBAC) | Global y tenant-aware según permisos. |
+| Modules | `/api/v1/modules` | Privado (RBAC) | Registry de módulos. |
+| Plans | `/api/v1/plans` | Privado (RBAC) | Planes base y feature gates. |
+| Tenants | `/api/v1/tenants` | Privado (RBAC) | Contexto seguro y aislamiento. |
+| Users | `/api/v1/users` | Privado (RBAC) | Usuarios y membresías. |
+| Profiles | `/api/v1/profiles` | Privado (RBAC) | RBAC efectivo. |
+| Invitations | `/api/v1/invitations` | Privado (RBAC) | Tokens con TTL y auditoría. |
+| API keys | `/api/v1/api-keys` | Privado (RBAC) | Hash, scopes y expiración opcional. |
+| Custom fields | `/api/v1/custom-fields` | Privado (RBAC) | Definiciones de campos reutilizables; límites por aplicación y por plan. |
+| Filters | `/api/v1/filters` | Privado (RBAC) | Filtros guardados por usuario/tenant. |
+| Relationships | `/api/v1/relationships` | Privado (RBAC) | Extremos dentro del mismo tenant; sin límite de niveles. |
+| Subscriptions | `/api/v1/billing/subscriptions` | Privado (RBAC) | Proveedor por adapter. |
+| Statements | `/api/v1/billing/statements` | Privado (RBAC) | Jobs y conciliación. |
+| Invoices | `/api/v1/billing/invoices` | Privado (RBAC) | PDF individual desde UI. |
+| Stripe billing webhook | `/api/v1/billing/webhooks/stripe` | Webhook (HMAC) | Entrante; firma obligatoria; adapter de proveedor configurable. |
+| Files | `/api/v1/files` | Privado (RBAC) | Storage, MIME, size y signed URLs. |
+| Documents | `/api/v1/documents` | Privado (RBAC) | Versionado acotado. |
+| Tags | `/api/v1/tags` | Privado (RBAC) | Scope tenant. |
+| Bookmarks | `/api/v1/bookmarks` | Privado (RBAC) | Scope usuario. |
+| Consent records | `/api/v1/consent-records` | Privado (RBAC) | Registro legal auditable. |
+| Legal templates (público) | `/api/v1/legal/templates` | Público | Obtener documento legal publicado por código/versión (privacidad, términos), por locale/jurisdicción. |
+| Legal templates (gestión) | `/api/v1/legal-templates` | Privado (RBAC) | Editor WYSIWYG, versionado y publicación de documentos legales. |
+| Events | `/api/v1/events` | Privado (RBAC) | Event outbox e idempotency key. |
+| Jobs | `/api/v1/jobs` | Privado (RBAC) | Inngest adapter local y pg_cron separado. |
+| Notifications | `/api/v1/notifications` | Privado (RBAC) | In-app default. |
+| Rules | `/api/v1/rules` | Privado (RBAC) | Gramática cerrada y loop guard. |
+| Email templates | `/api/v1/email-templates` | Privado (RBAC) | Adapter email. |
+| Integrations | `/api/v1/integrations` | Privado (RBAC) | Credenciales cifradas por adapter. |
+| Webhooks (gestión) | `/api/v1/webhooks` | Privado (RBAC) | Gestión y visibilidad de webhooks entrantes y salientes. |
+| Webhooks (entrega entrante) | `/api/v1/webhooks/inbound/{id}` | Webhook (HMAC) | Recepción entrante; verificación de firma, timestamp y anti-replay. |
+| Imports | `/api/v1/import-jobs` | Privado (RBAC) | CSV/XLSX, no JSON import. |
+| Exports | `/api/v1/export-jobs` | Privado (RBAC) | CSV/XLSX y URLs firmadas. |
+| AI models | `/api/v1/ai/models` | Privado (RBAC) | Catálogo, pricing y fallback. |
+| AI invocations | `/api/v1/ai/invocations` | Privado (RBAC) | Opt-in, redacción y budgets. |
+| AI budgets | `/api/v1/ai/budgets` | Privado (RBAC) | Topes de gasto por proveedor/modelo y por tenant. |
+| AI usage | `/api/v1/ai/usage` | Privado (RBAC) | Métricas de consumo y costo por tenant. |
+| Task | `/api/v1/tasks` | Privado (RBAC) | Módulo ejemplo en `src/web/modules/task`. |
 
-## Pendiente
+## Notas de implementación
 
-- Implementar handlers autenticados de Settings, Modules, Plans, Tenants, Users, Profiles, Invitations y API keys en Sprints posteriores.
-- Agregar metodos, codigos de respuesta y contratos de error al implementar cada dominio.
+- Cada dominio implementa su handler según su nivel de auth: **privado** (auth + contexto de tenant + RBAC + rate limit + errores seguros + auditoría) o **público** (sin auth de usuario, con su propia verificación y rate limit).
+- Agregar métodos, códigos de respuesta y contratos de error al implementar cada dominio.
 - Confirmar rate limits y scopes concretos por endpoint antes de exponer rutas.

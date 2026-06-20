@@ -70,7 +70,7 @@ Requisitos mínimos:
 
 ### 2.4 Load
 
-k6 es obligatorio para flujos críticos y release candidates.
+k6 (CLI local open source, ejecución bajo demanda) cubre los flujos críticos.
 
 Escenarios mínimos:
 
@@ -107,9 +107,9 @@ Requisitos:
 
 ---
 
-## 3. Gate por módulo
+## 3. Requisitos por módulo
 
-Un módulo no pasa gate si falta cualquiera de estos puntos:
+Un módulo no se considera completo si falta cualquiera de estos puntos:
 
 - Decisión de cache.
 - Decisión de jobs.
@@ -122,9 +122,9 @@ Un módulo no pasa gate si falta cualquiera de estos puntos:
 
 ---
 
-## 4. Gate de release
+## 4. Requisitos previos a publicar una versión
 
-Antes de release:
+Antes de publicar:
 
 - Ejecutar k6 en flujos críticos.
 - Revisar slow queries y planes de ejecución relevantes.

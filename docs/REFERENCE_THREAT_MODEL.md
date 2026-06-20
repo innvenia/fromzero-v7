@@ -22,6 +22,8 @@
 | **Supabase Storage** | S3-compatible | Carga directa vía Presigned URLs. Riesgo de malware upload, path traversal, MIME spoofing. |
 | **Event Bus / Rules** | Server-side | Motor de automatización "Si-Entonces". Riesgo de Rule abuse, infinite loops, privilege escalation. |
 | **Webhooks Outbound** | HTTPS Outbound | Notificaciones firmadas HMAC-SHA256. Riesgo de SSRF, credential leakage. |
+| **Webhooks Inbound (genéricos)** | HTTPS Inbound | Recepción de webhooks de sistemas externos. Riesgo de spoofing, replay y payload injection si no se valida firma, timestamp y anti-replay. |
+| **API pública de plantillas legales** | HTTPS público | Lectura anónima de documentos legales publicados. Sirve solo versiones publicadas (sin datos tenant-aware) y aplica rate limit; riesgo de abuso/scraping. |
 | **API Keys (M2M)** | Bearer Token | Acceso programático sin sesión. Riesgo de key leakage, scope bypass. |
 
 ---

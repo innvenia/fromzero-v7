@@ -7,7 +7,7 @@ El proyecto contiene `.mcp.json` local con servidores preparados y deshabilitado
 - `supabase-mcp-server`: MCP oficial de Supabase mediante `npx`.
 - `sonarqube`: MCP oficial de SonarQube mediante Docker.
 
-No contiene secretos inline y no conecta servicios por si solo mientras los servidores sigan con `disabled: true`.
+El archivo `.mcp.json` es **dependiente del entorno** y vive **ignorado por Git**. En local puede contener tokens inline; la postura objetivo es que cada token se lea desde una **variable externa** (no inline). Mientras los servidores sigan con `disabled: true`, no conecta servicios por si solo. Para documentacion versionable existe `.mcp.example.json` (sin secretos).
 
 ## Supabase MCP
 
@@ -64,7 +64,7 @@ Para activar, se requiere una aprobacion explicita adicional. La activacion mini
 
 ## Reglas
 
-- No escribir tokens reales en `.mcp.json`.
+- Preferir variables externas; si un token vive inline, debe permanecer solo en el `.mcp.json` local ignorado por Git, nunca versionado ni impreso.
 - No versionar `.env.local`.
 - No leer ni imprimir `.env` reales.
 - No activar escritura remota sin aprobacion puntual.

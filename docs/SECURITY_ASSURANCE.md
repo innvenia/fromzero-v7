@@ -35,7 +35,7 @@ Referencias:
 |---|---|
 | RLS | Toda tabla tenant-aware debe tener RLS probado. |
 | RBAC | Toda Server Action/API valida permisos server-side. |
-| Secrets | Ningún secreto real en frontend, logs, código o docs. |
+| Secrets | Ningún secreto real en frontend, logs, código, docs ni control de versiones. Permitidos localmente en `.env.local`/vault (ver §2.2). |
 | Service role | Solo server-side/background jobs; nunca cliente. |
 | Anon key | Se trata como pública y se protege con RLS/policies. |
 | Rate limiting | Requerido en auth, APIs públicas, IA, import/export, webhooks y operaciones costosas. |
@@ -45,11 +45,17 @@ Referencias:
 | API keys | Hash/cifrado, scopes, expiración, rotación y auditoría. Soportar expiración es obligatorio; aplicarla es opcional y la UI la recomienda por defecto. |
 | Auditoría | Operaciones críticas registradas en `logs`. |
 | Errores | Mensajes seguros, sin stack traces ni secretos. |
-| CI quality gate | SonarQube/SonarCloud bloquea release si falla seguridad o calidad. |
+| CI quality gate | Análisis de calidad/seguridad (p. ej. SonarQube/SonarCloud) **cuando el proyecto lo habilite**: configurable/opt-in, no obligatorio para todo proyecto. |
 
 ### 2.1 RBAC Server-Side
 
 El control RBAC se implementa siempre en servidor, referenciando el módulo Profile (`A6. profile`) y la tabla `profile_permissions`. Cada Server Action/API Route debe invocar un guard estándar, por ejemplo `requirePermission(action, moduleSlug)`, al inicio de la operación. Primero se valida la acción permitida por Profile y luego RLS limita los datos por Tenant; Client Components y menús RBAC-aware solo reducen superficie visual, nunca sustituyen la validación server-side.
+
+### 2.2 Manejo de secretos
+
+- **Permitido:** secretos reales en `.env.local`, variables del sistema, CI secrets o vault. Son necesarios para operar el proyecto.
+- **Prohibido:** versionar, imprimir o exponer secretos en Git, código, logs, docs, chats, capturas o exports.
+- **Obligatorio:** identificar explícitamente los archivos que pueden contener secretos (`.env`, `.env.*` salvo `.env.example`, `.mcp.json` en cualquier nivel) y excluirlos de **todo** sistema de tracking (Git y Docker) vía `.gitignore` y `.dockerignore`. Mantener `.env.example` y `.mcp.example.json` versionados solo con placeholders. Verificar periódicamente que esos archivos siguen excluidos.
 
 ---
 

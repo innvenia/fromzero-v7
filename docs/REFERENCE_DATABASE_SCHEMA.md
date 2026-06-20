@@ -19,7 +19,8 @@
 5. El `service_role` solo se usa en procesos server-side controlados. Nunca se instancia en cliente.
 6. La metadata transversal auditable se modela con columnas explícitas, no con JSONB genérico, cuando deba filtrarse, validarse o indexarse.
 7. Las relaciones entre registros se modelan con un grafo polimórfico tenant-scoped reutilizable por módulos del framework y aplicaciones derivadas.
-8. El versionado histórico solo aplica a `documents` y `files`; los demás módulos usan `logs.metadata.changes` como auditoría de cambios.
+8. El versionado histórico aplica a `documents`, `files` y `legal_template_versions`; los demás módulos usan `logs.metadata.changes` como auditoría de cambios.
+9. Los registros se clasifican en tres categorías mediante `is_demo` (`boolean`, default `false`) en tablas de negocio: **fundacionales** (creados por el bootstrap, no eliminables), **demo** (`is_demo = true`, eliminables en bloque sin afectar lo fundacional) y **reales** (`is_demo = false`). La limpieza de datos demo es centralizada y nunca borra registros fundacionales.
 
 ---
 
@@ -40,7 +41,7 @@
 | # | Tabla | Scope | RLS | Soft delete | Notas |
 |---|-------|-------|-----|-------------|-------|
 | 1 | `settings` | Global | No | No | Singleton global; acceso solo Super Admin. |
-| 2 | `modules` | Global | No | No | Registro canónico de módulos; los 27 core se cargan desde lista interna. |
+| 2 | `modules` | Global | No | No | Registro canónico de módulos; los 28 core se cargan desde lista interna. |
 | 3 | `plans` | Global | No | Opcional | Catálogo comercial; puede desactivarse por `billing_enabled`. |
 | 4 | `ai_models` | Global | No | Opcional | Modelos disponibles para Core AI. |
 | 5 | `logs` | Global/Tenant | Sí | No | Append-only. `tenant_id` nullable; `actor_id` nullable para M2M; `api_key_id` para API Keys. |
@@ -58,7 +59,7 @@
 | 17 | `email_templates` | Global/Tenant | Sí | Sí | Plantillas globales y overrides por Tenant. |
 | 18 | `api_keys` | Tenant | Sí | Sí | Guarda `key_hash`; texto plano se muestra una sola vez. |
 | 19 | `integrations` | Tenant | Sí | Sí | Credenciales cifradas por Tenant. |
-| 20 | `webhooks` | Tenant | Sí | Sí | Webhooks outbound firmados. |
+| 20 | `webhooks` | Tenant | Sí | Sí | Webhooks entrantes y salientes; salientes firmados HMAC, entrantes verificados por firma/timestamp/anti-replay. |
 | 21 | `webhook_deliveries` | Tenant | Sí | No | Historial/retry de entregas; `attempted_at` obligatorio y `delivered_at` nullable. |
 | 22 | `documents` | Tenant | Sí | Sí | Estado actual de documentos, plantillas y KB si aplica. |
 | 23 | `document_versions` | Tenant | Sí | No | Snapshots append-only de `documents`; versionado solo para Documents. |
@@ -76,7 +77,10 @@
 | 35 | `bookmarks` | Tenant/User | Sí | Sí | Favoritos por usuario y Tenant. |
 | 36 | `filters` | Tenant/User | Sí | Sí | Filtros privados o compartidos. |
 | 37 | `tasks` | Tenant | Sí | Sí | Módulo demostrativo canónico. |
-| 38 | `consent_records` | Tenant/User | Sí | No | Registro legal auditable de consentimientos. |
+| 38 | `consent_records` | Tenant/User | Sí | No | Registro legal auditable de consentimientos. `document_id` referencia la versión aceptada en `legal_template_versions`. |
+| 39 | `legal_templates` | Tenant | Sí | Sí | Documentos legales públicos versionados por código/locale/jurisdicción. |
+| 40 | `legal_template_versions` | Tenant | Sí | No | Versiones HTML inmutables (append-only) de documentos legales. |
+| 41 | `ai_budgets` | Global/Tenant | Sí | Sí | Topes de gasto del Core AI por proveedor/modelo, tenant o global. |
 
 ---
 

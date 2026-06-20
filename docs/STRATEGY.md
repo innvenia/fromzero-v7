@@ -14,7 +14,7 @@
 
 ### ¿Qué es From Zero?
 
-**From Zero Framework** es un **Sistema de Creación de Software**: una base estructurada, segura y escalable para construir aplicaciones SaaS multi-tenant de calidad profesional. **No es una aplicación final**, sino el cimiento sobre el cual se construyen aplicaciones. Entrega 27 módulos enterprise-grade pre-construidos y dos modos de operación (`saas` y `corporate`) que permiten crear tanto productos SaaS comerciales como software corporativo interno.
+**From Zero Framework** es un **Sistema de Creación de Software**: una base estructurada, segura y escalable para construir aplicaciones SaaS multi-tenant de calidad profesional. **No es una aplicación final**, sino el cimiento sobre el cual se construyen aplicaciones. Entrega 28 módulos enterprise-grade pre-construidos y dos modos de operación (`saas` y `corporate`) que permiten crear tanto productos SaaS comerciales como software corporativo interno.
 
 ### ¿Qué problema resuelve?
 
@@ -27,7 +27,7 @@ El usuario provee **dos insumos**:
 1. **PRD (Product Requirements Document):** define *qué* se va a construir - los módulos de la aplicación, la lógica de negocio y las reglas del dominio.
 2. **`bootstrap.json` (Bootstrap):** archivo declarativo que define la identidad del proyecto, la primera cuenta (Tenant Zero), los planes, los profiles y el modo de operación. El bootstrap hidrata la base de datos durante la inicialización.
 
-A partir de ahí, From Zero aporta la base técnica (los 27 módulos, la arquitectura y las garantías de seguridad) sobre la que se construye el producto.
+A partir de ahí, From Zero aporta la base técnica (los 28 módulos, la arquitectura y las garantías de seguridad) sobre la que se construye el producto.
 
 ### ¿Para quién es?
 
@@ -106,15 +106,15 @@ El **Module Factory** opera en dos niveles:
 - **Generación automática (determinista):** Grid de datos, traducciones i18n, registro de auditoría (5W), permisos RBAC (7 acciones), APIs y Server Actions.
 - **Co-creación guiada (humano-IA):** el formulario de cada módulo se diseña de forma específica (TSX por módulo, `[Slug]Form.tsx`) porque su estructura visual varía según la complejidad de los datos.
 
-### 5.2 27 Módulos Pre-construidos
+### 5.2 28 Módulos Pre-construidos
 
-Cada aplicación hereda 27 módulos enterprise-grade en 4 bloques:
+Cada aplicación hereda 28 módulos enterprise-grade en 4 bloques:
 
 #### Bloque A - Administración (Super Admin)
-Parámetros (`settings`), Módulo de Módulos (`module`), Planes (`plan`), Modelos AI (`ai-model`), Log (`log`), Profile (`profile`).
+Parámetros (`settings`), Módulo de Módulos (`module`), Planes (`plan`), Modelos AI multi-proveedor con topes de presupuesto (`ai-model`), Log (`log`), Profile (`profile`).
 
 #### Bloque B - Configuración de Cuentas (Tenant Admin)
-Tenants (`tenant`), Usuarios (`user`), Invitaciones (`invitation`), Notificaciones (`notification`), Reglas (`rule`), Campos Personalizados (`custom-field`), Plantillas Email (`email-template`), API Keys (`api-key`), Integraciones (`integration`), Webhooks (`webhook`), Documents (`document`), Import (`import`), Export (`export`), Suscripciones (`subscription`), Estados de Cuenta (`statement`), Invoices (`invoice`).
+Tenants (`tenant`), Usuarios (`user`), Invitaciones (`invitation`), Notificaciones (`notification`), Reglas (`rule`), Campos Personalizados (`custom-field`), Plantillas Email (`email-template`), API Keys (`api-key`), Integraciones (`integration`), Webhooks (`webhook`), Documents (`document`), Plantillas Legales (`legal-template`), Import (`import`), Export (`export`), Suscripciones (`subscription`), Estados de Cuenta (`statement`), Invoices (`invoice`).
 
 #### Bloque C - Funcionalidades Comunes (Todos los profiles autorizados)
 Files (`file`), Tags (`tag`), Bookmarks (`bookmark`), Filtros (`filter`).
@@ -122,7 +122,7 @@ Files (`file`), Tags (`tag`), Bookmarks (`bookmark`), Filtros (`filter`).
 #### Bloque D - Módulo Demostrativo
 Tasks (`task`): módulo de referencia que implementa todas las integraciones del framework (Grid, Custom Fields, Tags, Bookmarks, Filtros, Import/Export, Event Bus, Audit Log).
 
-> La especificación técnica completa de los 27 módulos está en [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md).
+> La especificación técnica completa de los 28 módulos está en [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md).
 
 ### 5.3 Stack Tecnológico
 
@@ -163,7 +163,7 @@ La configuración se resuelve en cascada determinista: **Settings (global) → T
 | **Protección de datos** | Soft Delete universal + Papelera de Reciclaje | Recuperación de datos eliminados. |
 | **Compliance GDPR** | Consent tracking, Right to Erasure | Cumplimiento desde el día cero. |
 | **Credenciales** | Encryption at rest (AES-256) | Secrets nunca en texto plano. |
-| **Webhooks** | Firma HMAC-SHA256 | Verificación de integridad. |
+| **Webhooks** | Entrantes y salientes con firma/verificación HMAC-SHA256 | Verificación de integridad bidireccional. |
 | **Feature Gating** | Middleware que valida plan/límites antes de ejecutar | Control de acceso por plan, sin código disperso. |
 
 ---
@@ -176,7 +176,7 @@ La configuración se resuelve en cascada determinista: **Settings (global) → T
 
 ### 7.2 Perfil Técnico (Desarrolladores, Agencias)
 - **Dolor:** "Cada proyecto reinventa la misma base: auth, billing, permisos."
-- **Solución:** 27 módulos base ("Zero Boilerplate") integrados en una arquitectura cohesiva, lista para extender.
+- **Solución:** 28 módulos base ("Zero Boilerplate") integrados en una arquitectura cohesiva, lista para extender.
 
 ### 7.3 Anti-Persona (Para quién NO es)
 - Quien busca una solución 100% No-Code visual (no es Bubble ni Webflow).
@@ -195,7 +195,7 @@ La configuración se resuelve en cascada determinista: **Settings (global) → T
 | **Multi-Project** | Custom | Dominios ilimitados | Prioritario + Onboarding |
 
 **Reglas:**
-- Ambas licencias incluyen los **27 módulos completos** y todo el código fuente. Sin feature-gating entre tiers.
+- Ambas licencias incluyen los **28 módulos completos** y todo el código fuente. Sin feature-gating entre tiers.
 - **Año 1:** actualizaciones incluidas. **Año 2+:** soporte por el 10% del valor inicial.
 - Sin suscripción obligatoria: el código sigue siendo tuyo.
 - **No es open source:** uso exclusivo del licenciatario.
@@ -224,7 +224,7 @@ Una vez estabilizado el framework, se creará una **versión light gratuita** pa
 
 | Competidor | Tipo | Diferenciador de From Zero |
 |:-----------|:-----|:---------------------------|
-| **Lovable / Bolt / v0** | App builders con IA | Generan prototipos sin arquitectura enterprise. From Zero entrega 27 módulos production-ready. |
+| **Lovable / Bolt / v0** | App builders con IA | Generan prototipos sin arquitectura enterprise. From Zero entrega 28 módulos production-ready. |
 | **Supabase** | BaaS | From Zero es full-stack (UI, Module Factory, lógica de negocio), no solo backend. |
 | **Clerk + proveedor de pagos + PaaS** | Stack à la carte | From Zero integra todo en una arquitectura cohesiva con RBAC, tenancy y auditoría pre-cableados. |
 | **Shipfast / Supastarter** | Boilerplates | From Zero tiene Module Factory (bootstrap→BD); no es un template estático. |
@@ -251,7 +251,7 @@ Una vez estabilizado el framework, se creará una **versión light gratuita** pa
 | Documento | Contenido |
 |:----------|:----------|
 | [`PRD.md`](./PRD.md) | Fuente de verdad técnica - especificaciones funcionales |
-| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación de los 27 módulos |
+| [`REFERENCE_MODULES.md`](./REFERENCE_MODULES.md) | Especificación de los 28 módulos |
 | [`REFERENCE_ARCHITECTURE.md`](./REFERENCE_ARCHITECTURE.md) | Arquitectura lógica |
 | [`REFERENCE_STRUCTURE.md`](./REFERENCE_STRUCTURE.md) | Estructura física |
 | [`REFERENCE_DESIGN_SYSTEM.md`](./REFERENCE_DESIGN_SYSTEM.md) | Design System |

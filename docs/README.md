@@ -18,7 +18,7 @@
 2. **Autenticación** y gestión de sesiones (Supabase Auth).
 3. **RBAC dinámico** (7 acciones × N módulos).
 4. **Facturación** y Feature Gating mediante adapter de pagos configurable.
-5. **27 módulos enterprise-grade** pre-construidos (Zero Boilerplate).
+5. **28 módulos enterprise-grade** pre-construidos (Zero Boilerplate).
 6. **Internacionalización, auditoría, import/export y custom fields** transversales.
 
 El objetivo: que el esfuerzo de desarrollo se concentre en la lógica de negocio única de cada producto, no en reconstruir la infraestructura común.
@@ -61,12 +61,12 @@ Los parámetros nacen en un bootstrap declarativo (`bootstrap.json`) y se vuelca
 
 ---
 
-## Los 27 Módulos
+## Los 28 Módulos
 
 | Bloque | Módulos |
 |:-------|:--------|
 | **A - Administración** | settings, module, plan, ai-model, log, profile |
-| **B - Cuentas (Tenant)** | tenant, user, invitation, notification, rule, custom-field, email-template, api-key, integration, webhook, document, import, export, subscription, statement, invoice |
+| **B - Cuentas (Tenant)** | tenant, user, invitation, notification, rule, custom-field, email-template, api-key, integration, webhook, document, legal-template, import, export, subscription, statement, invoice |
 | **C - Comunes** | file, tag, bookmark, filter |
 | **D - Demostrativo** | task |
 
@@ -90,7 +90,7 @@ La referencia canónica de stack, versiones, herramientas y conectores está en 
 | Core AI | Python (FastAPI + Pydantic v2) |
 | Testing | Vitest + Playwright |
 
-> Las tareas en segundo plano usan `pg_cron` para jobs programados e Inngest para workflows asíncronos sin Redis. Redis/BullMQ es opcional, pero sugerido para cache compartida, rate limits distribuidos, quotas, locks, invalidación y colas dedicadas en producción multi-instancia.
+> Las tareas en segundo plano usan `pg_cron` para jobs programados e Inngest (SDK en código; motor ejecutable en local o self-hosted, sin SaaS obligatorio) para workflows asíncronos sin Redis. Redis/BullMQ es opcional, pero sugerido para cache compartida, rate limits distribuidos, quotas, locks, invalidación y colas dedicadas en producción multi-instancia.
 
 ---
 
@@ -103,7 +103,7 @@ Los controles verificables de seguridad están definidos en [`SECURITY_ASSURANCE
 - **Log inmutable** basado en 5W.
 - **Soft Delete universal** + Papelera de Reciclaje.
 - **Encryption at rest** (AES-256) para credenciales.
-- **Webhooks** firmados con HMAC-SHA256.
+- **Webhooks** entrantes y salientes con firma/verificación HMAC-SHA256.
 - **Compliance GDPR** (consent tracking, Right to Erasure).
 
 ---
