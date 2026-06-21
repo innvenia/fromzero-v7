@@ -39,6 +39,7 @@
 - Cuestionario: `artifacts/FROMZERO_QUESTIONNAIRE.md`.
 - Referencia UI: `.codex/plugins/fromzero/library/ui-template-reference/` y recurso `fromzero-ui-template`.
 - Recursos de librería: `supabase`, `redis`, `sonarqube`, `stripe`, `inngest`, `playwright`, `k6`, `frontend-web`, `backend-api`, `databases`, `auth-providers`, `payments`, `deployment-cloud`, `ai-providers`, `testing-quality`, `mcp-supabase`, `mcp-sonarqube`.
+- Inventario FromZero: `.codex/plugins/fromzero/library/manifest.json`, `.codex/plugins/fromzero/library/categories.json`, `.codex/plugins/fromzero/library/registry-index.json`, `resource-resolver.mjs --project . --docs docs`, Recursos locales FromZero seleccionados.
 - Fuente externa verificada: OpenRouter, modelo `google/gemma-4-26b-a4b-it:free` en `https://openrouter.ai/google/gemma-4-26b-a4b-it%3Afree`; modelos Google en `https://openrouter.ai/google`; pricing y pinning en `https://openrouter.ai/pricing`.
 
 ## Decisiones del cuestionario
@@ -103,7 +104,7 @@
 | Task | D056/Q058 | structure | Módulo ejemplo app final | no | no aplica |
 | Shared modules | D057/Q059 | modules | File, Tag, Bookmark, Filter en framework shared | no | no aplica |
 | Público | D058/Q060 | structure | Base mínima reemplazable | no | no aplica |
-| Conflictos | D059/Q061 | questionnaire | Resolver caso por caso mostrando ambas versiones | no | no aplica |
+| Conflictos | D059/Q061 | questionnaire | Decidir caso por caso mostrando ambas versiones | no | no aplica |
 | Modelo OpenRouter | D060/Q063/C011 | OpenRouter | `google/gemma-4-26b-a4b-it:free` verificado | no | no aplica |
 | Plan default | D061-D063/Q065-Q066 | PRD/modules | Trial, vencido degrada a Free si existe Free | no | no aplica |
 | Anti-abuso | D064/Q068/C008 | architecture | reCAPTCHA adapter | no | no aplica |
@@ -170,7 +171,7 @@
 | Filter | módulo | Context | 3 | cubierto | Grid Universal | release candidate |
 | Task | módulo | Context | 3 | cubierto | módulo ejemplo app final | release candidate |
 | Record Relationship | transversal | Context | 2 | cubierto | datos/ownership | release candidate |
-| Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | resolver | 1 | cubierto | datos/seguridad | primer corte |
+| Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | recursos FromZero | 1 | cubierto | datos/seguridad | primer corte |
 | Core AI Python | servicio interno | docs | 2 | cubierto | Core AI | release candidate |
 | Module Factory | transversal | docs | 1 | cubierto | módulos/API/UI | primer corte |
 | Grid Universal | UI/transversal | docs | 2 | cubierto | UI y experiencia | release candidate |
@@ -337,7 +338,7 @@ Definir una especificación cerrada para construir From Zero Framework v7.4 como
 - Incluir una app Expo base; el framework queda API-ready.
 - Activar Sentry/PostHog u observabilidad dentro del framework base; se proveen opciones para apps derivadas.
 - Definir precios finales de tiers para todas las apps derivadas.
-- Resolver legalmente la licencia comercial propia; esta Spec exige revisión legal antes de venta.
+- Definir legalmente la licencia comercial propia; esta Spec exige revisión legal antes de venta.
 
 ## Usuarios y roles
 
@@ -443,9 +444,14 @@ Documentar placeholders en `.env.example`. No incluir secretos reales.
 | Variable | Tipo | Estado |
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | pública | requerida |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pública | requerida |
-| `SUPABASE_SERVICE_ROLE_KEY` | secreta | server/jobs only |
-| `DATABASE_URL` | secreta | server/migrations |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | pública | requerida |
+| `SUPABASE_SECRET_KEY` | secreta | server/jobs only |
+| `SUPABASE_DIRECT_CONNECTION_STRING` | secreta | conexión directa Postgres |
+| `SUPABASE_PROJECT_ID` | config | CLI/MCP Supabase |
+| `SUPABASE_DB_PASSWORD` | secreta | CLI Supabase |
+| `SUPABASE_ACCESS_TOKEN` | secreta | solo si se activa CLI o MCP Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pública | legacy opcional |
+| `SUPABASE_SERVICE_ROLE_KEY` | secreta | legacy opcional |
 | `APP_BASE_URL` | pública/config | requerida |
 | `API_BASE_URL` | pública/config | requerida |
 | `AUTH_URL` | config | requerida |
@@ -462,13 +468,11 @@ Documentar placeholders en `.env.example`. No incluir secretos reales.
 | `REDIS_URL` | secreta | opcional |
 | `RECAPTCHA_SITE_KEY` | pública | si anti-abuso activo |
 | `RECAPTCHA_SECRET_KEY` | secreta | si anti-abuso activo |
-| `SONAR_HOST_URL` | config | CI/gate |
-| `SONAR_PROJECT_KEY` | config | CI/gate |
-| `SONAR_TOKEN` | secreta | CI/gate |
+| `SONARQUBE_URL` | config | CI/gate |
+| `SONARQUBE_PROJECT_KEY` | config | CI/gate |
+| `SONARQUBE_TOKEN` | secreta | CI/gate |
 | `PLAYWRIGHT_BASE_URL` | config | tests |
 | `K6_BASE_URL` | config | load tests |
-| `TEST_BASE_URL` | config | tests |
-| `SUPABASE_ACCESS_TOKEN` | secreta | solo si se activa MCP/CLI |
 
 ## Timezone e i18n
 

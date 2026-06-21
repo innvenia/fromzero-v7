@@ -22,7 +22,7 @@ export const sprintThreeApiContracts = [
     domain: "settings",
     basePath: "/api/v1/settings",
     ownerSprint: "Sprint 3",
-    implemented: false,
+    implemented: true,
     requiresAuth: true,
     rateLimited: true
   },

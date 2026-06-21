@@ -9,26 +9,26 @@
 | Proyecto | From Zero Framework |
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
-| Última actualización | 2026-06-19 |
+| Última actualización | 2026-06-21 |
 | Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline; 2026-06-19: Sprint 4 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 4 completado localmente con auth/RBAC/API keys, migración SQL versionada, contratos Zod y pruebas; 2026-06-19: Sprint 5 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 5 completado localmente con Module Factory, Grid Universal, custom fields, filters, relationships, DataGrid, pruebas y documentación; 2026-06-19: Sprint 6 iniciado por aprobación explícita del usuario con Stripe mockeable y sin cobros reales; 2026-06-19: Sprint 6 completado localmente con billing core, subscriptions, statements, invoices, adapter Stripe mockeable, webhook HMAC, PDF individual, migración SQL versionada y pruebas; 2026-06-19: Sprint 7 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 7 completado localmente con storage, documents, tags, bookmarks, consent records, SQL versionado, pg_cron de purga y pruebas; 2026-06-19: Sprint 8 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 8 completado localmente con event outbox, jobs, rules, notifications, email templates, integrations/webhooks, SSRF/HMAC, import/export, SQL versionado y pruebas |
-| Aprobación del usuario | aprobada para Sprint 8 |
-| Fecha de aprobación | 2026-06-19 |
-| Frase literal de aprobación | aprubo iniciar sprint 8 |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline; 2026-06-19: Sprint 4 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 4 completado localmente con auth/RBAC/API keys, migración SQL versionada, contratos Zod y pruebas; 2026-06-19: Sprint 5 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 5 completado localmente con Module Factory, Grid Universal, custom fields, filters, relationships, DataGrid, pruebas y documentación; 2026-06-19: Sprint 6 iniciado por aprobación explícita del usuario con Stripe mockeable y sin cobros reales; 2026-06-19: Sprint 6 completado localmente con billing core, subscriptions, statements, invoices, adapter Stripe mockeable, webhook HMAC, PDF individual, migración SQL versionada y pruebas; 2026-06-19: Sprint 7 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 7 completado localmente con storage, documents, tags, bookmarks, consent records, SQL versionado, pg_cron de purga y pruebas; 2026-06-19: Sprint 8 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 8 completado localmente con event outbox, jobs, rules, notifications, email templates, integrations/webhooks, SSRF/HMAC, import/export, SQL versionado y pruebas; 2026-06-21: Fase 1 Sprint 1-8 ejecutada con GitHub origin, Supabase cloud dev, Sonar config, UI capturas, handler privado de referencia y separación demo/fundacional; 2026-06-21: validación final local y cloud ejecutada sin tocar `docs/`, `.codex/` ni `.env.local` |
+| Aprobación del usuario | aprobada para ejecutar Fase 1 |
+| Fecha de aprobación | 2026-06-21 |
+| Frase literal de aprobación | PLEASE IMPLEMENT THIS PLAN |
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
 | Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; Sprint 8: `c124575 feat(events): add automation and data exchange contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config` |
-| Restricciones de seguridad | Sin secretos ni `.env` reales. Sin migraciones cloud. MCP preparado pero deshabilitado. |
+| Restricciones de seguridad | Sin secretos impresos. Sin lectura de `.env` reales. `bootstrap.json` local-only. `docs/` y `.codex/` fuera de alcance. |
 
 ## Resumen para el dueño
 
-- Estado actual: Sprint 8 completado localmente.
-- Último avance: Event outbox, jobs, rules, notifications, email templates, integrations/webhooks, import/export y SQL versionado.
-- Sprint actual: Sprint 8 cerrado localmente.
-- Siguiente acción: preparar Sprint 9 Core AI/OpenRouter cuando el dueño lo solicite.
-- Bloqueos o riesgos: migraciones Sprint 4, Sprint 6, Sprint 7 y Sprint 8 no fueron aplicadas contra Supabase local/cloud; Inngest cloud, emails/webhooks reales, purgas reales, cobros reales, provider Stripe real y MCP requieren aprobación separada.
-- Qué necesita decidir o aprobar el dueño: OpenRouter/Core AI real, provider Stripe real, migración cloud, Inngest cloud, email/webhook real o activación MCP requieren aprobación separada.
+- Estado actual: Fase 1 ejecutada y validada; cierre pendiente de commit, push, CI y baseline Sonar.
+- Último avance: checks locales pasaron, Supabase cloud validado por conector y GitHub Sonar secrets/variables confirmados.
+- Sprint actual: Sprints 1-8 saneados; Sprint 9 no iniciado.
+- Siguiente acción: commitear, pushear, revisar GitHub Actions/Sonar y pedir aprobación de cierre Fase 1.
+- Bloqueos o riesgos: primer GitHub Actions run y Sonar baseline dependen del push; servicios reales siguen diferidos.
+- Qué necesita decidir o aprobar el dueño: rotación de credenciales compartidas antes de producción y cierre explícito de Fase 1.
 
 ## 1. Estado general
 
@@ -37,7 +37,7 @@
 - Cuestionario: aprobado.
 - Spec: aprobada.
 - Plan: aprobado.
-- ADRs afectados: 001, 003 y 005 aprobados.
+- ADRs afectados: 001, 002, 003, 004 y 005 aprobados o reconciliados.
 - Git: inicializado.
 - Branch: `main`.
 - Working tree: validar con `git status --short` antes de continuar.
@@ -119,6 +119,11 @@
 | Sprint 7 storage/documentos/shared | completado local | antes de Sprint 8 | contratos Zod, MIME/size, signed URL intent, consent auditable, SQL versionado, pg_cron purge |
 | Sprint 8 eventos/jobs/import-export | completado local | antes de Sprint 9 | contratos Zod, idempotency, SSRF guard, HMAC/replay, SQL versionado, pg_cron schedule |
 | MCP Supabase/SonarQube | preparado/deshabilitado | turno dedicado | `.mcp.json` local sin secretos inline; falta autenticación/conexión explícita |
+| Fase 1 validación local | aprobada | antes de commit Fase 1 | `npm run check`, `npm audit --audit-level=moderate`, `npm run test:e2e`, `git diff --cached --check` |
+| Supabase cloud dev | aprobada por conector | antes de cierre Fase 1 | 5 migraciones remotas, RLS negativa `authenticated` sin claims = 0 tenants, 30 tablas públicas con RLS |
+| Supabase CLI linked | bloqueada sin secreto local exportado | validación CLI directa | `npx --no-install supabase migration list --linked` falla porque `SUPABASE_DB_PASSWORD` no está exportada; no se leyó `.env.local` |
+| GitHub Sonar config | aprobada | antes de push Fase 1 | variable `SONARQUBE_URL` y secret `SONARQUBE_TOKEN` presentes; workflow usa ambos |
+| FromZero artifact checker | no bloqueante | antes de cierre Fase 1 | falla solo por `.codex/plugins/fromzero/templates/*`, fuera de alcance de esta Fase |
 | OpenRouter ID | pendiente | Sprint 9 | revalidación del modelo exacto |
 | Servicios cloud | pendiente | Sprint que los use | aprobación por servicio |
 | Migraciones cloud | pendiente | Sprint que las ejecute | aprobación antes de ejecutar |
@@ -158,17 +163,17 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: ninguno para Sprint 8 local; servicios reales requieren aprobación separada.
-- Riesgos activos: RLS/RBAC real pendiente de ejecución en Supabase, storage/purga física, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export real, performance FCP/LCP/API p95, revisión legal.
+- Bloqueos actuales: ninguno para Fase 1 local/cloud validada; falta observar CI/Sonar después del push.
+- Riesgos activos: storage/purga física, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export real, performance FCP/LCP/API p95, revisión legal.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales, OpenRouter real.
 - Secretos o accesos requeridos: ninguno para revisar Sprint 8; serán requeridos por Sprint con aprobación separada.
 - Estado de aprobación humana requerido: no requerido para revisar Sprint 8 local ya completado; requerido para cualquier migración cloud, provider real, Inngest cloud, email/webhook real o purga real.
 
 ## 8. Próxima acción
 
-Preparar Sprint 9 cuando el dueño solicite continuar.
+Revisar CI/Sonar tras push y pedir aprobación explícita de cierre Fase 1.
 
-No aplicar migraciones cloud, ejecutar purgas reales, activar proveedores reales ni activar MCP sin aprobación separada.
+No iniciar Sprint 9. No aplicar purgas reales, activar proveedores reales ni activar MCP sin aprobación separada.
 
 ## 9. Reglas de actualización
 

@@ -9,9 +9,9 @@
 | Proyecto | From Zero Framework |
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
-| Última actualización | 2026-06-18 |
+| Última actualización | 2026-06-21 |
 | Estado actual | aprobado |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación; 2026-06-18: aprobado explícitamente por el usuario para preparar Sprint 1 |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación; 2026-06-18: aprobado explícitamente por el usuario para preparar Sprint 1; 2026-06-21: Fase 1 saneamiento guiado Sprint 1-8 ejecutada contra GitHub, Supabase cloud dev y SonarQube sin tocar docs ni .codex; 2026-06-21: validación final local/cloud registrada antes del commit de cierre |
 | Aprobación del usuario | aprobada |
 | Fecha de aprobación | 2026-06-18 |
 | Frase literal de aprobación | Apruebo el plan. |
@@ -19,7 +19,7 @@
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, `artifacts/FROMZERO_SPEC.md`, `artifacts/adr/`, recursos locales FromZero |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `artifacts/issues/`, `artifacts/test-plans/` |
 | Commit asociado | pendiente |
-| Restricciones de seguridad | Sin secretos ni `.env` reales. No se ejecutó código de aplicación. No se activaron servicios externos. |
+| Restricciones de seguridad | Sin secretos impresos. Sin lectura de `.env` reales. `bootstrap.json` local-only. No se tocaron `docs/` ni `.codex/`. |
 
 ## Resumen para el dueño
 
@@ -38,6 +38,52 @@
 - Estado operativo: `artifacts/FROMZERO_STATE.md`.
 - Unidad visible de trabajo: Sprint.
 - Diseño técnico base: `artifacts/adr/001-data-auth-rls-rbac.md`, `artifacts/adr/002-api-module-contracts.md`, `artifacts/adr/003-integrations-jobs-cache.md`, `artifacts/adr/004-deployment-quality-gates.md`, `artifacts/adr/005-core-ai-openrouter.md`.
+
+## Fase 1 - Saneamiento guiado Sprint 1-8
+
+Esta Fase 1 convierte los Sprints 1-8 de estado local a base verificable antes de Sprint 9. No reemplaza la ejecución guiada: Codex ejecuta cambios y comandos; el dueño valida accesos, secrets externos, decisiones visuales y riesgos antes del cierre final.
+
+| Bloque | Decisión humana requerida | Acción de Codex | Evidencia esperada | Punto de parada | Criterio de cierre |
+|---|---|---|---|---|---|
+| Gate inicial | Configurar secrets externos sin compartir valores | Configurar GitHub origin, CI, Sonar properties y Supabase link | `git remote -v`, `gh auth status`, `supabase migration list --linked`, Sonar HTTP 200 | Si GitHub, Supabase o Sonar no responden | Gate respondido o bloqueo externo documentado |
+| Secretos | Rotar antes de producción los secretos compartidos por chat | Reforzar `.gitignore`, `.dockerignore`, examples y sacar `bootstrap.json` del índice | `git check-ignore -v`, `git ls-files -- bootstrap.json` sin salida | Si un secreto queda trackeado | `bootstrap.json` local-only |
+| Sprint 1 | Aceptar que `.env.local` no se crea por regla de no tocar `.env` reales | Crear CI, Sonar config, examples seguros y ledger | `npm run check`, `npm audit` | Si falta tooling base | cerrado validado |
+| Sprint 2 | Validar visualmente UI shell | Ejecutar Playwright y regenerar capturas | PNG 375/768/1920 en `artifacts/test-plans/` | Si hay desacuerdo visual | cerrado validado |
+| Sprint 3 | Confirmar Supabase cloud dev como fuente de verdad | Aplicar migraciones en base limpia y ejecutar RLS negativa | `supabase db push --linked`, query `authenticated` sin claims = 0 filas | Si la base no estaba limpia | cerrado validado |
+| Sprint 4 | Mantener `Guest` canónico y API keys por RBAC | Validar contratos existentes y crear handler privado de referencia | tests auth/RBAC/API key y `/api/v1/settings` dinámico | Si RBAC no coincide | contrato implementado, integración pendiente |
+| Sprint 5 | Aceptar demo solo si limpiable | Crear contrato allowlist demo con `is_demo = true` | `tests/unit/demo-cleanup.test.ts` | Si una tabla demo no es limpiable | cerrado validado |
+| Sprint 6 | Mantener billing real diferido | Validar contratos billing existentes tras migración cloud | tests Sprint 6 y tablas cloud | Si requiere Stripe real | contrato implementado, integración pendiente |
+| Sprint 7 | No purgar sin preview | Validar storage/documents/consent y excluir consent de demo | tests Sprint 7 y migración cloud | Si Storage real requiere acción manual | contrato implementado, integración pendiente |
+| Sprint 8 | Mantener externos diferidos sin aprobación | Validar jobs/webhooks/import/export local y DB | tests Sprint 8 y migración cloud | Si requiere Inngest/Resend/webhook real | contrato implementado, integración pendiente |
+
+### Evidencia ejecutada el 2026-06-21
+
+| Evidencia | Resultado |
+|---|---|
+| GitHub origin | `origin` apunta a `https://github.com/innvenia/fromzero-v7.git` |
+| GitHub auth | `gh auth status` autenticado como `innvenia` |
+| GitHub variable | `SONARQUBE_URL` presente con `https://sonarqube.innvenia.ai` |
+| GitHub secret | `SONARQUBE_TOKEN` presente sin imprimir valor |
+| CI Sonar env | workflow usa `SONARQUBE_URL` y `SONARQUBE_TOKEN`, mapeados a `SONAR_HOST_URL` y `SONAR_TOKEN` |
+| Supabase CLI | `2.107.0` |
+| Supabase link | project-ref `rqnwvoitfxunheujbklp` |
+| Supabase CLI linked | `migration list --linked` bloqueado porque `SUPABASE_DB_PASSWORD` no está exportada; no se leyó `.env.local` |
+| Supabase migrations | conector confirma 5 remotas: `20260618000300`, `20260619000400`, `20260619000600`, `20260619050821`, `20260619110800` |
+| Supabase RLS negativa | conector: `authenticated` sin claims ve `0` tenants |
+| Supabase RLS coverage | conector: 30 tablas públicas esperadas con RLS activo |
+| SonarQube host | `https://sonarqube.innvenia.ai` configurado en GitHub variable |
+| SonarQube baseline | pendiente hasta primer CI después del push |
+| CI | workflow creado localmente; primer run pendiente de push |
+| UI | Playwright 4/4 passed; capturas mobile/tablet/desktop regeneradas |
+| Gate local | `npm run check` passed |
+| Audit | `npm audit --audit-level=moderate` = 0 vulnerabilidades |
+| E2E | `npm run test:e2e` = 4 passed |
+| FromZero checker | falla solo por `.codex/plugins/fromzero/templates/*`, fuera de alcance |
+| Artefactos FromZero | actualizados en `artifacts/`, sin tocar `docs/` |
+
+### Estado para Sprint 9
+
+Sprint 9 no debe iniciar hasta que el dueño cierre explícitamente Fase 1. Quedan pendientes externos: ejecutar primer GitHub Actions run tras push, ejecutar baseline SonarQube y decidir activaciones reales de OpenRouter/Core AI.
 
 ## 1. Reglas de ejecución
 
@@ -68,7 +114,7 @@
 ## 3. Recursos y herramientas
 
 - Recursos locales seleccionados: `frontend-web`, `backend-api`, `databases`, `supabase`, `auth-providers`, `payments`, `stripe`, `ai-providers`, `inngest`, `redis`, `playwright`, `k6`, `sonarqube`, `testing-quality`, `deployment-cloud`, `fromzero-ui-template`, `mcp-supabase`, `mcp-sonarqube`.
-- Resolver FromZero: no se ejecutó `tools/resource-resolver.mjs --install` en esta fase.
+- Selección de recursos FromZero: no se ejecutó `tools/resource-resolver.mjs --install` en esta fase.
 - Recursos faltantes: no detectados como bloqueantes para planificar; versiones oficiales se fijan en Sprint 1 antes de implementar.
 - Decisión de instalación: si un Sprint instala recursos empaquetados, debe producir `.fromzero/fromzero.lock.json` como evidencia. No instalar recursos globalmente.
 - MCP: preparar configuración, pero no activar Supabase/SonarQube MCP sin turno dedicado y aprobación explícita.
@@ -86,7 +132,7 @@
 
 ## 5. Variables y placeholders
 
-- Variables requeridas en `.env.example`: `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `RESEND_API_KEY`, `OPENROUTER_API_KEY`, `AI_PROVIDER`, `AI_MODEL_ID`, `INNGEST_EVENT_KEY`, `INNGEST_SIGNING_KEY`, `REDIS_URL`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `SONAR_HOST_URL`, `SONAR_PROJECT_KEY`, `SONAR_TOKEN`, `PLAYWRIGHT_BASE_URL`, `K6_BASE_URL`, `TEST_BASE_URL`, `SUPABASE_ACCESS_TOKEN`.
+- Variables requeridas en `.env.example`: ApplicationRuntime, ApplicationAuth, SupabaseRuntime, SupabaseDatabase, SupabaseTooling, SupabaseLegacy, Stripe, Resend, CoreAI, OpenRouter, Inngest, Redis, Recaptcha, SonarQube, NextJsTelemetry, Playwright y K6.
 - Secretos reales fuera del repo: todas las variables secretas.
 - Archivos locales no versionados: `.env`, `.env.*`, dumps, logs, reportes con datos sensibles.
 - Regla: `.env.example` documenta nombres, no valores reales.
@@ -149,7 +195,7 @@
 | Filter | módulo | Context | release candidate | Sprint 5 | `src/framework/modules/filter/` | grid tests | ownership | filtro guardado |
 | Task | módulo | Context | release candidate | Sprint 10 | `src/web/modules/task/` | full triad tests | reference module | módulo ejemplo |
 | Record Relationship | transversal | Context | release candidate | Sprint 5 | `src/framework/relationships/` | relation tests | referential gates | relaciones transversales |
-| Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | resolver | primer corte | Sprint 3 | `supabase/` | migration/RLS tests | Supabase | base segura |
+| Supabase PostgreSQL/Auth/Storage/RLS | datos/seguridad | recursos FromZero | primer corte | Sprint 3 | `supabase/` | migration/RLS tests | Supabase | base segura |
 | Core AI Python | servicio interno | docs | release candidate | Sprint 9 | `core-ai/` | Pydantic/guardrail tests | internal-only | IA interna con límites por petición |
 | Module Factory | transversal | docs | primer corte | Sprint 5 | `src/framework/factory/` | factory tests | contract | CRUD generado |
 | Grid Universal | UI/transversal | docs | release candidate | Sprint 5 | `src/framework/grid/` | grid tests | Playwright | grid reusable |

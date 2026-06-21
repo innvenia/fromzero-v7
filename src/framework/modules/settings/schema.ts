@@ -5,7 +5,7 @@ export const settingsConfigSchema = z.object({
     app_mode: z.enum(["saas", "corporate"]),
     app_name: z.string().min(1),
     app_url: z.string().url(),
-    allow_multi_tenant_users: z.literal(false),
+    allow_multi_tenant_users: z.boolean().default(false),
     maintenance_mode: z.boolean(),
     event_bus_enabled: z.boolean()
   }),

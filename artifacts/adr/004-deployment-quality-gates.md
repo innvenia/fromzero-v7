@@ -11,21 +11,23 @@ Ruta de salida: `artifacts/adr/004-deployment-quality-gates.md`
 | Proyecto | From Zero Framework |
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-18 |
-| Última actualización | 2026-06-18 |
-| Estado actual | borrador |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan |
-| Aprobación del usuario | pendiente |
-| Fecha de aprobación | pendiente |
-| Frase literal de aprobación | pendiente |
+| Última actualización | 2026-06-21 |
+| Estado actual | aprobado |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada para alimentar el Plan; 2026-06-21: aprobado por ejecución Fase 1 con GitHub Actions, Supabase cloud dev y SonarQube config |
+| Aprobación del usuario | aprobada |
+| Fecha de aprobación | 2026-06-21 |
+| Frase literal de aprobación | PLEASE IMPLEMENT THIS PLAN |
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md` aprobado como base |
 | Documentos o fuentes asociadas | `docs/REFERENCE_STACK.md`, `docs/SCALABILITY_ASSURANCE.md`, `docs/SECURITY_ASSURANCE.md`, `docs/STRATEGY.md`, `artifacts/FROMZERO_SPEC.md` |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_PLAN.md`, `.github/workflows/`, `docker-compose.yml`, `.env.example` |
 | Commit asociado | pendiente |
-| Restricciones de seguridad | Sin secretos ni `.env` reales. No se configuraron runners ni cloud. |
+| Restricciones de seguridad | Sin secretos ni `.env` reales. Sonar token solo como secret externo. |
 
 ## Decisión
 
 Usar npm, GitHub Actions, SonarQube self-hosted como quality gate, Playwright para viewports 375/768/1920, Vitest para lógica, k6 para carga en staging, Docker genérico y Coolify sobre VPS como ruta de despliegue primaria. Separar Dev, Test/Staging y Producción con credenciales distintas.
+
+Actualización 2026-06-21: SonarQube queda configurado con `sonar-project.properties` versionado y GitHub Actions usa `SonarSource/sonarqube-scan-action@v7`. En el repo se documentan `SONARQUBE_URL`, `SONARQUBE_PROJECT_KEY` y `SONARQUBE_TOKEN`; el workflow mapea URL y token a los nombres que espera el scanner. La ausencia de esos valores bloquea solo el baseline SonarQube, no el gate local.
 
 ## Contexto
 

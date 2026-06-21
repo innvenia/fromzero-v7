@@ -19,7 +19,7 @@ export const bootstrapSchema = z.object({
     mode: z.enum(["saas", "corporate"]),
     name: z.string().min(1),
     url: z.string().url(),
-    allow_multi_tenant_users: z.literal(false),
+    allow_multi_tenant_users: z.boolean().default(false),
     licensing_model: z.enum(["per_tenant", "per_user"])
   }),
   infrastructure: z.object({

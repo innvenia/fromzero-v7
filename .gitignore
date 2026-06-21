@@ -24,6 +24,14 @@ pnpm-debug.log*
 !.env.example
 !.env.*.example
 .mcp.json
+**/.mcp.json
+bootstrap.json
+*.pem
+*.key
+*credentials*.json
+*service-account*.json
+.npmrc
+.netrc
 
 # Node/Next.js/React/TypeScript
 node_modules/

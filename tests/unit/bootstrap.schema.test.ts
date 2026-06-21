@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import bootstrapConfig from "../../bootstrap.json";
+import bootstrapConfig from "../../bootstrap.example.json";
 import { baseProfileCodes } from "../../src/framework/db";
 import { bootstrapSchema, coreModuleDefinitions } from "../../src/framework/bootstrap";
 
@@ -46,5 +46,25 @@ describe("bootstrap contract", () => {
     const serializedValues = collectStrings(bootstrapConfig);
 
     expect(serializedValues.some((value) => /(?:sk_live|sk_test|sbp_|service_role|eyJ)/i.test(value))).toBe(false);
+  });
+
+  it("keeps multi-tenant users configurable with a safe default", () => {
+    const parsedDefault = bootstrapSchema.parse({
+      ...bootstrapConfig,
+      app: {
+        ...bootstrapConfig.app,
+        allow_multi_tenant_users: undefined
+      }
+    });
+    const parsedEnabled = bootstrapSchema.parse({
+      ...bootstrapConfig,
+      app: {
+        ...bootstrapConfig.app,
+        allow_multi_tenant_users: true
+      }
+    });
+
+    expect(parsedDefault.app.allow_multi_tenant_users).toBe(false);
+    expect(parsedEnabled.app.allow_multi_tenant_users).toBe(true);
   });
 });

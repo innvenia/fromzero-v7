@@ -12,7 +12,7 @@ Ruta de salida: `artifacts/test-plans/sprint-4.md`
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-19 |
 | Última actualización | 2026-06-19 |
-| Estado actual | ejecutado localmente |
+| Estado actual | aprobado |
 | Historial de estados | 2026-06-19: creado al iniciar Sprint 4; 2026-06-19: pruebas locales ejecutadas |
 | Aprobación del usuario | aprobada para Sprint 4 |
 | Fecha de aprobación | 2026-06-19 |
