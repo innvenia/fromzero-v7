@@ -257,6 +257,24 @@ describe("Sprint 8 events, jobs, integrations and automation contracts", () => {
       }
     }));
     expect(markNotificationRead(notification, nowIso).read_at).toBe(nowIso);
+    expect(buildNotificationFromEvent({
+      event,
+      userId,
+      title: "SMS update",
+      body: "Use 2 < 3 before sending",
+      channels: ["in_app", "sms"],
+      id: "89898989-8989-4898-8898-898989898989"
+    })).toEqual(expect.objectContaining({
+      channels: ["in_app", "sms"]
+    }));
+    expect(() => buildNotificationFromEvent({
+      event,
+      userId,
+      title: "SMS update",
+      body: "Do not send <strong>HTML</strong>",
+      channels: ["in_app", "sms"],
+      id: "90909090-9090-4909-8909-909090909090"
+    })).toThrow("SMS notification bodies cannot include HTML");
 
     const templates = [
       {

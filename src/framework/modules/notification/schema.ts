@@ -36,7 +36,7 @@ export const notificationRecordSchema = z.object({
     });
   }
 
-  if (notification.channels.includes("sms") && /<[^>]+>/.test(notification.body)) {
+  if (notification.channels.includes("sms") && containsBracketedMarkup(notification.body)) {
     context.addIssue({
       code: "custom",
       message: "SMS notification bodies cannot include HTML."
@@ -59,6 +59,35 @@ export const notificationRecordSchema = z.object({
     }
   }
 });
+
+function containsBracketedMarkup(value: string): boolean {
+  let hasOpeningBracket = false;
+  let hasContentAfterOpeningBracket = false;
+
+  for (const character of value) {
+    if (!hasOpeningBracket) {
+      if (character === "<") {
+        hasOpeningBracket = true;
+        hasContentAfterOpeningBracket = false;
+      }
+
+      continue;
+    }
+
+    if (character === ">") {
+      if (hasContentAfterOpeningBracket) {
+        return true;
+      }
+
+      hasOpeningBracket = false;
+      continue;
+    }
+
+    hasContentAfterOpeningBracket = true;
+  }
+
+  return false;
+}
 
 export type NotificationType = z.infer<typeof notificationTypeSchema>;
 export type NotificationLevel = z.infer<typeof notificationLevelSchema>;
