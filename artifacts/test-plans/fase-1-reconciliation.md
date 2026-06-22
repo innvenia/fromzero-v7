@@ -42,7 +42,8 @@
 
 - `npm run check` ejecuta lint, typecheck, tests, build y verificación de stack.
 - `GET /api/v1/settings` compila como ruta dinámica real.
-- CI GitHub Actions creado; run remoto pendiente por push.
+- CI GitHub Actions pasó en run `27921644951`.
+- Run previo `27921449589` falló en `npm ci` por npm 10 en runner; corregido con `3ff5c76`.
 
 ## RLS/RBAC
 
@@ -70,8 +71,8 @@
 
 ## Limitaciones
 
-- Sonar baseline queda pendiente por GitHub Secrets externos.
-- GitHub Actions run queda pendiente hasta push.
+- SonarQube API de métricas responde 401 sin token; se validó publicación desde logs de CI.
+- SonarQube scan advierte shallow clone y sin blame SCM; no bloqueó el análisis.
 - No se activaron Stripe, Resend, Inngest cloud, OpenRouter ni webhooks reales.
 - Docker Desktop apagado impidió cache local pg-delta de Supabase, sin bloquear el push remoto.
 
@@ -94,6 +95,11 @@ npm run check
 npm audit --audit-level=moderate
 npx supabase --version
 npx supabase migration list --linked
+gh run list --repo innvenia/fromzero-v7 --branch main --limit 5
+gh run watch 27921449589 --repo innvenia/fromzero-v7 --exit-status
+gh run view 27921449589 --repo innvenia/fromzero-v7 --log-failed
+gh run watch 27921644951 --repo innvenia/fromzero-v7 --exit-status
+gh run view 27921644951 --repo innvenia/fromzero-v7 --log
 ```
 
 Conector Supabase:
@@ -134,7 +140,10 @@ order by tablename;
 | RLS negativa | conector: `authenticated` sin claims ve 0 tenants |
 | RLS coverage | conector: 30 tablas públicas esperadas con RLS activo |
 | Sonar host | configurado como GitHub variable |
-| Sonar baseline | Pendiente hasta primer CI tras push |
+| Sonar baseline | `ANALYSIS SUCCESSFUL`; dashboard `https://sonarqube.innvenia.ai/dashboard?id=fromzero-framework` |
+| Sonar metrics API | 401 sin token; no se imprimieron secretos |
+| GitHub Actions primer run | `27921449589` falló por npm 10 en `npm ci` |
+| GitHub Actions final | `27921644951` passed |
 | Playwright | 4 passed |
 | Vitest | 16 archivos, 79 tests passed |
 | Build | Next build passed |
@@ -150,6 +159,4 @@ order by tablename;
 
 ## Pendientes de cierre Fase 1
 
-- Hacer push de la rama y ejecutar GitHub Actions.
-- Ejecutar baseline SonarQube.
 - Registrar cierre explícito del dueño antes de iniciar Sprint 9.

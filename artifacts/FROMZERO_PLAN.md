@@ -11,14 +11,14 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-21 |
 | Estado actual | aprobado |
-| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación; 2026-06-18: aprobado explícitamente por el usuario para preparar Sprint 1; 2026-06-21: Fase 1 saneamiento guiado Sprint 1-8 ejecutada contra GitHub, Supabase cloud dev y SonarQube sin tocar docs ni .codex; 2026-06-21: validación final local/cloud registrada antes del commit de cierre |
+| Historial de estados | 2026-06-18: creado desde Spec aprobada, con diseño técnico ADR previo; 2026-06-18: corregido por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones, requiere re-aprobación; 2026-06-18: aprobado explícitamente por el usuario para preparar Sprint 1; 2026-06-21: Fase 1 saneamiento guiado Sprint 1-8 ejecutada contra GitHub, Supabase cloud dev y SonarQube sin tocar docs ni .codex; 2026-06-21: validación final local/cloud registrada antes del commit de cierre; 2026-06-21: Actions y SonarQube baseline revisados tras push |
 | Aprobación del usuario | aprobada |
 | Fecha de aprobación | 2026-06-18 |
 | Frase literal de aprobación | Apruebo el plan. |
 | Artefactos prerequisito | `artifacts/FROMZERO_SPEC.md` aprobado explícitamente como base |
 | Documentos o fuentes asociadas | `docs/`, `artifacts/FROMZERO_CONTEXT.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md`, `artifacts/FROMZERO_SPEC.md`, `artifacts/adr/`, recursos locales FromZero |
 | Artefactos derivados o relacionados | `artifacts/FROMZERO_STATE.md`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | pendiente |
+| Commit asociado | `c494b9f feat(fromzero): complete phase 1 guided sanitation`; `3ff5c76 ci: use project npm version` |
 | Restricciones de seguridad | Sin secretos impresos. Sin lectura de `.env` reales. `bootstrap.json` local-only. No se tocaron `docs/` ni `.codex/`. |
 
 ## Resumen para el dueño
@@ -74,16 +74,19 @@ Esta Fase 1 convierte los Sprints 1-8 de estado local a base verificable antes d
 | SonarQube host | `https://sonarqube.innvenia.ai` configurado en GitHub variable |
 | SonarQube baseline | pendiente hasta primer CI después del push |
 | CI | workflow creado localmente; primer run pendiente de push |
+| CI primer run | `27921449589` falló en `npm ci` por runner npm 10; corregido con `3ff5c76` |
+| CI final | `27921644951` passed en `main`: install, lint, typecheck, test, build, audit y SonarQube scan |
 | UI | Playwright 4/4 passed; capturas mobile/tablet/desktop regeneradas |
 | Gate local | `npm run check` passed |
 | Audit | `npm audit --audit-level=moderate` = 0 vulnerabilidades |
 | E2E | `npm run test:e2e` = 4 passed |
 | FromZero checker | falla solo por `.codex/plugins/fromzero/templates/*`, fuera de alcance |
 | Artefactos FromZero | actualizados en `artifacts/`, sin tocar `docs/` |
+| SonarQube baseline | scanner `ANALYSIS SUCCESSFUL`; dashboard `https://sonarqube.innvenia.ai/dashboard?id=fromzero-framework`; métricas API privadas sin token |
 
 ### Estado para Sprint 9
 
-Sprint 9 no debe iniciar hasta que el dueño cierre explícitamente Fase 1. Quedan pendientes externos: ejecutar primer GitHub Actions run tras push, ejecutar baseline SonarQube y decidir activaciones reales de OpenRouter/Core AI.
+Sprint 9 no debe iniciar hasta que el dueño cierre explícitamente Fase 1. Queda pendiente decidir activaciones reales de OpenRouter/Core AI en Sprint 9.
 
 ## 1. Reglas de ejecución
 
