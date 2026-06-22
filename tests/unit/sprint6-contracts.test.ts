@@ -260,6 +260,30 @@ describe("Sprint 6 billing contracts", () => {
     expect(decoded).toContain("Acme");
   });
 
+  it("builds a PDF artifact for an account statement record", () => {
+    const statement = buildStatementFromSubscriptions({
+      tenantId,
+      periodStart: "2026-06-01T00:00:00.000Z",
+      periodEnd: "2026-07-01T00:00:00.000Z",
+      subscriptions: [subscriptionRecordSchema.parse(activeSubscription)],
+      plans: [proPlan],
+      generatedAt: now.toISOString()
+    });
+    const pdf = buildBillingRecordPdf({
+      type: "statement",
+      tenantName: "Acme",
+      record: statement
+    });
+
+    const decoded = new TextDecoder().decode(pdf.bytes);
+
+    expect(pdf.fileName).toBe("statement-2026-06-01.pdf");
+    expect(pdf.contentType).toBe("application/pdf");
+    expect(decoded).toContain("Statement 2026-06-01");
+    expect(decoded).toContain("Period: 2026-06-01 to 2026-07-01");
+    expect(decoded).toContain("Total: USD 49.00");
+  });
+
   it("escapes PDF text and slugifies invoice file names without regex backtracking", () => {
     const pdf = buildBillingRecordPdf({
       type: "invoice",
