@@ -13,8 +13,8 @@ export const planFeaturesSchema = z.object({
 }).catchall(z.unknown());
 
 export const planRecordSchema = z.object({
-  id: z.string().uuid(),
-  code: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  id: z.uuid(),
+  code: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   name: z.string().min(1).max(100),
   description: z.string().nullable(),
   is_active: z.boolean(),

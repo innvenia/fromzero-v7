@@ -27,10 +27,10 @@ export const customFieldOptionSchema = z.object({
 });
 
 export const customFieldRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   entity_type: moduleCodeSchema,
-  field_name: z.string().regex(/^[a-z][a-z0-9_]*$/).max(100),
+  field_name: z.string().check(z.regex(/^[a-z][a-z0-9_]*$/)).max(100),
   labels: localizedLabelSchema,
   field_type: customFieldTypeSchema,
   options: z.array(customFieldOptionSchema).nullable(),
@@ -66,15 +66,15 @@ function validateCustomFieldValue(field: CustomFieldRecord, value: unknown): voi
   }
 
   if (field.field_type === "email") {
-    z.string().email().parse(value);
+    z.email().parse(value);
   }
 
   if (field.field_type === "url") {
-    z.string().url().parse(value);
+    z.url().parse(value);
   }
 
   if (field.field_type === "date") {
-    z.string().regex(/^\d{4}-\d{2}-\d{2}$/).parse(value);
+    z.string().check(z.regex(/^\d{4}-\d{2}-\d{2}$/)).parse(value);
   }
 
   if (field.field_type === "select") {

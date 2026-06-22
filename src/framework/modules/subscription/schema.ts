@@ -12,20 +12,20 @@ export const subscriptionStatusSchema = z.enum([
 export const subscriptionBillingCycleSchema = z.enum(["monthly", "yearly"]);
 
 export const subscriptionRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   entity_type: subscriptionEntityTypeSchema,
-  entity_id: z.string().uuid(),
-  plan_id: z.string().uuid(),
+  entity_id: z.uuid(),
+  plan_id: z.uuid(),
   status: subscriptionStatusSchema,
   billing_cycle: subscriptionBillingCycleSchema,
   external_subscription_id: z.string().min(1).max(200).nullable(),
   payment_method_id: z.string().min(1).max(200).nullable(),
-  starts_at: z.string().datetime(),
-  current_period_start: z.string().datetime(),
-  current_period_end: z.string().datetime(),
-  trial_ends_at: z.string().datetime().nullable(),
-  canceled_at: z.string().datetime().nullable(),
+  starts_at: z.iso.datetime(),
+  current_period_start: z.iso.datetime(),
+  current_period_end: z.iso.datetime(),
+  trial_ends_at: z.iso.datetime().nullable(),
+  canceled_at: z.iso.datetime().nullable(),
   metadata: z.record(z.string(), z.unknown())
 }).superRefine((subscription, context) => {
   if (subscription.entity_type === "tenant" && subscription.entity_id !== subscription.tenant_id) {

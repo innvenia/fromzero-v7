@@ -16,11 +16,11 @@ export const searchFieldSchema = z.object({
 });
 
 export const moduleRecordSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().min(1).max(100),
-  code: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  code: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   icon: z.string().max(50).nullable(),
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  slug: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   description: z.string().nullable(),
   enabled: z.boolean(),
   table_name: z.string().max(100).nullable(),

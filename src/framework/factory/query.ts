@@ -12,7 +12,7 @@ export const factorySortSchema = z.object({
 });
 
 export const factoryListQuerySchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   page: z.number().int().min(1),
   pageSize: z.number().int().min(1).max(100),
   sort: factorySortSchema.optional(),
@@ -22,7 +22,7 @@ export const factoryListQuerySchema = z.object({
 
 export const boundedFactoryListRequestSchema = z.object({
   moduleCode: z.string().min(1),
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   limit: z.number().int().min(1).max(100),
   offset: z.number().int().min(0),
   sort: factorySortSchema.nullable(),
@@ -41,7 +41,7 @@ export function buildFactoryListRequest(
   const contract = sprintFiveModuleFactoryContractSchema.parse(contractInput);
   const rawQuery = z.record(z.string(), z.unknown()).parse(queryInput);
 
-  if (!Object.prototype.hasOwnProperty.call(rawQuery, "pageSize")) {
+  if (!Object.hasOwn(rawQuery, "pageSize")) {
     throw new Error("pageSize is required for bounded factory list requests.");
   }
 

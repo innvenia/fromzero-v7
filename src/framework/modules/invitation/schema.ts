@@ -4,17 +4,17 @@ export const invitationStatusValues = ["pending", "accepted", "expired", "revoke
 export const invitationTypeValues = ["link", "code"] as const;
 
 export const invitationRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  email: z.string().trim().toLowerCase().email(),
-  profile_id: z.string().uuid(),
-  invited_by: z.string().uuid(),
-  token_hash: z.string().regex(/^[a-f0-9]{64}$/),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  email: z.string().trim().toLowerCase().pipe(z.email()),
+  profile_id: z.uuid(),
+  invited_by: z.uuid(),
+  token_hash: z.string().check(z.regex(/^[a-f0-9]{64}$/)),
   invitation_type: z.enum(invitationTypeValues),
   status: z.enum(invitationStatusValues),
-  expires_at: z.string().datetime(),
-  accepted_at: z.string().datetime().nullable(),
-  accepted_by_user_id: z.string().uuid().nullable()
+  expires_at: z.iso.datetime(),
+  accepted_at: z.iso.datetime().nullable(),
+  accepted_by_user_id: z.uuid().nullable()
 });
 
 export function isInvitationPending(record: Pick<InvitationRecord, "status" | "expires_at">, now = new Date()): boolean {

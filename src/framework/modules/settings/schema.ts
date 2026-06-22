@@ -4,7 +4,7 @@ export const settingsConfigSchema = z.object({
   general: z.object({
     app_mode: z.enum(["saas", "corporate"]),
     app_name: z.string().min(1),
-    app_url: z.string().url(),
+    app_url: z.url(),
     allow_multi_tenant_users: z.boolean().default(false),
     maintenance_mode: z.boolean(),
     event_bus_enabled: z.boolean()
@@ -30,7 +30,7 @@ export const settingsConfigSchema = z.object({
   }),
   ai: z.object({
     ai_enabled: z.boolean(),
-    ai_default_model_id: z.string().uuid().nullable()
+    ai_default_model_id: z.uuid().nullable()
   }),
   billing: z.object({
     billing_enabled: z.boolean(),
@@ -62,10 +62,10 @@ export const settingsConfigSchema = z.object({
 });
 
 export const settingsRecordSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   config: settingsConfigSchema,
-  updated_by: z.string().uuid().nullable(),
-  updated_at: z.string().datetime()
+  updated_by: z.uuid().nullable(),
+  updated_at: z.iso.datetime()
 });
 
 export type SettingsConfig = z.infer<typeof settingsConfigSchema>;

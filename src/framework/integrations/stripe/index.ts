@@ -11,13 +11,13 @@ const stripeInvoiceEventSchema = z.object({
   id: z.string().min(1),
   type: z.enum(["invoice.paid", "invoice.payment_failed"]),
   data: z.object({
-    object: z.object({
+    object: z.looseObject({
       id: z.string().min(1),
       subscription: z.string().min(1).nullable().optional(),
       amount_paid: z.number().int().nonnegative().optional(),
       amount_due: z.number().int().nonnegative().optional(),
       currency: z.string().min(3).max(3)
-    }).passthrough()
+    })
   })
 });
 
@@ -25,10 +25,10 @@ const stripeSubscriptionEventSchema = z.object({
   id: z.string().min(1),
   type: z.literal("customer.subscription.updated"),
   data: z.object({
-    object: z.object({
+    object: z.looseObject({
       id: z.string().min(1),
       status: z.enum(["trialing", "active", "past_due", "canceled", "unpaid", "paused"])
-    }).passthrough()
+    })
   })
 });
 

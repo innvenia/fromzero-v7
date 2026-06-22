@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -37,8 +39,8 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Test
-        run: npm test
+      - name: Test coverage
+        run: npm run test:coverage
 
       - name: Build
         run: npm run build
@@ -49,6 +51,9 @@ jobs:
       - name: SonarQube scan
         if: ${{ env.SONARQUBE_TOKEN != '' && env.SONARQUBE_URL != '' }}
         uses: SonarSource/sonarqube-scan-action@v7
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true
         env:
           SONAR_HOST_URL: ${{ env.SONARQUBE_URL }}
           SONAR_TOKEN: ${{ env.SONARQUBE_TOKEN }}

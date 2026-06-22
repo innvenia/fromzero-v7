@@ -23,14 +23,14 @@ export const encryptedCredentialsEnvelopeSchema = z.object({
 }).strict();
 
 export const integrationRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   provider: integrationProviderSchema,
   name: z.string().min(1).max(200),
   config: z.record(z.string(), z.unknown()),
   credentials: encryptedCredentialsEnvelopeSchema,
   status: integrationStatusSchema,
-  last_tested_at: z.string().datetime().nullable(),
+  last_tested_at: z.iso.datetime().nullable(),
   is_active: z.boolean()
 }).superRefine((integration, context) => {
   const baseUrl = integration.config.base_url;

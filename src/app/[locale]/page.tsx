@@ -2,11 +2,11 @@ import { getTranslations } from "next-intl/server";
 import { DashboardPage } from "@web/dashboard/dashboard-page";
 import type { AppLocale } from "@fw/i18n/routing";
 
-type HomePageProps = {
+type HomePageProps = Readonly<{
   params: Promise<{
     locale: AppLocale;
   }>;
-};
+}>;
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;

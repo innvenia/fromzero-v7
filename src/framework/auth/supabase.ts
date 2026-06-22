@@ -30,8 +30,8 @@ export function createSupabaseServerClient(cookieStore: SupabaseCookieStore): Su
 }
 
 export function createSupabaseServiceRoleClient(): SupabaseClient {
-  if (typeof window !== "undefined") {
-    throw new Error("Supabase service role client is server-only");
+  if (typeof globalThis.window !== "undefined") {
+    throw new TypeError("Supabase service role client is server-only");
   }
 
   return createClient(getSupabaseUrl(), getSupabaseServerOnlyKey(), {

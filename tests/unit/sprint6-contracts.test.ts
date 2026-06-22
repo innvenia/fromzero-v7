@@ -259,4 +259,21 @@ describe("Sprint 6 billing contracts", () => {
     expect(decoded).toContain("INV-2026-0001");
     expect(decoded).toContain("Acme");
   });
+
+  it("escapes PDF text and slugifies invoice file names without regex backtracking", () => {
+    const pdf = buildBillingRecordPdf({
+      type: "invoice",
+      tenantName: "Acme (HQ) \\ Labs",
+      record: {
+        ...invoice,
+        invoice_number: "INV (Q4) \\ 2026"
+      }
+    });
+
+    const decoded = new TextDecoder().decode(pdf.bytes);
+
+    expect(pdf.fileName).toBe("invoice-inv-q4-2026.pdf");
+    expect(decoded).toContain("Invoice INV \\(Q4\\) \\\\ 2026");
+    expect(decoded).toContain("Tenant: Acme \\(HQ\\) \\\\ Labs");
+  });
 });

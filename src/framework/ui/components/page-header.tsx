@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
-type PageHeaderProps = {
+type PageHeaderProps = Readonly<{
   actions?: ReactNode;
   breadcrumb: string;
   subtitle: string;
   title: string;
-};
+}>;
 
 export function PageHeader({ actions, breadcrumb, subtitle, title }: PageHeaderProps) {
   return (

@@ -3,20 +3,20 @@ import { z } from "zod";
 import { moduleCodeSchema } from "../../auth/schema";
 
 export const tagRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   name: z.string().min(1).max(100),
-  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).nullable(),
+  color: z.string().check(z.regex(/^#[0-9a-fA-F]{6}$/)).nullable(),
   description: z.string().max(500).nullable(),
-  deleted_at: z.string().datetime().nullable()
+  deleted_at: z.iso.datetime().nullable()
 });
 
 export const taggableRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  tag_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  tag_id: z.uuid(),
   entity_type: moduleCodeSchema,
-  entity_id: z.string().uuid()
+  entity_id: z.uuid()
 });
 
 export type TagRecord = z.infer<typeof tagRecordSchema>;
@@ -45,7 +45,7 @@ export function validateTagAttachment(input: {
     throw new Error("Tag target module is not allowlisted.");
   }
 
-  z.string().uuid().parse(input.target.entityId);
+  z.uuid().parse(input.target.entityId);
 
   return true;
 }

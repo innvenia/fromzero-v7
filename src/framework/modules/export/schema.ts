@@ -7,8 +7,8 @@ export const exportFileFormatSchema = z.enum(["csv", "xlsx"]);
 export const exportStatusSchema = z.enum(["pending", "processing", "completed", "failed"]);
 
 export const exportRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   module_code: moduleCodeSchema,
   file_name: z.string().min(1).max(300).nullable(),
   file_url: z.string().min(1).max(1000).nullable(),
@@ -16,9 +16,9 @@ export const exportRecordSchema = z.object({
   filters_applied: z.record(z.string(), z.unknown()),
   total_rows: z.number().int().nonnegative().nullable(),
   status: exportStatusSchema,
-  download_expires_at: z.string().datetime().nullable(),
-  started_at: z.string().datetime().nullable(),
-  completed_at: z.string().datetime().nullable()
+  download_expires_at: z.iso.datetime().nullable(),
+  started_at: z.iso.datetime().nullable(),
+  completed_at: z.iso.datetime().nullable()
 }).superRefine((record, context) => {
   if (record.status === "completed" && (!record.file_url || !record.download_expires_at || !record.completed_at)) {
     context.addIssue({
@@ -39,7 +39,7 @@ export function buildExportFileName(input: {
 }): string {
   const format = exportFileFormatSchema.parse(input.fileFormat);
   const safeModuleCode = moduleCodeSchema.parse(input.moduleCode);
-  const stamp = input.createdAt.toISOString().slice(0, 19).replace(/[-:T]/g, "");
+  const stamp = input.createdAt.toISOString().slice(0, 19).replaceAll(/[-:T]/g, "");
 
   return `${safeModuleCode}-${stamp}.${format}`;
 }

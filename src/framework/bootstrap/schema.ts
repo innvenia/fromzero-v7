@@ -12,13 +12,13 @@ export const bootstrapPlanSchema = z.object({
 export const bootstrapSchema = z.object({
   _metadata: z.object({
     version: z.literal("7.4.0"),
-    generated_at: z.string().datetime(),
+    generated_at: z.iso.datetime(),
     prd_reference: z.string().min(1)
   }),
   app: z.object({
     mode: z.enum(["saas", "corporate"]),
     name: z.string().min(1),
-    url: z.string().url(),
+    url: z.url(),
     allow_multi_tenant_users: z.boolean().default(false),
     licensing_model: z.enum(["per_tenant", "per_user"])
   }),
@@ -45,12 +45,12 @@ export const bootstrapSchema = z.object({
   initial_data: z.object({
     tenant_zero: z.object({
       name: z.string().min(1),
-      slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      slug: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/))
     }),
     super_admin: z.object({
       first_name: z.string().min(1),
       last_name: z.string().min(1),
-      email: z.string().email()
+      email: z.email()
     }),
     profiles: z.array(z.enum(baseProfileCodes)).superRefine((profiles, context) => {
       for (const requiredProfile of baseProfileCodes) {

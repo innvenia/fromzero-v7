@@ -39,10 +39,10 @@ type DashboardCopy = {
   subtitle: string;
 };
 
-type DashboardPageProps = {
+type DashboardPageProps = Readonly<{
   copy: DashboardCopy;
   locale: AppLocale;
-};
+}>;
 
 const dashboardModuleCodes = new Set(["module", "custom-field", "filter"]);
 

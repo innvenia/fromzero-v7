@@ -7,11 +7,11 @@ type AppShellCopy = {
   searchPlaceholder: string;
 };
 
-type AppShellProps = {
+type AppShellProps = Readonly<{
   children: React.ReactNode;
   copy: AppShellCopy;
   locale: AppLocale;
-};
+}>;
 
 const navigation = [
   { href: "", icon: Gauge, labelKey: "Overview" },

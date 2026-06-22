@@ -15,22 +15,22 @@ import { logRecordSchema, type LogRecord } from "../modules/log";
 import { defaultRateLimitRules, type RateLimitRule } from "./rate-limit";
 
 const permissionGrantSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   subjectType: z.enum(["user", "profile"]),
-  subjectId: z.string().uuid(),
+  subjectId: z.uuid(),
   moduleCode: z.string().min(1),
   action: z.string().min(1),
   allowed: z.boolean()
 });
 
 export const privateApiRequestSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.uuid(),
   appMetadata: z.unknown(),
-  requestedTenantId: z.string().uuid().nullable().optional(),
+  requestedTenantId: z.uuid().nullable().optional(),
   moduleCode: moduleCodeSchema,
   action: moduleActionSchema,
   permissionGrants: z.array(permissionGrantSchema),
-  route: z.string().regex(/^\/api\/v1(?:\/[a-z0-9-]+)+$/),
+  route: z.string().check(z.regex(/^\/api\/v1(?:\/[a-z0-9-]+)+$/)),
   requestId: z.string().min(1).max(128)
 });
 

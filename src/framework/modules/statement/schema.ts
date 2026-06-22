@@ -3,8 +3,8 @@ import { z } from "zod";
 export const statementStatusSchema = z.enum(["draft", "finalized", "paid", "voided"]);
 
 export const statementLineItemSchema = z.object({
-  subscription_id: z.string().uuid(),
-  plan_id: z.string().uuid(),
+  subscription_id: z.uuid(),
+  plan_id: z.uuid(),
   plan_code: z.string().min(1).max(50),
   description: z.string().min(1).max(300),
   quantity: z.number().positive(),
@@ -14,16 +14,16 @@ export const statementLineItemSchema = z.object({
 });
 
 export const statementRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  period_start: z.string().datetime(),
-  period_end: z.string().datetime(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  period_start: z.iso.datetime(),
+  period_end: z.iso.datetime(),
   total_amount: z.number().nonnegative(),
   currency: z.string().length(3),
   line_items: z.array(statementLineItemSchema),
   status: statementStatusSchema,
   payment_method_id: z.string().min(1).max(200).nullable(),
-  generated_at: z.string().datetime(),
+  generated_at: z.iso.datetime(),
   metadata: z.record(z.string(), z.unknown())
 }).superRefine((statement, context) => {
   const lineTotal = statement.line_items.reduce((total, lineItem) => total + lineItem.amount, 0);

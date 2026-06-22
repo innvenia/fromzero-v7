@@ -70,7 +70,7 @@ export function resolveGridConfiguration(input: ResolveGridConfigurationInput): 
   if (sort) {
     const sortColumn = columnByField.get(sort.field);
 
-    if (!sortColumn || !sortColumn.sortable) {
+    if (!sortColumn?.sortable) {
       throw new Error("Grid sort field is not sortable.");
     }
   }

@@ -1,9 +1,9 @@
 import { Card } from "./card";
 
-type StatCardProps = {
+type StatCardProps = Readonly<{
   label: string;
   value: string;
-};
+}>;
 
 export function StatCard({ label, value }: StatCardProps) {
   return (

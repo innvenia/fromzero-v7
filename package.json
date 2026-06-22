@@ -17,8 +17,9 @@
     "verify:stack": "npm ls --depth=0",
     "typecheck": "tsc --noEmit --pretty false",
     "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --coverage --passWithNoTests",
     "test:e2e": "playwright test",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run verify:stack"
+    "check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build && npm run verify:stack"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.0",
@@ -37,6 +38,7 @@
     "@types/node": "25.9.3",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
+    "@vitest/coverage-v8": "4.1.9",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.9",
     "supabase": "^2.107.0",

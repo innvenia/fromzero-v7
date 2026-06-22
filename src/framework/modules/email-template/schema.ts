@@ -1,15 +1,15 @@
 import { z } from "zod";
 
 export const emailTemplateVariableSchema = z.object({
-  name: z.string().regex(/^[a-z][a-z0-9_]*$/),
+  name: z.string().check(z.regex(/^[a-z][a-z0-9_]*$/)),
   type: z.enum(["string", "number", "boolean", "date", "url"]),
   required: z.boolean()
 });
 
 export const emailTemplateRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid().nullable(),
-  code: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(100),
+  id: z.uuid(),
+  tenant_id: z.uuid().nullable(),
+  code: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(100),
   name: z.string().min(1).max(200),
   subject: z.string().min(1).max(300),
   body_html: z.string().min(1),
@@ -17,7 +17,7 @@ export const emailTemplateRecordSchema = z.object({
   variables: z.array(emailTemplateVariableSchema),
   is_active: z.boolean(),
   is_system: z.boolean(),
-  locale: z.string().regex(/^[a-z]{2}(?:-[A-Z]{2})?$/)
+  locale: z.string().check(z.regex(/^[a-z]{2}(?:-[A-Z]{2})?$/))
 });
 
 export type EmailTemplateVariable = z.infer<typeof emailTemplateVariableSchema>;
@@ -69,8 +69,12 @@ function stringifyTemplateValue(value: unknown): string {
     return value;
   }
 
-  if (typeof value === "number" || typeof value === "boolean") {
-    return String(value);
+  if (typeof value === "number") {
+    return value.toString();
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
   }
 
   throw new Error("Email template variables must render to scalar values.");
@@ -83,12 +87,12 @@ function renderTemplateString(input: {
   escape: boolean;
 }): string {
   for (const variable of input.variables) {
-    if (variable.required && !Object.prototype.hasOwnProperty.call(input.data, variable.name)) {
+    if (variable.required && !Object.hasOwn(input.data, variable.name)) {
       throw new Error(`Missing required email template variable: ${variable.name}.`);
     }
   }
 
-  return input.template.replace(/\{\{\s*([a-z][a-z0-9_]*)\s*\}\}/g, (_match, variableName: string) => {
+  return input.template.replaceAll(/\{\{\s*([a-z][a-z0-9_]*)\s*\}\}/g, (_match, variableName: string) => {
     const variable = input.variables.find((candidate) => candidate.name === variableName);
 
     if (!variable) {

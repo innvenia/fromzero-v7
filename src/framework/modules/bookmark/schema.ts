@@ -3,14 +3,14 @@ import { z } from "zod";
 import { moduleCodeSchema } from "../../auth/schema";
 
 export const bookmarkRecordSchema = z.object({
-  id: z.string().uuid(),
-  user_id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  user_id: z.uuid(),
+  tenant_id: z.uuid(),
   entity_type: moduleCodeSchema,
-  entity_id: z.string().uuid(),
+  entity_id: z.uuid(),
   display_label: z.string().min(1).max(200),
   sort_order: z.number().int().nullable(),
-  deleted_at: z.string().datetime().nullable()
+  deleted_at: z.iso.datetime().nullable()
 });
 
 export type BookmarkRecord = z.infer<typeof bookmarkRecordSchema>;

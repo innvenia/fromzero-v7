@@ -3,18 +3,18 @@ import { z } from "zod";
 export const documentStatusSchema = z.enum(["draft", "published", "archived"]);
 
 export const documentRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   title: z.string().min(1).max(300),
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(300),
+  slug: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(300),
   content: z.string().nullable(),
   excerpt: z.string().nullable(),
   category: z.string().min(1).max(100).nullable(),
   status: documentStatusSchema,
   is_pinned: z.boolean(),
-  published_at: z.string().datetime().nullable(),
+  published_at: z.iso.datetime().nullable(),
   custom_data: z.record(z.string(), z.unknown()),
-  deleted_at: z.string().datetime().nullable()
+  deleted_at: z.iso.datetime().nullable()
 }).superRefine((document, context) => {
   if (document.status === "published" && !document.published_at) {
     context.addIssue({
@@ -25,20 +25,20 @@ export const documentRecordSchema = z.object({
 });
 
 export const documentVersionRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  document_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  document_id: z.uuid(),
   version_number: z.number().int().positive(),
   title: z.string().min(1).max(300),
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(300),
+  slug: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).max(300),
   content: z.string().nullable(),
   excerpt: z.string().nullable(),
   category: z.string().min(1).max(100).nullable(),
   status: documentStatusSchema,
-  published_at: z.string().datetime().nullable(),
+  published_at: z.iso.datetime().nullable(),
   change_summary: z.string().min(1).max(500).nullable(),
-  created_by: z.string().uuid(),
-  created_at: z.string().datetime()
+  created_by: z.uuid(),
+  created_at: z.iso.datetime()
 });
 
 export type DocumentStatus = z.infer<typeof documentStatusSchema>;

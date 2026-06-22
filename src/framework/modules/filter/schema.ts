@@ -19,15 +19,15 @@ export const filterOperatorValues = [
 ] as const;
 
 export const filterConditionSchema = z.object({
-  field: z.string().regex(/^[a-z][a-z0-9_.]*$/).max(100),
+  field: z.string().check(z.regex(/^[a-z][a-z0-9_.]*$/)).max(100),
   operator: z.enum(filterOperatorValues),
   value: z.unknown().optional()
 });
 
 export const filterRecordSchema = z.object({
-  id: z.string().uuid(),
-  user_id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  user_id: z.uuid(),
+  tenant_id: z.uuid(),
   module_code: moduleCodeSchema,
   name: z.string().min(1).max(200),
   conditions: z.array(filterConditionSchema),
@@ -80,7 +80,7 @@ export function validateFilterAgainstGrid(
   for (const condition of filter.conditions) {
     const column = columnByField.get(condition.field);
 
-    if (!column || !column.filterable) {
+    if (!column?.filterable) {
       throw new Error("Filter references a non-filterable grid column.");
     }
   }
@@ -88,7 +88,7 @@ export function validateFilterAgainstGrid(
   if (filter.sort_config) {
     const column = columnByField.get(filter.sort_config.field);
 
-    if (!column || !column.sortable) {
+    if (!column?.sortable) {
       throw new Error("Filter sort references a non-sortable grid column.");
     }
   }

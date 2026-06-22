@@ -20,17 +20,17 @@ export const frameworkEventNameSchema = z.string()
   .max(120);
 
 const frameworkEventBaseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: frameworkEventNameSchema,
-  tenant_id: z.string().uuid().nullable(),
-  actor_id: z.string().uuid().nullable(),
+  tenant_id: z.uuid().nullable(),
+  actor_id: z.uuid().nullable(),
   module_code: moduleCodeSchema.nullable(),
   entity_type: moduleCodeSchema.nullable(),
-  entity_id: z.string().uuid().nullable(),
+  entity_id: z.uuid().nullable(),
   source: frameworkEventSourceSchema,
   payload: z.record(z.string(), z.unknown()),
   idempotency_key: z.string().min(16).max(160),
-  occurred_at: z.string().datetime()
+  occurred_at: z.iso.datetime()
 });
 
 export const frameworkEventSchema = frameworkEventBaseSchema.superRefine((event, context) => {
@@ -46,7 +46,7 @@ export const createFrameworkEventInputSchema = frameworkEventBaseSchema.omit({
   id: true,
   idempotency_key: true
 }).extend({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
   idempotency_key: z.string().min(16).max(160).optional()
 });
 

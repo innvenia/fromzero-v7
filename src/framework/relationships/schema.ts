@@ -2,11 +2,11 @@ import { z } from "zod";
 
 import { moduleCodeSchema } from "../auth/schema";
 
-export const relationshipTypeCodeSchema = z.string().regex(/^[a-z][a-z0-9_]*$/).max(50);
+export const relationshipTypeCodeSchema = z.string().check(z.regex(/^[a-z][a-z0-9_]*$/)).max(50);
 
 export const recordRelationshipTypeSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid().nullable(),
+  id: z.uuid(),
+  tenant_id: z.uuid().nullable(),
   code: relationshipTypeCodeSchema,
   name: z.string().min(1).max(100),
   description: z.string().nullable(),
@@ -18,22 +18,22 @@ export const recordRelationshipTypeSchema = z.object({
 });
 
 export const relationshipEndpointSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   entityType: moduleCodeSchema,
-  entityId: z.string().uuid()
+  entityId: z.uuid()
 });
 
 export const recordRelationshipRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  relationship_type_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  relationship_type_id: z.uuid(),
   source_entity_type: moduleCodeSchema,
-  source_entity_id: z.string().uuid(),
+  source_entity_id: z.uuid(),
   target_entity_type: moduleCodeSchema,
-  target_entity_id: z.string().uuid(),
+  target_entity_id: z.uuid(),
   metadata: z.record(z.string(), z.unknown()),
-  effective_from: z.string().datetime().nullable(),
-  effective_to: z.string().datetime().nullable()
+  effective_from: z.iso.datetime().nullable(),
+  effective_to: z.iso.datetime().nullable()
 });
 
 export type RecordRelationshipType = z.infer<typeof recordRelationshipTypeSchema>;

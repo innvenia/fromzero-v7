@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const apiEndpointContractSchema = z.object({
   domain: z.string().min(1),
-  basePath: z.string().regex(/^\/api\/v1(?:\/[a-z0-9-]+)+$/),
+  basePath: z.string().check(z.regex(/^\/api\/v1(?:\/[a-z0-9-]+)+$/)),
   ownerSprint: z.string().min(1),
   implemented: z.boolean(),
   requiresAuth: z.boolean(),

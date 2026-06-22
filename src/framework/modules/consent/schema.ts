@@ -10,14 +10,14 @@ export const consentTypeSchema = z.enum([
 ]);
 
 export const consentRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  user_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  user_id: z.uuid(),
   consent_type: consentTypeSchema,
-  accepted_at: z.string().datetime(),
-  revoked_at: z.string().datetime().nullable(),
-  document_id: z.string().uuid().nullable(),
-  document_version_id: z.string().uuid().nullable(),
+  accepted_at: z.iso.datetime(),
+  revoked_at: z.iso.datetime().nullable(),
+  document_id: z.uuid().nullable(),
+  document_version_id: z.uuid().nullable(),
   ip_address: z.string().min(1).max(45),
   user_agent: z.string().min(1).max(500),
   metadata: z.record(z.string(), z.unknown())

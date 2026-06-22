@@ -43,20 +43,40 @@ function getCellValue(record: Record<string, unknown>, field: string): unknown {
   }, record);
 }
 
+function renderPrimitiveValue(value: unknown): string {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (typeof value === "number" || typeof value === "bigint") {
+    return value.toString();
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
+  }
+
+  if (typeof value === "symbol") {
+    return value.description ?? "";
+  }
+
+  return JSON.stringify(value) ?? "";
+}
+
 function renderCellValue(value: unknown, type: DataGridColumn["type"], emptyCell: string) {
   if (value === null || value === undefined || value === "") {
     return <span className="text-[var(--text-faint)]">{emptyCell}</span>;
   }
 
   if (type === "badge") {
-    return <Badge tone="info">{String(value)}</Badge>;
+    return <Badge tone="info">{renderPrimitiveValue(value)}</Badge>;
   }
 
   if (type === "boolean") {
-    return <span className="font-semibold text-[var(--text-strong)]">{String(value)}</span>;
+    return <span className="font-semibold text-[var(--text-strong)]">{renderPrimitiveValue(value)}</span>;
   }
 
-  return String(value);
+  return renderPrimitiveValue(value);
 }
 
 export function DataGrid<TRecord extends Record<string, unknown>>({

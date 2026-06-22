@@ -20,15 +20,34 @@ type BillingPdfArtifact = {
 };
 
 function escapePdfText(value: string) {
-  return value.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+  let escapedValue = "";
+
+  for (const character of value) {
+    if (character === "\\" || character === "(" || character === ")") {
+      escapedValue += "\\";
+    }
+
+    escapedValue += character;
+  }
+
+  return escapedValue;
 }
 
 function slugifyFilePart(value: string) {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  let slug = "";
+
+  for (const character of value.trim().toLowerCase()) {
+    const isLowercaseLetter = character >= "a" && character <= "z";
+    const isDigit = character >= "0" && character <= "9";
+
+    if (isLowercaseLetter || isDigit) {
+      slug += character;
+    } else if (slug.length > 0 && !slug.endsWith("-")) {
+      slug += "-";
+    }
+  }
+
+  return slug.endsWith("-") ? slug.slice(0, -1) : slug;
 }
 
 function buildPdfSource(title: string, lines: readonly string[]) {

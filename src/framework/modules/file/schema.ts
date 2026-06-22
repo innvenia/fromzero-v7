@@ -34,8 +34,8 @@ export const storageSettingsSchema = z.object({
 });
 
 export const fileRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   file_name: z.string().min(1).max(300),
   storage_bucket: storageBucketSchema,
   storage_key: z.string().min(1).max(1000).refine((value) => !value.includes(".."), {
@@ -45,14 +45,14 @@ export const fileRecordSchema = z.object({
   file_size: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
   mime_type: z.string().min(1).max(100),
   entity_type: moduleCodeSchema.nullable(),
-  entity_id: z.string().uuid().nullable(),
+  entity_id: z.uuid().nullable(),
   is_public: z.boolean(),
   thumbnail_url: z.string().min(1).max(1000).nullable(),
-  file_group_id: z.string().uuid(),
+  file_group_id: z.uuid(),
   version: z.number().int().positive(),
-  previous_version_id: z.string().uuid().nullable(),
+  previous_version_id: z.uuid().nullable(),
   is_current: z.boolean(),
-  deleted_at: z.string().datetime().nullable()
+  deleted_at: z.iso.datetime().nullable()
 }).superRefine((file, context) => {
   if ((file.entity_type === null) !== (file.entity_id === null)) {
     context.addIssue({
@@ -63,11 +63,11 @@ export const fileRecordSchema = z.object({
 });
 
 export const uploadIntentInputSchema = z.object({
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
   entityType: moduleCodeSchema,
-  entityId: z.string().uuid(),
-  fileId: z.string().uuid(),
+  entityId: z.uuid(),
+  fileId: z.uuid(),
   fileName: z.string().min(1).max(300),
   mimeType: z.string().min(1).max(100),
   sizeBytes: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
@@ -305,16 +305,22 @@ export function buildStorageBrowserTree(filesInput: readonly FileRecord[]): Stor
     groupedFiles.set(groupKey, node);
   }
 
-  return [...groupedFiles.values()]
-    .sort((left, right) => `${left.entityType}:${left.entityId}`.localeCompare(`${right.entityType}:${right.entityId}`))
-    .map((node) => ({
-      ...node,
-      files: node.files.sort((left, right) => {
-        if (left.fileName !== right.fileName) {
-          return left.fileName.localeCompare(right.fileName);
-        }
+  const sortedNodes = [...groupedFiles.values()];
+  sortedNodes.sort((left, right) => `${left.entityType}:${left.entityId}`.localeCompare(`${right.entityType}:${right.entityId}`));
 
-        return right.version - left.version;
-      })
-    }));
+  return sortedNodes.map((node) => {
+    const sortedFiles = [...node.files];
+    sortedFiles.sort((left, right) => {
+      if (left.fileName !== right.fileName) {
+        return left.fileName.localeCompare(right.fileName);
+      }
+
+      return right.version - left.version;
+    });
+
+    return {
+      ...node,
+      files: sortedFiles
+    };
+  });
 }

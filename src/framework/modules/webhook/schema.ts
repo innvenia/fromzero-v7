@@ -13,14 +13,14 @@ export const encryptedWebhookSecretSchema = z.object({
 }).strict();
 
 export const webhookRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   name: z.string().min(1).max(200),
-  url: z.string().url(),
+  url: z.url(),
   secret_encrypted: encryptedWebhookSecretSchema,
-  events: z.array(z.string().regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/)).min(1),
+  events: z.array(z.string().check(z.regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/))).min(1),
   is_active: z.boolean(),
-  last_triggered_at: z.string().datetime().nullable(),
+  last_triggered_at: z.iso.datetime().nullable(),
   failure_count: z.number().int().nonnegative()
 }).superRefine((webhook, context) => {
   try {
@@ -34,17 +34,17 @@ export const webhookRecordSchema = z.object({
 });
 
 export const webhookDeliveryRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  webhook_id: z.string().uuid(),
-  event: z.string().regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  webhook_id: z.uuid(),
+  event: z.string().check(z.regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/)),
   payload: z.record(z.string(), z.unknown()),
   response_status: z.number().int().min(100).max(599).nullable(),
   response_body: z.string().max(1024).nullable(),
   attempt_number: z.number().int().positive(),
   status: webhookDeliveryStatusSchema,
-  attempted_at: z.string().datetime(),
-  delivered_at: z.string().datetime().nullable()
+  attempted_at: z.iso.datetime(),
+  delivered_at: z.iso.datetime().nullable()
 }).superRefine((delivery, context) => {
   if (delivery.status === "delivered" && delivery.delivered_at === null) {
     context.addIssue({
@@ -145,6 +145,14 @@ export function buildWebhookDeliveryAttempt(input: {
   const webhook = webhookRecordSchema.parse(input.webhook);
   const delivered = input.responseStatus !== null && input.responseStatus >= 200 && input.responseStatus < 300;
 
+  let status: WebhookDeliveryRecord["status"] = "retrying";
+
+  if (delivered) {
+    status = "delivered";
+  } else if (input.attemptNumber >= 3) {
+    status = "failed";
+  }
+
   return webhookDeliveryRecordSchema.parse({
     id: input.id ?? globalThis.crypto.randomUUID(),
     tenant_id: webhook.tenant_id,
@@ -154,7 +162,7 @@ export function buildWebhookDeliveryAttempt(input: {
     response_status: input.responseStatus,
     response_body: input.responseBody ? input.responseBody.slice(0, 1024) : null,
     attempt_number: input.attemptNumber,
-    status: delivered ? "delivered" : input.attemptNumber >= 3 ? "failed" : "retrying",
+    status,
     attempted_at: input.attemptedAt,
     delivered_at: delivered ? input.attemptedAt : null
   });

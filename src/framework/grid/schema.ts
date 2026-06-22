@@ -36,7 +36,7 @@ export const gridModuleConfigSchema = z.object({
 });
 
 export const gridCustomFieldColumnSchema = z.object({
-  field_name: z.string().regex(/^[a-z][a-z0-9_]*$/),
+  field_name: z.string().check(z.regex(/^[a-z][a-z0-9_]*$/)),
   field_type: z.enum(["text", "textarea", "number", "boolean", "date", "select", "multi-select", "email", "url"]),
   labels: z.record(z.string(), z.string().min(1)),
   is_filterable: z.boolean()

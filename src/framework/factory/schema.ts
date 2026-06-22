@@ -6,7 +6,7 @@ export const factoryOperationValues = ["list", "get", "create", "update", "delet
 
 export const factoryOperationSchema = z.enum(factoryOperationValues);
 
-export const safeSqlIdentifierSchema = z.string().regex(/^[a-z][a-z0-9_]*$/);
+export const safeSqlIdentifierSchema = z.string().check(z.regex(/^[a-z][a-z0-9_]*$/));
 
 export const sprintFiveModuleFactoryContractSchema = z.object({
   code: moduleCodeSchema,

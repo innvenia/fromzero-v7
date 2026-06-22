@@ -14,12 +14,12 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-type LocaleLayoutProps = {
+type LocaleLayoutProps = Readonly<{
   children: React.ReactNode;
   params: Promise<{
     locale: string;
   }>;
-};
+}>;
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;

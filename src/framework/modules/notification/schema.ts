@@ -15,9 +15,9 @@ export const notificationDeliveryStateSchema = z.enum([
 ]);
 
 export const notificationRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  user_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  user_id: z.uuid(),
   title: z.string().min(1).max(200),
   body: z.string().min(1).max(5000),
   type: notificationTypeSchema,
@@ -25,9 +25,9 @@ export const notificationRecordSchema = z.object({
   channels: z.array(notificationChannelSchema).min(1),
   delivery_status: z.record(z.string(), notificationDeliveryStateSchema),
   entity_type: z.string().min(1).max(100).nullable(),
-  entity_id: z.string().uuid().nullable(),
-  read_at: z.string().datetime().nullable(),
-  archived_at: z.string().datetime().nullable()
+  entity_id: z.uuid().nullable(),
+  read_at: z.iso.datetime().nullable(),
+  archived_at: z.iso.datetime().nullable()
 }).superRefine((notification, context) => {
   if (!notification.channels.includes("in_app")) {
     context.addIssue({

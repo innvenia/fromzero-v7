@@ -12,7 +12,7 @@ export const tenantSettingsSchema = z.object({
   date_format: z.string().min(1).optional(),
   time_format: z.enum(["12h", "24h"]).optional(),
   tenant_branding: z.object({
-    logo_url: z.string().url().optional(),
+    logo_url: z.url().optional(),
     primary_color: z.string().optional()
   }).optional(),
   soft_delete: z.object({
@@ -21,13 +21,13 @@ export const tenantSettingsSchema = z.object({
 }).catchall(z.unknown());
 
 export const tenantRecordSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string().min(1).max(200),
   legal_name: z.string().max(200).nullable(),
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  slug: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   status: z.enum(tenantStatusValues),
-  primary_email: z.string().email().nullable(),
-  billing_email: z.string().email().nullable(),
+  primary_email: z.email().nullable(),
+  billing_email: z.email().nullable(),
   phone: z.string().max(30).nullable(),
   country: z.string().length(2).nullable(),
   social_links: z.record(z.string(), z.unknown()),

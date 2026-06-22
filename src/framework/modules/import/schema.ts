@@ -14,7 +14,7 @@ export const importStatusSchema = z.enum([
 
 export const importColumnMappingSchema = z.record(
   z.string().min(1).max(200),
-  z.string().regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/)
+  z.string().check(z.regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/))
 );
 
 export const importErrorSchema = z.object({
@@ -24,8 +24,8 @@ export const importErrorSchema = z.object({
 });
 
 export const importRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   module_code: moduleCodeSchema,
   file_name: z.string().min(1).max(300),
   file_url: z.string().min(1).max(1000),
@@ -37,8 +37,8 @@ export const importRecordSchema = z.object({
   error_count: z.number().int().nonnegative(),
   errors: z.array(importErrorSchema),
   status: importStatusSchema,
-  started_at: z.string().datetime().nullable(),
-  completed_at: z.string().datetime().nullable()
+  started_at: z.iso.datetime().nullable(),
+  completed_at: z.iso.datetime().nullable()
 }).superRefine((record, context) => {
   if (record.total_rows !== null && record.processed_rows > record.total_rows) {
     context.addIssue({

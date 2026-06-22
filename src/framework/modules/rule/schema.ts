@@ -26,11 +26,11 @@ export const ruleActionTypeSchema = z.enum([
 ]);
 
 export const ruleConditionLeafSchema = z.object({
-  field: z.string().regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/),
+  field: z.string().check(z.regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/)),
   operator: ruleConditionOperatorSchema,
   value: z.unknown().optional()
 }).superRefine((condition, context) => {
-  if (condition.operator !== "is_null" && !Object.prototype.hasOwnProperty.call(condition, "value")) {
+  if (condition.operator !== "is_null" && !Object.hasOwn(condition, "value")) {
     context.addIssue({
       code: "custom",
       message: "Rule condition value is required for this operator."
@@ -63,30 +63,30 @@ export const ruleConditionSchema: z.ZodType<RuleCondition> = z.lazy(() =>
 );
 
 const notificationActionConfigSchema = z.object({
-  recipient_user_id: z.string().uuid().nullable(),
-  recipient_profile_id: z.string().uuid().nullable(),
+  recipient_user_id: z.uuid().nullable(),
+  recipient_profile_id: z.uuid().nullable(),
   title: z.string().min(1).max(200),
   body: z.string().min(1).max(5000),
   channels: z.array(z.enum(["in_app", "email", "sms", "whatsapp"])).min(1)
 });
 
 const emailActionConfigSchema = z.object({
-  template_code: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  to_email: z.string().email().nullable(),
-  to_field: z.string().regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/).nullable(),
+  template_code: z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
+  to_email: z.email().nullable(),
+  to_field: z.string().check(z.regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/)).nullable(),
   variables: z.record(z.string(), z.unknown())
 }).refine((config) => Boolean(config.to_email || config.to_field), {
   message: "Email rule actions require to_email or to_field."
 });
 
 const updateFieldActionConfigSchema = z.object({
-  field: z.string().regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/),
+  field: z.string().check(z.regex(/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)?$/)),
   value: z.unknown()
 });
 
 const webhookActionConfigSchema = z.object({
-  webhook_id: z.string().uuid().optional(),
-  url: z.string().url().optional(),
+  webhook_id: z.uuid().optional(),
+  url: z.url().optional(),
   method: z.literal("POST"),
   headers: z.record(z.string(), z.string()).default({})
 }).refine((config) => Boolean(config.webhook_id || config.url), {
@@ -94,12 +94,12 @@ const webhookActionConfigSchema = z.object({
 });
 
 export const ruleRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
   name: z.string().min(1).max(200),
   description: z.string().nullable(),
   is_active: z.boolean(),
-  trigger_event: z.string().regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/).max(100),
+  trigger_event: z.string().check(z.regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/)).max(100),
   trigger_module: moduleCodeSchema,
   conditions: ruleConditionSchema,
   action_type: ruleActionTypeSchema,
@@ -107,7 +107,7 @@ export const ruleRecordSchema = z.object({
   max_retries: z.number().int().min(0).max(10),
   retry_delay_seconds: z.number().int().positive(),
   execution_count: z.number().int().nonnegative(),
-  last_executed_at: z.string().datetime().nullable()
+  last_executed_at: z.iso.datetime().nullable()
 }).superRefine((rule, context) => {
   const schema = {
     send_notification: notificationActionConfigSchema,
@@ -127,16 +127,16 @@ export const ruleRecordSchema = z.object({
 });
 
 export const ruleRunRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid(),
-  rule_id: z.string().uuid(),
-  event_id: z.string().uuid(),
+  id: z.uuid(),
+  tenant_id: z.uuid(),
+  rule_id: z.uuid(),
+  event_id: z.uuid(),
   status: z.enum(["queued", "matched", "skipped", "succeeded", "failed", "retrying"]),
   idempotency_key: z.string().min(16).max(160),
   attempt_number: z.number().int().positive(),
   error_message: z.string().max(1000).nullable(),
-  started_at: z.string().datetime(),
-  completed_at: z.string().datetime().nullable()
+  started_at: z.iso.datetime(),
+  completed_at: z.iso.datetime().nullable()
 });
 
 export type RuleActionType = z.infer<typeof ruleActionTypeSchema>;
@@ -149,7 +149,7 @@ function readPayloadField(payload: Record<string, unknown>, field: string): unkn
       return undefined;
     }
 
-    return Object.prototype.hasOwnProperty.call(current, segment)
+    return Object.hasOwn(current, segment)
       ? (current as Record<string, unknown>)[segment]
       : undefined;
   }, payload);

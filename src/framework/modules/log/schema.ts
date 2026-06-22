@@ -13,16 +13,16 @@ export const logActionSchema = z.enum([
 ]);
 
 export const logRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid().nullable(),
-  actor_id: z.string().uuid().nullable(),
-  api_key_id: z.string().uuid().nullable(),
+  id: z.uuid(),
+  tenant_id: z.uuid().nullable(),
+  actor_id: z.uuid().nullable(),
+  api_key_id: z.uuid().nullable(),
   action: logActionSchema.or(z.string().min(1).max(100)),
   entity_type: z.string().max(100).nullable(),
-  entity_id: z.string().uuid().nullable(),
+  entity_id: z.uuid().nullable(),
   ip_address: z.string().nullable(),
   user_agent: z.string().nullable(),
-  timestamp: z.string().datetime(),
+  timestamp: z.iso.datetime(),
   metadata: z.record(z.string(), z.unknown())
 });
 

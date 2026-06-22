@@ -6,27 +6,27 @@ export const authMethodSchema = z.enum(["jwt", "api_key"]);
 export const mfaPolicySchema = z.enum(["disabled", "optional", "required"]);
 export const mfaMethodSchema = z.enum(["totp", "email", "sms"]);
 export const moduleActionSchema = z.enum(moduleActions);
-export const moduleCodeSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+export const moduleCodeSchema = z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/));
 
 const flexibleBooleanSchema = z.union([
   z.boolean(),
   z.enum(["true", "false"]).transform((value) => value === "true")
 ]);
 
-export const appMetadataSchema = z.object({
-  tenant_id: z.string().uuid().optional(),
-  profile_id: z.string().uuid().optional(),
+export const appMetadataSchema = z.looseObject({
+  tenant_id: z.uuid().optional(),
+  profile_id: z.uuid().optional(),
   profile_code: z.string().min(1).optional(),
   is_super_admin: flexibleBooleanSchema.optional(),
   mfa_policy: mfaPolicySchema.optional(),
   mfa_verified: flexibleBooleanSchema.optional()
-}).passthrough();
+});
 
 export const interactiveAuthContextSchema = z.object({
   authMethod: z.literal("jwt"),
-  userId: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  profileId: z.string().uuid().nullable(),
+  userId: z.uuid(),
+  tenantId: z.uuid(),
+  profileId: z.uuid().nullable(),
   profileCode: z.string().min(1).nullable(),
   isSuperAdmin: z.boolean(),
   mfaPolicy: mfaPolicySchema,
@@ -35,10 +35,10 @@ export const interactiveAuthContextSchema = z.object({
 
 export const apiKeyAuthContextSchema = z.object({
   authMethod: z.literal("api_key"),
-  apiKeyId: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  profileId: z.string().uuid(),
-  scopes: z.array(z.string().regex(/^(?:\*|[a-z0-9]+(?:-[a-z0-9]+)*):(?:\*|view|create|update|delete|import|export|notify)$/)),
+  apiKeyId: z.uuid(),
+  tenantId: z.uuid(),
+  profileId: z.uuid(),
+  scopes: z.array(z.string().check(z.regex(/^(?:\*|[a-z0-9]+(?:-[a-z0-9]+)*):(?:\*|view|create|update|delete|import|export|notify)$/))),
   isSuperAdmin: z.literal(false)
 });
 
@@ -48,7 +48,7 @@ export const authContextSchema = z.discriminatedUnion("authMethod", [
 ]);
 
 export const emailPasswordCredentialsSchema = z.object({
-  email: z.string().trim().toLowerCase().email(),
+  email: z.string().trim().toLowerCase().pipe(z.email()),
   password: z.string().min(8).max(128)
 });
 

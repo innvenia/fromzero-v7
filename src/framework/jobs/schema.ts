@@ -25,7 +25,7 @@ export const jobRetryPolicySchema = z.object({
 });
 
 export const backgroundJobDefinitionSchema = z.object({
-  name: z.string().regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)*$/),
+  name: z.string().check(z.regex(/^[a-z0-9-]+(?:\.[a-z0-9-]+)*$/)),
   kind: backgroundJobKindSchema,
   trigger: z.string().min(1).max(120),
   idempotent: z.boolean(),
@@ -35,8 +35,8 @@ export const backgroundJobDefinitionSchema = z.object({
 });
 
 export const jobRunRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenant_id: z.string().uuid().nullable(),
+  id: z.uuid(),
+  tenant_id: z.uuid().nullable(),
   job_name: z.string().min(1).max(120),
   kind: backgroundJobKindSchema,
   status: backgroundJobStatusSchema,
@@ -45,8 +45,8 @@ export const jobRunRecordSchema = z.object({
   max_attempts: z.number().int().positive(),
   last_error: z.string().max(1000).nullable(),
   payload: z.record(z.string(), z.unknown()),
-  started_at: z.string().datetime().nullable(),
-  completed_at: z.string().datetime().nullable()
+  started_at: z.iso.datetime().nullable(),
+  completed_at: z.iso.datetime().nullable()
 }).superRefine((run, context) => {
   if (run.attempt_number > run.max_attempts) {
     context.addIssue({
