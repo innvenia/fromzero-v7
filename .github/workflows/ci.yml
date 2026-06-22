@@ -52,6 +52,7 @@ jobs:
         if: ${{ env.SONARQUBE_TOKEN != '' && env.SONARQUBE_URL != '' }}
         uses: SonarSource/sonarqube-scan-action@v7
         with:
+          skipSignatureVerification: "false"
           args: >
             -Dsonar.qualitygate.wait=true
         env:
