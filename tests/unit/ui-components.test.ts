@@ -2,7 +2,7 @@ import type { ReactElement, ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 
 import { DataGrid, type DataGridLabels } from "../../src/framework/grid";
-import { Card } from "../../src/framework/ui/components";
+import { Badge, Button, Card, PageHeader, StatCard } from "../../src/framework/ui/components";
 
 type ElementProps = {
   children?: ReactNode;
@@ -159,5 +159,48 @@ describe("UI component contracts", () => {
     expect(card.props.className).toContain("rounded-[var(--r-card)]");
     expect(card.props.className).toContain("p-4");
     expect(card.props.children).toBe("Summary");
+  });
+
+  it("renders button variants with safe defaults", () => {
+    const button = Button({
+      children: "Save",
+      className: "min-w-24",
+      disabled: true,
+      variant: "primary"
+    });
+
+    expect(button.props.type).toBe("button");
+    expect(button.props.disabled).toBe(true);
+    expect(button.props.className).toContain("bg-[var(--accent)]");
+    expect(button.props.className).toContain("min-w-24");
+  });
+
+  it("renders badge, page header and stat card components", () => {
+    const badge = Badge({
+      children: "Active",
+      className: "uppercase",
+      tone: "success"
+    });
+    expect(badge.type).toBe("span");
+    expect(badge.props.className).toContain("bg-[var(--success-soft)]");
+    expect(badge.props.className).toContain("uppercase");
+
+    const actions = Button({ children: "Create" });
+    const header = PageHeader({
+      actions,
+      breadcrumb: "Framework / Settings",
+      subtitle: "Tenant configuration",
+      title: "Settings"
+    });
+    expect(header.type).toBe("header");
+    expect(header.props.children[0].props.children[1].props.children).toBe("Settings");
+    expect(header.props.children[1].props.children).toEqual(actions);
+
+    const statCard = StatCard({
+      label: "Quality Gate",
+      value: "OK"
+    });
+    expect(statCard.props.className).toContain("min-h-[112px]");
+    expect(statCard.props.children[1].props.children).toBe("OK");
   });
 });
