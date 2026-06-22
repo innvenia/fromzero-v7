@@ -1,8 +1,13 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
-import bootstrapConfig from "../../bootstrap.example.json";
 import { baseProfileCodes } from "../../src/framework/db";
 import { bootstrapSchema, coreModuleDefinitions } from "../../src/framework/bootstrap";
+
+const bootstrapFixture = JSON.parse(readFileSync(join(process.cwd(), "bootstrap.example.json"), "utf8")) as unknown;
+const bootstrapConfig = bootstrapSchema.parse(bootstrapFixture);
 
 function collectStrings(value: unknown): string[] {
   if (typeof value === "string") {
@@ -22,19 +27,15 @@ function collectStrings(value: unknown): string[] {
 
 describe("bootstrap contract", () => {
   it("keeps the approved SaaS defaults", () => {
-    const parsed = bootstrapSchema.parse(bootstrapConfig);
-
-    expect(parsed.app.mode).toBe("saas");
-    expect(parsed.app.allow_multi_tenant_users).toBe(false);
-    expect(parsed.app.licensing_model).toBe("per_tenant");
-    expect(parsed.infrastructure.features.redis_enabled).toBe(false);
-    expect(parsed.security.mfa_policy).toBe("optional");
+    expect(bootstrapConfig.app.mode).toBe("saas");
+    expect(bootstrapConfig.app.allow_multi_tenant_users).toBe(false);
+    expect(bootstrapConfig.app.licensing_model).toBe("per_tenant");
+    expect(bootstrapConfig.infrastructure.features.redis_enabled).toBe(false);
+    expect(bootstrapConfig.security.mfa_policy).toBe("optional");
   });
 
   it("includes all required base profiles", () => {
-    const parsed = bootstrapSchema.parse(bootstrapConfig);
-
-    expect(parsed.initial_data.profiles).toEqual(expect.arrayContaining([...baseProfileCodes]));
+    expect(bootstrapConfig.initial_data.profiles).toEqual(expect.arrayContaining([...baseProfileCodes]));
   });
 
   it("keeps the canonical core module registry complete", () => {
@@ -43,7 +44,7 @@ describe("bootstrap contract", () => {
   });
 
   it("does not contain real-looking secrets", () => {
-    const serializedValues = collectStrings(bootstrapConfig);
+    const serializedValues = collectStrings(bootstrapFixture);
 
     expect(serializedValues.some((value) => /(?:sk_live|sk_test|sbp_|service_role|eyJ)/i.test(value))).toBe(false);
   });
