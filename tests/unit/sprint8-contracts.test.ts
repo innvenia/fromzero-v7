@@ -316,6 +316,69 @@ describe("Sprint 8 events, jobs, integrations and automation contracts", () => {
     });
   });
 
+  it("renders scalar email template values and rejects invalid template data", () => {
+    const template = {
+      id: "56565656-5656-4656-8656-565656565656",
+      tenant_id: null,
+      code: "activity-digest",
+      name: "Activity digest",
+      subject: "Digest {{count}} {{enabled}} {{optional_note}}",
+      body_html: "<p>{{name}}</p>",
+      body_text: "Digest {{count}} {{enabled}} {{optional_note}}",
+      variables: [
+        { name: "name", type: "string", required: true },
+        { name: "count", type: "number", required: true },
+        { name: "enabled", type: "boolean", required: true },
+        { name: "optional_note", type: "string", required: false }
+      ],
+      is_active: true,
+      is_system: true,
+      locale: "en"
+    } as const;
+
+    expect(resolveEmailTemplate({
+      templates: [template],
+      code: "activity-digest",
+      tenantId,
+      locale: "en"
+    })).toEqual(template);
+    expect(renderEmailTemplate({
+      template,
+      data: {
+        name: "A&B",
+        count: 3,
+        enabled: false
+      }
+    })).toEqual({
+      subject: "Digest 3 false ",
+      html: "<p>A&amp;B</p>",
+      text: "Digest 3 false "
+    });
+    expect(() => renderEmailTemplate({
+      template,
+      data: {
+        name: "A&B",
+        enabled: true
+      }
+    })).toThrow("Missing required email template variable: count");
+    expect(() => renderEmailTemplate({
+      template: { ...template, subject: "{{unknown_value}}" },
+      data: {
+        name: "A&B",
+        count: 1,
+        enabled: true
+      }
+    })).toThrow("Unknown email template variable: unknown_value");
+    expect(() => renderEmailTemplate({
+      template,
+      data: {
+        name: { first: "Ada" },
+        count: 1,
+        enabled: true
+      }
+    })).toThrow("Email template variables must render to scalar values");
+  });
+
   it("requires encrypted integration credentials and blocks unsafe outbound URLs", () => {
     const integration = integrationRecordSchema.parse({
       id: integrationId,
@@ -391,6 +454,53 @@ describe("Sprint 8 events, jobs, integrations and automation contracts", () => {
       status: "retrying",
       delivered_at: null
     }));
+    expect(buildWebhookDeliveryAttempt({
+      webhook,
+      event: "task.updated",
+      payload: { id: eventId },
+      attemptNumber: 1,
+      responseStatus: 204,
+      responseBody: null,
+      attemptedAt: nowIso,
+      id: "67676767-6767-4676-8676-676767676767"
+    })).toEqual(expect.objectContaining({
+      status: "delivered",
+      delivered_at: nowIso
+    }));
+    expect(buildWebhookDeliveryAttempt({
+      webhook,
+      event: "task.updated",
+      payload: { id: eventId },
+      attemptNumber: 3,
+      responseStatus: 500,
+      responseBody: null,
+      attemptedAt: nowIso,
+      id: "78787878-7878-4787-8787-787878787878"
+    })).toEqual(expect.objectContaining({
+      status: "failed",
+      delivered_at: null
+    }));
+    expect(verifyWebhookSignature({
+      payload,
+      signatureHeader: `t=${timestamp},v1=not-hex`,
+      secret,
+      now,
+      toleranceSeconds: 300
+    })).toBe(false);
+    expect(verifyWebhookSignature({
+      payload,
+      signatureHeader,
+      secret: "",
+      now,
+      toleranceSeconds: 300
+    })).toBe(false);
+    expect(verifyWebhookSignature({
+      payload,
+      signatureHeader: signWebhookPayload({ payload, secret, timestamp: timestamp - 1_000 }),
+      secret,
+      now,
+      toleranceSeconds: 300
+    })).toBe(false);
     expect(shouldDisableWebhook({ ...webhook, failure_count: 10 })).toBe(true);
   });
 

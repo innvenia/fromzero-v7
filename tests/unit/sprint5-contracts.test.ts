@@ -158,7 +158,25 @@ describe("Sprint 5 contracts", () => {
     expect(validateCustomFieldDefinition(customField, allowedModuleCodes)).toEqual(customField);
     expect(() => validateCustomFieldDefinition({ ...customField, entity_type: "unknown" }, allowedModuleCodes))
       .toThrow("Custom field module is not allowlisted");
+    expect(() => validateCustomFieldDefinition({ ...customField, default_value: "ca" }, allowedModuleCodes))
+      .toThrow("Custom field default value is not in the select options");
+
+    const multiSelectField = customFieldRecordSchema.parse({
+      ...customField,
+      field_name: "countries",
+      field_type: "multi-select",
+      options: [
+        { value: "mx", labels: { es: "México", en: "Mexico" } },
+        { value: "us", labels: { es: "Estados Unidos", en: "United States" } }
+      ],
+      default_value: ["mx", "us"]
+    });
+
+    expect(validateCustomFieldDefinition(multiSelectField, allowedModuleCodes)).toEqual(multiSelectField);
+    expect(() => validateCustomFieldDefinition({ ...multiSelectField, default_value: ["ca"] }, allowedModuleCodes))
+      .toThrow("Custom field default values are not in the select options");
     expect(() => assertCustomFieldLimit(50, 50)).toThrow("Custom field limit exceeded");
+    expect(assertCustomFieldLimit(49, 50)).toBe(true);
   });
 
   it("validates filter ownership, sharing and grid field allowlists", () => {
