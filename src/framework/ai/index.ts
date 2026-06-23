@@ -52,9 +52,87 @@ export interface OpenRouterAdapterOptions {
 }
 
 const openRouterDefaultEndpoint = "https://openrouter.ai/api/v1/chat/completions";
+const emailAllowedLocalChars = new Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._%+-");
+const emailAllowedDomainChars = new Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-");
+const secretValueChars = new Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-");
+const secretKeyPrefixes = ["sk-", "pk-", "rk-", "or-"] as const;
+const secretKeyLabels = new Set(["token", "secret", "password", "apikey"]);
+const trailingPunctuation = new Set([",", ".", ";", ":", "!", "?", ")", "]", "}"]);
 
 function roundCost(value: number): number {
   return Number(value.toFixed(12));
+}
+
+function everyCharacterAllowed(value: string, allowedCharacters: ReadonlySet<string>): boolean {
+  for (const character of value) {
+    if (!allowedCharacters.has(character)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function splitTrailingPunctuation(value: string): { body: string; suffix: string } {
+  let end = value.length;
+
+  while (end > 0 && trailingPunctuation.has(value.at(end - 1) ?? "")) {
+    end -= 1;
+  }
+
+  return {
+    body: value.slice(0, end),
+    suffix: value.slice(end)
+  };
+}
+
+function normalizeSecretLabel(value: string): string {
+  return value.toLowerCase().replaceAll("_", "").replaceAll("-", "");
+}
+
+function isEmailToken(value: string): boolean {
+  const atIndex = value.indexOf("@");
+
+  if (atIndex <= 0 || atIndex !== value.lastIndexOf("@")) {
+    return false;
+  }
+
+  const localPart = value.slice(0, atIndex);
+  const domain = value.slice(atIndex + 1);
+  const dotIndex = domain.lastIndexOf(".");
+  const topLevelDomain = domain.slice(dotIndex + 1);
+
+  return dotIndex > 0
+    && topLevelDomain.length >= 2
+    && everyCharacterAllowed(localPart, emailAllowedLocalChars)
+    && everyCharacterAllowed(domain, emailAllowedDomainChars)
+    && everyCharacterAllowed(topLevelDomain, emailAllowedLocalChars);
+}
+
+function isSecretValue(value: string): boolean {
+  return value.length >= 8 && everyCharacterAllowed(value, secretValueChars);
+}
+
+function isProviderSecretToken(value: string): boolean {
+  return secretKeyPrefixes.some((prefix) => value.startsWith(prefix) && isSecretValue(value.slice(prefix.length)));
+}
+
+function isInlineSecretAssignment(value: string): boolean {
+  const separatorIndexes = [value.indexOf(":"), value.indexOf("=")].filter((index) => index > 0);
+
+  if (separatorIndexes.length === 0) {
+    return false;
+  }
+
+  const separatorIndex = Math.min(...separatorIndexes);
+  const label = normalizeSecretLabel(value.slice(0, separatorIndex));
+  const secretValue = value.slice(separatorIndex + 1);
+
+  return secretKeyLabels.has(label) && isSecretValue(secretValue);
+}
+
+function isSecretLabel(value: string): boolean {
+  return secretKeyLabels.has(normalizeSecretLabel(value));
 }
 
 export function estimateAiCost(input: {
@@ -173,10 +251,43 @@ export function evaluateAiBudgets(input: AiBudgetEvaluationInput): AiBudgetEvalu
 }
 
 export function redactAiText(value: string): string {
+  let redactNextSecret = false;
+
   return value
-    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[redacted-email]")
-    .replace(/\b(?:sk|pk|rk|or)-[A-Za-z0-9_-]{8,}\b/g, "[redacted-secret]")
-    .replace(/\b(?:token|secret|password|api[_-]?key)\s*[:=]\s*[A-Za-z0-9._-]{8,}\b/gi, "[redacted-secret]");
+    .split(" ")
+    .map((token) => {
+      const { body, suffix } = splitTrailingPunctuation(token);
+
+      if (!body) {
+        return token;
+      }
+
+      if (redactNextSecret && isSecretValue(body)) {
+        redactNextSecret = false;
+        return `[redacted-secret]${suffix}`;
+      }
+
+      if (redactNextSecret && body === "=") {
+        return token;
+      }
+
+      redactNextSecret = false;
+
+      if (isEmailToken(body)) {
+        return `[redacted-email]${suffix}`;
+      }
+
+      if (isProviderSecretToken(body) || isInlineSecretAssignment(body)) {
+        return `[redacted-secret]${suffix}`;
+      }
+
+      if (isSecretLabel(body)) {
+        redactNextSecret = true;
+      }
+
+      return token;
+    })
+    .join(" ");
 }
 
 export function buildAiInvocationLogMetadata(input: {
@@ -272,7 +383,7 @@ export function createOpenRouterAdapter(options: OpenRouterAdapterOptions): AiPr
       const content = payload.choices?.[0]?.message?.content;
 
       if (typeof content !== "string") {
-        throw new Error("OpenRouter response is invalid");
+        throw new TypeError("OpenRouter response is invalid");
       }
 
       return {

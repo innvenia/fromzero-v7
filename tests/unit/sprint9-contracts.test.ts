@@ -75,6 +75,7 @@ describe("Sprint 9 Core AI contracts", () => {
 
   it("validates AI model catalog metadata and request guardrails", () => {
     const model = aiModelRecordSchema.parse(gemmaModel);
+    const paidModel = aiModelRecordSchema.parse(paidFallbackModel);
 
     expect(model.provider).toBe("openrouter");
     expect(model.input_modalities).toContain("video");
@@ -111,6 +112,53 @@ describe("Sprint 9 Core AI contracts", () => {
       requestedOutputTokens: 2_000,
       modality: "audio"
     })).toThrow("AI modality is not supported");
+
+    expect(estimateAiCost({
+      model: { ...paidModel, pricing_unit: "per_1k" },
+      inputTokens: 2_000,
+      outputTokens: 1_000
+    })).toBe(0.45);
+
+    expect(() => assertAiRequestWithinModelLimits({
+      model: { ...paidModel, max_cost_per_request: 0.00001 },
+      inputTokens: 100_000,
+      requestedOutputTokens: 4_000,
+      modality: "text"
+    })).toThrow("AI request exceeds model cost limit");
+  });
+
+  it("rejects invalid AI model and budget scope records", () => {
+    expect(() => aiModelRecordSchema.parse({
+      ...gemmaModel,
+      max_input_tokens: 300_000
+    })).toThrow("AI max_input_tokens cannot exceed context_window");
+
+    expect(() => aiModelRecordSchema.parse({
+      ...gemmaModel,
+      max_tokens: 300_000
+    })).toThrow("AI max_tokens cannot exceed context_window");
+
+    const baseBudget = {
+      id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      tenant_id: null,
+      user_id: null,
+      feature_key: null,
+      scope: "tenant",
+      provider: null,
+      ai_model_id: null,
+      period: "month",
+      max_spend: 1,
+      spend_to_date: 0,
+      currency: "USD",
+      on_exceed: "block",
+      is_active: true
+    } as const;
+
+    expect(() => aiBudgetRecordSchema.parse(baseBudget)).toThrow("Tenant AI budgets require tenant_id");
+    expect(() => aiBudgetRecordSchema.parse({ ...baseBudget, scope: "user" })).toThrow("User AI budgets require user_id");
+    expect(() => aiBudgetRecordSchema.parse({ ...baseBudget, scope: "feature" })).toThrow("Feature AI budgets require feature_key");
+    expect(() => aiBudgetRecordSchema.parse({ ...baseBudget, scope: "provider" })).toThrow("Provider AI budgets require provider");
+    expect(() => aiBudgetRecordSchema.parse({ ...baseBudget, scope: "model" })).toThrow("Model AI budgets require ai_model_id");
   });
 
   it("resolves active fallback models before invoking deprecated models", () => {
@@ -170,15 +218,65 @@ describe("Sprint 9 Core AI contracts", () => {
       warnings: ["AI budget threshold would be exceeded"],
       matchedBudgetIds: [budget.id]
     });
+
+    const ignoredBudgets = [
+      { ...budget, id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd", is_active: false },
+      { ...budget, id: "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee", currency: "EUR" },
+      { ...budget, id: "ffffffff-ffff-4fff-8fff-ffffffffffff", tenant_id: "99999999-9999-4999-8999-999999999999" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999998", user_id: "99999999-9999-4999-8999-999999999997" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999996", feature_key: "other.feature" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999995", provider: "openai" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999994", ai_model_id: "99999999-9999-4999-8999-999999999993" }
+    ].map((record) => aiBudgetRecordSchema.parse(record));
+
+    expect(evaluateAiBudgets({
+      tenantId,
+      userId,
+      featureKey: "task.summarize",
+      model,
+      estimatedCost: 0.002,
+      budgets: ignoredBudgets
+    })).toEqual({
+      allowed: true,
+      warnings: [],
+      matchedBudgetIds: []
+    });
+
+    const scopedBudgets = [
+      { ...budget, id: "99999999-9999-4999-8999-999999999992", tenant_id: null, user_id: null, feature_key: null, provider: null, ai_model_id: null, scope: "global" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999991", tenant_id: tenantId, user_id: null, feature_key: null, provider: null, ai_model_id: null, scope: "tenant" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999990", tenant_id: null, user_id: null, feature_key: null, provider: "openrouter", ai_model_id: null, scope: "provider" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999989", tenant_id: null, user_id: null, feature_key: null, provider: null, ai_model_id: model.id, scope: "model" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999988", tenant_id: null, user_id: userId, feature_key: null, provider: null, ai_model_id: null, scope: "user" },
+      { ...budget, id: "99999999-9999-4999-8999-999999999987", tenant_id: null, user_id: null, feature_key: "task.summarize", provider: null, ai_model_id: null, scope: "feature" }
+    ].map((record) => aiBudgetRecordSchema.parse({
+      ...record,
+      max_spend: 2,
+      spend_to_date: 0
+    }));
+
+    expect(evaluateAiBudgets({
+      tenantId,
+      userId,
+      featureKey: "task.summarize",
+      model,
+      estimatedCost: 0.002,
+      budgets: scopedBudgets
+    }).matchedBudgetIds).toEqual(scopedBudgets.map((budgetRecord) => budgetRecord.id));
   });
 
   it("redacts sensitive input and builds prompt-free usage log metadata", () => {
-    const redacted = redactAiText("Email admin@example.com with token sk-test-secret-value");
+    const fakeProviderKey = ["sk", "test-secret-value"].join("-");
+    const fakeInlineSecret = ["or", "secret-value"].join("-");
+    const redacted = redactAiText(`Email admin@example.com, with token ${fakeProviderKey} and api_key=${fakeInlineSecret}`);
 
     expect(redacted).not.toContain("admin@example.com");
-    expect(redacted).not.toContain("sk-test-secret-value");
+    expect(redacted).not.toContain(fakeProviderKey);
+    expect(redacted).not.toContain(fakeInlineSecret);
     expect(redacted).toContain("[redacted-email]");
     expect(redacted).toContain("[redacted-secret]");
+    expect(redactAiText("plain text token is short")).toBe("plain text token is short");
+    expect(redactAiText(`api_key = ${fakeInlineSecret}`)).toBe("api_key = [redacted-secret]");
 
     const metadata = buildAiInvocationLogMetadata({
       tenantId,
@@ -247,6 +345,31 @@ describe("Sprint 9 Core AI contracts", () => {
       inputTokens: 1,
       requestedOutputTokens: 1
     })).rejects.toThrow("OpenRouter API key is required");
+
+    await expect(createOpenRouterAdapter({
+      apiKey: "server-only-test-key",
+      fetcher: async () => new Response("{}", { status: 503 })
+    }).invoke({
+      model,
+      prompt: "Provider fails",
+      inputTokens: 1,
+      requestedOutputTokens: 1
+    })).rejects.toThrow("OpenRouter request failed");
+
+    await expect(createOpenRouterAdapter({
+      apiKey: "server-only-test-key",
+      fetcher: async () => new Response(JSON.stringify({
+        choices: [{ message: { content: null } }]
+      }), {
+        status: 200,
+        headers: { "content-type": "application/json" }
+      })
+    }).invoke({
+      model,
+      prompt: "Invalid payload",
+      inputTokens: 1,
+      requestedOutputTokens: 1
+    })).rejects.toThrow(TypeError);
 
     await expect(createMockAiProviderAdapter("Mocked local answer").invoke({
       model,
