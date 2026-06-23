@@ -9,9 +9,9 @@
 | Proyecto | From Zero Framework |
 | Versión del adaptador FromZero | 0.4.33, instalación local del proyecto |
 | Fecha de creación | 2026-06-21 |
-| Última actualización | 2026-06-21 |
+| Última actualización | 2026-06-22 |
 | Estado actual | aprobado |
-| Historial de estados | 2026-06-21: creado durante Fase 1 para normalizar P1-P62 |
+| Historial de estados | 2026-06-21: creado durante Fase 1 para normalizar P1-P62; 2026-06-22: Sprint 9 revalidó OpenRouter e implementó Core AI local |
 | Aprobación del usuario | aprobada |
 | Fecha de aprobación | 2026-06-21 |
 | Frase literal de aprobación | PLEASE IMPLEMENT THIS PLAN |
@@ -83,9 +83,9 @@
 | P56 | Observabilidad mínima requiere explicación | contrato implementado, integración pendiente |
 | P57 | Redis default off | cerrado validado |
 | P58 | Secretos controlados, no prohibidos | cerrado validado |
-| P59 | Sprint 9 solo tras saneamiento | contrato implementado, integración pendiente |
-| P60 | Revalidar OpenRouter antes de Sprint 9 | bloqueado por gate externo |
-| P61 | Límites costo/uso como deuda Core AI | contrato implementado, integración pendiente |
+| P59 | Sprint 9 solo tras saneamiento | cerrado validado |
+| P60 | Revalidar OpenRouter antes de Sprint 9 | cerrado validado |
+| P61 | Límites costo/uso como deuda Core AI | cerrado localmente |
 | P62 | Legal externo responsabilidad de app derivada | cerrado validado |
 
 ## Evidencia clave

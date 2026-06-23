@@ -3,6 +3,7 @@ export const sprintFourMigration = "20260619000400_auth_rbac_api_keys.sql";
 export const sprintSixMigration = "20260619000600_billing_core.sql";
 export const sprintSevenMigration = "20260619050821_sprint7_storage_documents_shared.sql";
 export const sprintEightMigration = "20260619110800_events_jobs_integrations.sql";
+export const sprintNineMigration = "20260622222347_core_ai_openrouter.sql";
 
 export const moduleActions = [
   "view",
@@ -91,6 +92,11 @@ export const sprintEightRlsTables = [
   "webhook_deliveries",
   "imports",
   "exports"
+] as const;
+
+export const sprintNineRlsTables = [
+  "ai_models",
+  "ai_budgets"
 ] as const;
 
 export const baseProfileCodes = [

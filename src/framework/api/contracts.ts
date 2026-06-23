@@ -83,11 +83,17 @@ export const sprintEightApiContracts = [
   apiContract("Sprint 8", "exports", "/api/v1/export-jobs")
 ] as const;
 
+export const sprintNineApiContracts = [
+  apiContract("Sprint 9", "ai-models", "/api/v1/ai/models"),
+  apiContract("Sprint 9", "ai-invoke", "/api/v1/ai/invoke")
+] as const;
+
 export const apiEndpointContracts = [
   ...sprintThreeApiContracts,
   ...sprintFourApiContracts,
   ...sprintFiveApiContracts,
   ...sprintSixApiContracts,
   ...sprintSevenApiContracts,
-  ...sprintEightApiContracts
+  ...sprintEightApiContracts,
+  ...sprintNineApiContracts
 ] as const;
