@@ -22,11 +22,16 @@
 - State con `artifacts/FROMZERO_STATE.md` como fuente de verdad operativa.
 - TDD con prueba fallida antes de lógica productiva.
 - Build por Sprints verificables.
+- Gate local ejecutado y registrado en el checkpoint: lint, typecheck, tests unitarios relevantes, coverage, build (si aplica), audit (si aplica), `git diff --check`, secret scan básico y SonarQube local si está configurado.
+- Estándar de calidad interno FromZero cumplido por el código o desviación justificada y aprobada: coverage global y new ≥ 80%, duplicación ≤ 3%, bugs/vulnerabilities/security hotspots abiertos 0, code smells introducidos 0, open issues 0.
+- Regla anti-duplicación aplicada: tercer bloque estructuralmente igual extraído a helper/factory (contratos API, schemas Zod, job definitions, adapters, fixtures, configuración).
+- Componentes React con props `Readonly<Props>`; componentes exportados con test contractual mínimo.
 - Security aprobado.
 - UI aprobado o no aplica con razón.
 - Scalability aprobado.
 - Release con evidencia y handoff.
 - Release con aceptación de producto contra visión validada.
+- Handoff con `## Gate de calidad`: comandos ejecutados, coverage local, resultado SonarQube o `no configurado`, missing blame si/no, issues abiertos, duplicación, riesgos residuales y archivos excluidos del commit o del análisis.
 - `library/manifest.json` revisado.
 - Recursos de integración activados o pregunta bloqueante.
 - `.env.example` sin secretos reales.
@@ -35,3 +40,9 @@
 - Commit reportado con hash corto y mensaje completo.
 - Artefactos revisables enlazados para el usuario.
 - `Siguiente paso para ti:` con acción humana explícita.
+- Preparación inicial cerrada: stack obligatorio validado, `bootstrap.json` listo o diferido, secretos excluidos y aprobación humana registrada.
+- DoR cumplido antes de iniciar cada Sprint y DoD verificado antes de cerrarlo; gate de salida con preguntas críticas = 0.
+- Plan auditado contra documentación y cuestionario antes de aprobar; gaps cerrados.
+- Código listo para validar: RLS con política y prueba cross-tenant lista, RBAC enumerado, naming dual, validación en trust boundaries.
+- Evidencia de test clasificada por nivel; Sprints de BD/RLS e integración con evidencia de ejecución real.
+- Revisión adversarial por dominio completada; hallazgos críticos resueltos o riesgo aceptado.

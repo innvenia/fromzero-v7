@@ -4,6 +4,10 @@
 - Prioridad documental registrada cuando existe `docs/PRD.md` o documentos `docs/REFERENCE_*.md`.
 - Archivos leídos, truncados y omitidos registrados con razón.
 - `artifacts/START_HERE.md` creado o sobrescrito desde `templates/start-here.md`.
+- `artifacts/START_HERE.md` declara `docs/` como directorio estándar de insumos.
+- Idea vaga registrada en `docs/PROJECT_BRIEF.md` cuando aplique.
+- PRD sin ruta resuelto contra `docs/PRD.md` cuando aplique.
+- Documentación en carpeta sin `[ruta-de-docs]` real quedó bloqueada sin fallback automático.
 - `artifacts/FROMZERO_CONTEXT.md` creado o actualizado desde template.
 - Entendimiento inicial registrado antes del Q&A cuando hubo decisiones críticas.
 - Usuario objetivo, usuario no objetivo y casos excluidos registrados.
@@ -32,3 +36,8 @@
 - Alcance clasificado.
 - Tenant ownership claro.
 - Ambigüedades bloqueantes listadas.
+- Stack declarado con herramientas clasificadas obligatoria/opcional/diferida; lo obligatorio validado como funcional.
+- `bootstrap.json` confirmado con datos reales de arranque o diferido con tracking en `artifacts/DEFERRED_ACTIVATIONS.md`.
+- Archivos con secretos identificados y excluidos de Git y Docker.
+- Aprobación humana explícita de la preparación registrada antes de cerrar Context.
+- Ledger de decisiones y fuentes consultados antes de preguntar; lo ya resuelto citado como asumido, no re-preguntado.

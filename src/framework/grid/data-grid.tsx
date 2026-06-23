@@ -89,7 +89,7 @@ export function DataGrid<TRecord extends Record<string, unknown>>({
   rowActions = [],
   rows,
   totalCount
-}: DataGridProps<TRecord>) {
+}: Readonly<DataGridProps<TRecord>>) {
   return (
     <section
       aria-busy={isFetching}

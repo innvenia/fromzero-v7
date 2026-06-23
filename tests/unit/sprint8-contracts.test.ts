@@ -25,6 +25,7 @@ import {
   buildImportConfirmedEvent,
   buildImportPreview,
   buildNotificationFromEvent,
+  assertRuleLimit,
   createExportDownloadIntent,
   createFrameworkEvent,
   doesRuleMatchEvent,
@@ -223,6 +224,122 @@ describe("Sprint 8 events, jobs, integrations and automation contracts", () => {
         conditions: { field: "status;drop", operator: "eq", value: "completed" }
       })
     ).toThrow();
+  });
+
+  it("covers rule operators, action variants and match guards", () => {
+    const payload = {
+      assignee: null,
+      estimate: 8,
+      labels: ["urgent", "customer"],
+      priority: "critical",
+      score: 91,
+      status: "open",
+      title: "Release blocker"
+    };
+
+    expect(evaluateRuleCondition({ field: "status", operator: "neq", value: "closed" }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "score", operator: "gt", value: 90 }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "score", operator: "gte", value: 91 }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "estimate", operator: "lt", value: 13 }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "estimate", operator: "lte", value: 8 }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "priority", operator: "not_in", value: ["low"] }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "labels", operator: "contains", value: "urgent" }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "title", operator: "contains", value: "block" }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "title", operator: "starts_with", value: "Release" }, payload)).toBe(true);
+    expect(evaluateRuleCondition({ field: "assignee", operator: "is_null" }, payload)).toBe(true);
+    expect(evaluateRuleCondition({
+      operator: "OR",
+      conditions: [
+        { field: "status", operator: "eq", value: "closed" },
+        { field: "priority", operator: "eq", value: "critical" }
+      ]
+    }, payload)).toBe(true);
+    expect(() => evaluateRuleCondition({ field: "priority", operator: "in", value: "critical" }, payload))
+      .toThrow();
+    expect(evaluateRuleCondition({ field: "score", operator: "gt", value: "90" }, payload)).toBe(false);
+
+    const event = createFrameworkEvent({
+      id: eventId,
+      name: "task.updated",
+      tenant_id: tenantId,
+      actor_id: userId,
+      module_code: "task",
+      entity_type: "task",
+      entity_id: "12121212-1212-4212-8212-121212121212",
+      source: "user",
+      occurred_at: nowIso,
+      payload
+    });
+    const baseRule = ruleRecordSchema.parse({
+      id: ruleId,
+      tenant_id: tenantId,
+      name: "Update task field",
+      description: null,
+      is_active: true,
+      trigger_event: "task.updated",
+      trigger_module: "task",
+      conditions: { field: "status", operator: "eq", value: "open" },
+      action_type: "update_field",
+      action_config: {
+        field: "priority",
+        value: "high"
+      },
+      max_retries: 3,
+      retry_delay_seconds: 60,
+      execution_count: 0,
+      last_executed_at: null
+    });
+
+    expect(ruleRecordSchema.parse({
+      ...baseRule,
+      action_type: "send_email",
+      action_config: {
+        template_code: "task-alert",
+        to_email: null,
+        to_field: "owner.email",
+        variables: { title: "Release blocker" }
+      }
+    }).action_type).toBe("send_email");
+    expect(ruleRecordSchema.parse({
+      ...baseRule,
+      action_type: "call_webhook",
+      action_config: {
+        method: "POST",
+        url: "https://hooks.example.com/tasks"
+      }
+    }).action_type).toBe("call_webhook");
+    expect(() => ruleRecordSchema.parse({
+      ...baseRule,
+      action_type: "send_email",
+      action_config: {
+        template_code: "task-alert",
+        to_email: null,
+        to_field: null,
+        variables: {}
+      }
+    })).toThrow();
+    expect(doesRuleMatchEvent({ rule: { ...baseRule, is_active: false }, event, allowedModuleCodes })).toBe(false);
+    expect(doesRuleMatchEvent({
+      rule: { ...baseRule, trigger_event: "task.created" },
+      event,
+      allowedModuleCodes
+    })).toBe(false);
+    expect(() =>
+      doesRuleMatchEvent({
+        rule: baseRule,
+        event: { ...event, payload: { ...event.payload, __rule_depth: 5 } },
+        allowedModuleCodes
+      })
+    ).toThrow("Rule loop depth exceeded");
+    expect(() =>
+      doesRuleMatchEvent({
+        rule: baseRule,
+        event,
+        allowedModuleCodes: ["billing"]
+      })
+    ).toThrow("Rule trigger module is not allowlisted");
+    expect(assertRuleLimit(4, 5)).toBe(true);
+    expect(() => assertRuleLimit(5, 5)).toThrow("Rule limit exceeded");
   });
 
   it("builds notification records and renders escaped email templates", () => {

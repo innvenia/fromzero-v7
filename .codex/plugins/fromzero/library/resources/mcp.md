@@ -21,7 +21,7 @@ MCP (Model Context Protocol) permite que el agente use herramientas externas (ba
 | Servidor | Cuándo proponerlo | Fases | Variables (placeholders en `.env.example`) |
 |---|---|---|---|
 | Supabase MCP | El proyecto usa Supabase y se necesita inspección de schema, RLS o datos de desarrollo | `fz-design`, `fz-build`, `fz-security` | `SUPABASE_ACCESS_TOKEN` (secreto, fuera del repo) |
-| SonarQube MCP | SonarQube está configurado y se requieren quality gates o hotspots | `fz-security`, `fz-release` | `SONAR_HOST_URL`, `SONAR_TOKEN` (secreto) |
+| SonarQube MCP | SonarQube está configurado y se requieren quality gates o hotspots | `fz-security`, `fz-release` | `SONARQUBE_URL`, `SONARQUBE_TOKEN` (secreto) |
 
 ## Configuración por plataforma
 

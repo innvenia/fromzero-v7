@@ -27,6 +27,8 @@ description: "Usar cuando el usuario quiera definir el diseño técnico antes de
 - Definir la estrategia de entornos: Dev, Test/Staging y Producción separados.
 - Definir los contratos base de capacidades diferidas: variables en `.env.example`, feature flags, tablas o configuración, wrappers, interfaces y gates de activación.
 - Crear un ADR bajo `artifacts/adr/` usando `templates/adr.md` por cada decisión de arquitectura mayor.
+- Registrar el estado explícito de cada ADR (`borrador`, `aprobado`, `rechazado`, `reemplazado`, `requiere cambios` o `requiere re-aprobación`). No marcar un ADR como `aprobado` sin revisión; un ADR en `borrador` no es base de ejecución aprobada.
+- Comunicar el estado de cada ADR a `fz-plan`: el estado del Plan es independiente del estado del ADR, y un plan no debe apoyarse en un ADR en `borrador` sin diferido aprobado con riesgo.
 - Verificar el resultado contra el gate Design de la metodología antes de cerrar.
 - Cuando la fase pase y haya archivos creados o actualizados, crear commit automático si es seguro. El cierre debe mostrar hash corto y mensaje completo.
 - Si el entorno está en modo plan o sin escritura, entregar el diseño en la conversación y el prompt exacto para materializar los documentos al habilitar escritura.

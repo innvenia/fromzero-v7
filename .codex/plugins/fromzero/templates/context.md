@@ -26,6 +26,7 @@
 - Escenario de entrada: idea documentada | idea vaga
 - Ruta de construcción: framework existente | framework nuevo | app sin framework
 - Decisión de UI: framework | referencia del usuario | UI generado | sin UI
+- Entorno objetivo de trabajo (BD): local desechable | Supabase Local | cloud dev operativo | pendiente de decidir
 - Estado Git:
 
 ## Fuentes del insumo

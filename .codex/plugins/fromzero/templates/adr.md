@@ -12,7 +12,7 @@ Ruta de salida: `artifacts/adr/<slug>.md`
 | Versión del adaptador FromZero |  |
 | Fecha de creación |  |
 | Última actualización |  |
-| Estado actual | borrador \| aprobado \| requiere cambios \| requiere re-aprobación |
+| Estado actual | borrador \| aprobado \| rechazado \| reemplazado \| requiere cambios \| requiere re-aprobación |
 | Historial de estados |  |
 | Aprobación del usuario | pendiente \| aprobada \| no aplica |
 | Fecha de aprobación |  |
@@ -36,3 +36,8 @@ Ruta de salida: `artifacts/adr/<slug>.md`
 ## Impacto escalabilidad
 
 ## Resultado
+
+Transiciones válidas: `borrador` → `aprobado` / `rechazado` / `requiere cambios`;
+`requiere cambios` → nueva revisión → `aprobado`; un ADR ya `aprobado` que se invalida
+pasa a `requiere re-aprobación`; si otro ADR lo sustituye, pasa a `reemplazado`. El
+estado del Plan es independiente del estado de cada ADR.

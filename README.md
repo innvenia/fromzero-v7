@@ -6,9 +6,9 @@ Base reutilizable para construir aplicaciones SaaS/corporate multi-tenant con Ne
 
 - Metodologia: FromZero local del proyecto.
 - Plan: aprobado.
-- Sprint 8: completado localmente, eventos/jobs/notificaciones/rules/webhooks/import-export.
-- Codigo de aplicacion: shell UI base, DataGrid, health API y contratos core implementados; handlers autenticados pendientes.
-- Servicios externos: no activados.
+- Sprint 9: cerrado validado en Supabase Cloud dev; OpenRouter real sigue diferido.
+- Codigo de aplicacion: shell UI base, DataGrid, health API, contratos core y Core AI interno implementados; handlers autenticados pendientes.
+- Servicios externos: no activados; OpenRouter real requiere aprobacion separada.
 
 ## Requisitos
 
@@ -50,16 +50,34 @@ Abrir `http://localhost:3000/es` para revisar la shell en español o `http://loc
 
 Usa `.env.example` como plantilla. No versionar `.env`, `.env.local` ni archivos `.env.*` con valores reales.
 
+Para preparar Codex con variables locales:
+
+```powershell
+node .codex/plugins/fromzero/tools/load-env-local.mjs --setup codex
+.\scripts\sync-codex-env.ps1 -EnvFile .env.local -Target User
+```
+
+El flujo no imprime valores. Reinicia Codex para que herede las variables actualizadas.
+
 ## Estructura inicial
 
 - `src/app/`: routing Next.js App Router, sin logica pesada.
 - `src/framework/`: base reusable del framework.
 - `src/web/`: experiencia web construida sobre el framework.
 - `core-ai/`: runtime independiente futuro para IA.
-- `supabase/migrations/`: SQL versionado local, sin ejecucion cloud automatica.
+- `core-ai/core_ai/`: servicio FastAPI/Pydantic v2 para ejecucion IA interna.
+- `supabase/migrations/`: SQL versionado; Sprint 9 aplicado en cloud dev con RLS validada.
 - `docs/API_ENDPOINT_INVENTORY.md`: inventario de contratos API.
 - `bootstrap.json`: genesis declarativa de un solo uso.
 
+## Core AI
+
+```powershell
+python -m pytest core-ai/tests
+```
+
+El modo por defecto es mock. Completar `OPENROUTER_API_KEY`, `CORE_AI_SECRET` y cambiar `CORE_AI_PROVIDER_MODE` solo con aprobacion de activacion real.
+
 ## Siguiente Sprint
 
-Sprint 9 implementa Core AI y OpenRouter por adapter. Migraciones cloud, Inngest cloud, proveedores reales y secretos reales requieren aprobacion separada.
+Sprint 10 implementa el modulo Task, superficies publicas y documentacion demo. Proveedores reales, secretos reales y nuevas migraciones cloud requieren aprobacion separada.

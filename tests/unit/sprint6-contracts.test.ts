@@ -234,6 +234,66 @@ describe("Sprint 6 billing contracts", () => {
     });
   });
 
+  it("normalizes failed invoices and subscription status events", () => {
+    expect(normalizeStripeBillingEvent({
+      id: "evt_failed_invoice",
+      type: "invoice.payment_failed",
+      data: {
+        object: {
+          id: "in_failed_123",
+          subscription: null,
+          amount_due: 2500,
+          currency: "usd"
+        }
+      }
+    })).toEqual({
+      provider: "stripe",
+      eventId: "evt_failed_invoice",
+      eventType: "invoice.payment_failed",
+      externalInvoiceId: "in_failed_123",
+      externalSubscriptionId: null,
+      amount: 25,
+      currency: "USD"
+    });
+
+    expect(normalizeStripeBillingEvent({
+      id: "evt_subscription_unpaid",
+      type: "customer.subscription.updated",
+      data: {
+        object: {
+          id: "sub_unpaid_123",
+          status: "unpaid"
+        }
+      }
+    })).toEqual({
+      provider: "stripe",
+      eventId: "evt_subscription_unpaid",
+      eventType: "subscription.updated",
+      externalSubscriptionId: "sub_unpaid_123",
+      status: "past_due"
+    });
+
+    expect(normalizeStripeBillingEvent({
+      id: "evt_subscription_paused",
+      type: "customer.subscription.updated",
+      data: {
+        object: {
+          id: "sub_paused_123",
+          status: "paused"
+        }
+      }
+    })).toEqual(expect.objectContaining({
+      eventType: "subscription.updated",
+      status: "suspended"
+    }));
+
+    expect(() => normalizeStripeBillingEvent({
+      id: "evt_unsupported",
+      type: "customer.created",
+      data: { object: { id: "cus_123" } }
+    })).toThrow("Unsupported Stripe billing event");
+  });
+
   it("declares pg_cron schedules for token expiry and trial lifecycle", () => {
     expect(billingPgCronSchedules).toEqual(
       expect.arrayContaining([

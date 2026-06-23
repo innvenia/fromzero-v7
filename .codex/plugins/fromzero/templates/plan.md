@@ -48,10 +48,14 @@ Sprints ni las verificaciones obligatorias.
 - La numeración visible empieza en Sprint 1.
 - No generar numeración inferior a `1` en pasos, Sprints, fases, etapas ni items.
 - No tocar servicios cloud sin aprobación por servicio.
-- No leer ni imprimir `.env` reales.
-- Crear solo `.env.example` con placeholders.
+- Leer `.env.local` solo para operar o configurar herramientas del TechStack (Controlled Secret Runtime Access); nunca imprimir, exponer ni versionar secretos.
+- Crear `.env.example` con placeholders; copiar la plantilla a `.env`, `.env.local` u otro `.env*` local cuando se necesite, sin leer ni versionar valores reales.
 - Mantener credenciales reales fuera del repo.
+- Declarar los archivos con secretos y excluirlos de Git y Docker (`.gitignore` y `.dockerignore`); crear `.env.example` y `.mcp.example.json`.
 - Validar cada Sprint con comandos y criterios verificables.
+- Definir DoR y DoD por tipo de Sprint (BD/RLS, integración, UI, calidad). DoR incumplido bloquea el inicio del Sprint; DoD incumplido bloquea su cierre salvo aprobación de riesgo. No avanzar con preguntas críticas abiertas (gate de salida: preguntas críticas = 0).
+- Ejecutar y registrar el gate local en el DoD de cada Sprint: lint, typecheck, tests unitarios relevantes, coverage, build (si aplica), audit (si aplica), `git diff --check`, secret scan básico y SonarQube local si está configurado.
+- Cumplir el estándar de calidad interno FromZero antes de cerrar (coverage global y new ≥ 80%, duplicación ≤ 3%, bugs/vulnerabilities/security hotspots abiertos 0, code smells introducidos 0, open issues 0), o registrar desviación justificada y aprobada en `artifacts/FROMZERO_DECISIONS.md`. El estándar aplica exista o no SonarQube; ver `docs/gates.md`.
 - Mantener `artifacts/FROMZERO_STATE.md` actualizado como punto central de reanudación.
 - Commits pequeños con Conventional Commits.
 - Este plan paso la validación de cierre contra `artifacts/FROMZERO_SPEC.md` y la estructura de referencia (ver sección Validación de cierre).
@@ -60,6 +64,7 @@ Sprints ni las verificaciones obligatorias.
 
 - Git:
 - Commit base:
+- Entorno objetivo de trabajo (BD): local desechable | Supabase Local | cloud dev operativo
 - `.gitignore`:
 - Spec:
 - Cuestionario:
@@ -76,9 +81,16 @@ Sprints ni las verificaciones obligatorias.
 
 ## 4. Verificaciones externas
 
-| Verificación | Estado | Condición de activación | Evidencia requerida |
-|---|---|---|---|
-|  | pendiente |  |  |
+Una fila por servicio (no en bloque). El nivel 1/2/3 (ver `docs/library-selection.md`) fija el rigor de aprobación y evidencia.
+
+| Verificación / Servicio | Nivel (1/2/3) | Estado | Condición de activación | Evidencia requerida |
+|---|---|---|---|---|
+|  |  | pendiente |  |  |
+
+- Aprobación por servicio: cada servicio (BD, Sonar, Stripe, provider de IA y similares) se aprueba individual y explícitamente, no en bloque. Una fila por servicio.
+- Nivel de servicio (ver `docs/library-selection.md`): 1 esencial de desarrollo, 2 integración controlada, 3 alto riesgo. El nivel define el rigor de aprobación y la evidencia.
+- Evidencia de respuesta del servicio: no marcar "activado" sin prueba de que el servicio respondió (salida de CLI o `status`, respuesta API 2xx con payload, o webhook recibido y registrado).
+- Lo construido o cerrado sin activar contra su servicio o entorno real se registra en `artifacts/DEFERRED_ACTIVATIONS.md` con su condición de activación.
 
 ## 5. Variables y placeholders
 
@@ -217,6 +229,12 @@ Estado: pendiente | completado | requiere cambios
 
 Objetivo:
 
+DoR (antes de iniciar):
+
+Resumen breve de inicio:
+
+Herramientas previstas:
+
 Archivos objetivo:
 
 Pruebas/comandos:
@@ -224,6 +242,8 @@ Pruebas/comandos:
 Verificaciones:
 
 Criterios de aceptación:
+
+DoD (antes de cerrar): `init` ejecutado sin errores contra la BD declarada; stack obligatorio validado; `bootstrap.json` listo o diferido; archivos con secretos excluidos de Git y Docker; aprobación humana de preparación registrada.
 
 Dependencias (solo Sprints anteriores o limitación declarada):
 
@@ -233,6 +253,12 @@ Estado:
 
 Objetivo:
 
+DoR (antes de iniciar):
+
+Resumen breve de inicio:
+
+Herramientas previstas:
+
 Archivos objetivo:
 
 Pruebas/comandos:
@@ -240,6 +266,8 @@ Pruebas/comandos:
 Verificaciones:
 
 Criterios de aceptación:
+
+DoD (antes de cerrar):
 
 Dependencias (solo Sprints anteriores o limitación declarada):
 
@@ -340,7 +368,7 @@ Cada Sprint debe cerrar con:
 - Revisión de especialistas o fallback para dominios relevantes: completo | pendiente | no aplica (razón)
 - Zonas de validación humana por Sprint: completo | pendiente | no aplica (razón)
 - Automatización vs augmentación evaluada: completo | pendiente | no aplica (razón)
-- `.env` reales leídos: no | bloqueo (detalle)
+- Secretos impresos, expuestos o versionados: no | bloqueo (detalle)
 - Secretos incluidos: no | bloqueo (detalle)
 - Código de aplicación modificado durante planificación: no | bloqueo (detalle)
 

@@ -25,6 +25,13 @@
     ".env.example actualizado sin secretos cuando las integraciones requieren variables",
     "handoff",
     "hash y mensaje del commit automático, o razón concreta si no se creó",
-    "siguiente paso humano con enlaces a artefactos"
+    "siguiente paso humano con enlaces a artefactos",
+    "Sprint schema/RLS/integración: ejecución real lograda (migración aplicada + RLS negativa cross-tenant) o bloqueo con aprobación de riesgo registrada",
+    "Entorno BD objetivo resuelto desde la decisión registrada y .env.local antes de migrar; no asumir --local",
+    "Cada limitación o bloqueo reportado respaldado por evidencia (comando + resultado o config leída); sin suposiciones",
+    "Fuentes externas marcadas como verificadas incluyen URL + qué se comprobó + fecha; lo no verificado se etiqueta como tal",
+    "Working tree clasificado al inicio; commit del Sprint creado o bloqueo de commit escalado, no silencioso",
+    "Conteos de pruebas citados con alcance explícito (suite vs Sprint) y reconciliados",
+    "Cierre de Sprint emitido con el formato canónico de docs/reporting.md (qué se ejecutó, qué falló, pendientes, decisiones requeridas, cómo quedó, siguiente paso)"
   ]
 }

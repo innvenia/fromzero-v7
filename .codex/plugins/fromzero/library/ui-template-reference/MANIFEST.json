@@ -1,12 +1,13 @@
 {
   "version": "0.2.0",
   "role": "Canonical Design System reference of the FromZero methodology.",
-  "upstream": "ui-template/nextjs-template (refresh origin when accessible; not normative)",
+  "upstream": "methodology/from_zero/ui-template (embedded in methodology; refresh origin; not normative)",
   "includes": [
     "README.md",
     "AGENTS.md",
     "docs/design-system.md",
     "docs/interface-architecture.md",
+    "docs/ui-reference-images",
     "src/framework/ui/README.md",
     "src/framework/ui/components",
     "src/app/globals.css"

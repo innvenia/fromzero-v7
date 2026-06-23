@@ -9,262 +9,83 @@ export const apiEndpointContractSchema = z.object({
   rateLimited: z.boolean()
 });
 
+export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;
+
+type ApiEndpointOptions = Partial<Pick<ApiEndpointContract, "implemented" | "requiresAuth" | "rateLimited">>;
+
+function apiContract(
+  ownerSprint: string,
+  domain: string,
+  basePath: string,
+  options: ApiEndpointOptions = {}
+): ApiEndpointContract {
+  return {
+    domain,
+    basePath,
+    ownerSprint,
+    implemented: options.implemented ?? false,
+    requiresAuth: options.requiresAuth ?? true,
+    rateLimited: options.rateLimited ?? true
+  };
+}
+
 export const sprintThreeApiContracts = [
-  {
-    domain: "health",
-    basePath: "/api/v1/health",
-    ownerSprint: "Sprint 3",
+  apiContract("Sprint 3", "health", "/api/v1/health", {
     implemented: true,
     requiresAuth: false,
     rateLimited: false
-  },
-  {
-    domain: "settings",
-    basePath: "/api/v1/settings",
-    ownerSprint: "Sprint 3",
-    implemented: true,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "modules",
-    basePath: "/api/v1/modules",
-    ownerSprint: "Sprint 3",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "plans",
-    basePath: "/api/v1/plans",
-    ownerSprint: "Sprint 3",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "tenants",
-    basePath: "/api/v1/tenants",
-    ownerSprint: "Sprint 3",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  }
+  }),
+  apiContract("Sprint 3", "settings", "/api/v1/settings", { implemented: true }),
+  apiContract("Sprint 3", "modules", "/api/v1/modules"),
+  apiContract("Sprint 3", "plans", "/api/v1/plans"),
+  apiContract("Sprint 3", "tenants", "/api/v1/tenants")
 ] as const;
 
 export const sprintFourApiContracts = [
-  {
-    domain: "users",
-    basePath: "/api/v1/users",
-    ownerSprint: "Sprint 4",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "profiles",
-    basePath: "/api/v1/profiles",
-    ownerSprint: "Sprint 4",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "invitations",
-    basePath: "/api/v1/invitations",
-    ownerSprint: "Sprint 4",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "api-keys",
-    basePath: "/api/v1/api-keys",
-    ownerSprint: "Sprint 4",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  }
+  apiContract("Sprint 4", "users", "/api/v1/users"),
+  apiContract("Sprint 4", "profiles", "/api/v1/profiles"),
+  apiContract("Sprint 4", "invitations", "/api/v1/invitations"),
+  apiContract("Sprint 4", "api-keys", "/api/v1/api-keys")
 ] as const;
 
 export const sprintFiveApiContracts = [
-  {
-    domain: "custom-fields",
-    basePath: "/api/v1/custom-fields",
-    ownerSprint: "Sprint 5",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "filters",
-    basePath: "/api/v1/filters",
-    ownerSprint: "Sprint 5",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "relationships",
-    basePath: "/api/v1/relationships",
-    ownerSprint: "Sprint 5",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  }
+  apiContract("Sprint 5", "custom-fields", "/api/v1/custom-fields"),
+  apiContract("Sprint 5", "filters", "/api/v1/filters"),
+  apiContract("Sprint 5", "relationships", "/api/v1/relationships")
 ] as const;
 
 export const sprintSixApiContracts = [
-  {
-    domain: "billing-subscriptions",
-    basePath: "/api/v1/billing/subscriptions",
-    ownerSprint: "Sprint 6",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "billing-statements",
-    basePath: "/api/v1/billing/statements",
-    ownerSprint: "Sprint 6",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "billing-invoices",
-    basePath: "/api/v1/billing/invoices",
-    ownerSprint: "Sprint 6",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "billing-stripe-webhooks",
-    basePath: "/api/v1/billing/webhooks/stripe",
-    ownerSprint: "Sprint 6",
-    implemented: false,
-    requiresAuth: false,
-    rateLimited: true
-  }
+  apiContract("Sprint 6", "billing-subscriptions", "/api/v1/billing/subscriptions"),
+  apiContract("Sprint 6", "billing-statements", "/api/v1/billing/statements"),
+  apiContract("Sprint 6", "billing-invoices", "/api/v1/billing/invoices"),
+  apiContract("Sprint 6", "billing-stripe-webhooks", "/api/v1/billing/webhooks/stripe", {
+    requiresAuth: false
+  })
 ] as const;
 
 export const sprintSevenApiContracts = [
-  {
-    domain: "files",
-    basePath: "/api/v1/files",
-    ownerSprint: "Sprint 7",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "documents",
-    basePath: "/api/v1/documents",
-    ownerSprint: "Sprint 7",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "tags",
-    basePath: "/api/v1/tags",
-    ownerSprint: "Sprint 7",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "bookmarks",
-    basePath: "/api/v1/bookmarks",
-    ownerSprint: "Sprint 7",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "consent-records",
-    basePath: "/api/v1/consent-records",
-    ownerSprint: "Sprint 7",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  }
+  apiContract("Sprint 7", "files", "/api/v1/files"),
+  apiContract("Sprint 7", "documents", "/api/v1/documents"),
+  apiContract("Sprint 7", "tags", "/api/v1/tags"),
+  apiContract("Sprint 7", "bookmarks", "/api/v1/bookmarks"),
+  apiContract("Sprint 7", "consent-records", "/api/v1/consent-records")
 ] as const;
 
 export const sprintEightApiContracts = [
-  {
-    domain: "events",
-    basePath: "/api/v1/events",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "jobs",
-    basePath: "/api/v1/jobs",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "notifications",
-    basePath: "/api/v1/notifications",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "rules",
-    basePath: "/api/v1/rules",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "email-templates",
-    basePath: "/api/v1/email-templates",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "integrations",
-    basePath: "/api/v1/integrations",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "webhooks",
-    basePath: "/api/v1/webhooks",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "imports",
-    basePath: "/api/v1/import-jobs",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  },
-  {
-    domain: "exports",
-    basePath: "/api/v1/export-jobs",
-    ownerSprint: "Sprint 8",
-    implemented: false,
-    requiresAuth: true,
-    rateLimited: true
-  }
+  apiContract("Sprint 8", "events", "/api/v1/events"),
+  apiContract("Sprint 8", "jobs", "/api/v1/jobs"),
+  apiContract("Sprint 8", "notifications", "/api/v1/notifications"),
+  apiContract("Sprint 8", "rules", "/api/v1/rules"),
+  apiContract("Sprint 8", "email-templates", "/api/v1/email-templates"),
+  apiContract("Sprint 8", "integrations", "/api/v1/integrations"),
+  apiContract("Sprint 8", "webhooks", "/api/v1/webhooks"),
+  apiContract("Sprint 8", "imports", "/api/v1/import-jobs"),
+  apiContract("Sprint 8", "exports", "/api/v1/export-jobs")
+] as const;
+
+export const sprintNineApiContracts = [
+  apiContract("Sprint 9", "ai-models", "/api/v1/ai/models"),
+  apiContract("Sprint 9", "ai-invoke", "/api/v1/ai/invoke")
 ] as const;
 
 export const apiEndpointContracts = [
@@ -273,7 +94,6 @@ export const apiEndpointContracts = [
   ...sprintFiveApiContracts,
   ...sprintSixApiContracts,
   ...sprintSevenApiContracts,
-  ...sprintEightApiContracts
+  ...sprintEightApiContracts,
+  ...sprintNineApiContracts
 ] as const;
-
-export type ApiEndpointContract = z.infer<typeof apiEndpointContractSchema>;

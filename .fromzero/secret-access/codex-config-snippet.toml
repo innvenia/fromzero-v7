@@ -1,0 +1,16 @@
+# FromZero: pega esto en tu config.toml de Codex.
+# Proyecto confiable: .codex/config.toml aqui. O global: ~/.codex/config.toml.
+# Solo contiene NOMBRES de variables, nunca valores.
+
+[shell_environment_policy]
+inherit = "all"
+include_only = ["PATH", "HOME", "USERPROFILE", "SystemRoot", "TEMP", "TMP", "APPDATA", "LOCALAPPDATA", "PATHEXT", "COMSPEC", "NEXT_PUBLIC_APP_URL", "APP_BASE_URL", "API_BASE_URL", "AUTH_URL", "AUTH_SECRET", "NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "SUPABASE_SECRET_KEY", "SUPABASE_DIRECT_CONNECTION_STRING", "SUPABASE_PROJECT_ID", "SUPABASE_DB_PASSWORD", "SUPABASE_ACCESS_TOKEN", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "STRIPE_PUBLISHABLE_KEY", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "RESEND_API_KEY", "AI_PROVIDER", "AI_MODEL_ID", "AI_DEFAULT_MODEL", "CORE_AI_SECRET", "OPENROUTER_API_KEY", "INNGEST_EVENT_KEY", "INNGEST_SIGNING_KEY", "REDIS_ENABLED", "REDIS_URL", "RECAPTCHA_SITE_KEY", "RECAPTCHA_SECRET_KEY", "SONARQUBE_URL", "SONARQUBE_PROJECT_KEY", "SONARQUBE_TOKEN", "NEXT_TELEMETRY_DISABLED", "PLAYWRIGHT_BASE_URL", "K6_BASE_URL", "SONAR_TOKEN", "SONAR_HOST_URL", "SONAR_PROJECT_KEY"]
+
+# Fallback si tu version de Codex no soporta include_only:
+# ignore_default_excludes = true
+
+# Para cada servidor MCP que use secretos, reenvia por nombre (ejemplo):
+# [mcp_servers.supabase]
+# command = "npx"
+# args = ["-y", "@supabase/mcp-server-supabase@latest"]
+# env_vars = ["SUPABASE_ACCESS_TOKEN"]

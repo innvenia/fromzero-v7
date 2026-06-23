@@ -26,6 +26,7 @@ description: "Usar automáticamente cuando el usuario pida definir, aclarar, ate
 - Rechazar la Spec si alguna pregunta crítica mantiene `Respuesta seleccionada` vacía, salvo que el usuario la haya diferido explícitamente y aprobado esa decisión.
 - Rechazar la Spec si hubo cuestionario crítico y falta `## Resumen validado para Spec` en `artifacts/FROMZERO_QUESTIONNAIRE.md`.
 - Usar `## Resumen validado para Spec` como fuente de entrada para consolidar visión, decisiones cerradas, diferidos aprobados, supuestos y correcciones antes de redactar la Spec.
+- Antes de redactar cada sección, consultar `artifacts/FROMZERO_DECISIONS.md` y clasificar las fuentes como documentada, contradictoria o no documentada; citar como decisión documentada asumida lo que ya esté `aceptada` y derivar las contradicciones a la reconciliación de respuestas del dueño.
 - Confirmar que el usuario revisó y aprobó explícitamente `artifacts/FROMZERO_QUESTIONNAIRE.md`; si pide ajustes, actualizar el cuestionario antes de crear o actualizar la spec.
 - Crear o actualizar `artifacts/FROMZERO_SPEC.md` con la especificación cerrada y verificable usando `templates/spec.md` como contrato de estructura; incluye `## Metadatos` completo y verifica conformidad sección por sección antes de cerrar.
 - Completar `## Resumen para el dueño` en lenguaje no técnico antes de las matrices: qué se construye, para quién, resultado esperado, fuera de alcance, decisiones grandes, riesgos y qué se pide aprobar. Esta sección no sustituye matrices, gates ni criterios técnicos.
@@ -96,6 +97,26 @@ description: "Usar automáticamente cuando el usuario pida definir, aclarar, ate
 - Seguridad y escalabilidad por módulo o capacidad cuando el insumo las detalle.
 - Gates de integración: RLS/RBAC, webhooks, quality gate, mobile build, deployment, budget o load.
 - Riesgos y preguntas bloqueantes.
+
+### Reconciliación de respuestas del dueño
+
+Cuando una decisión nueva o más profunda cambie, normalice o contradiga una respuesta
+ya registrada, no actualices Plan ni State en silencio. Construye una tabla trazable y
+preséntala para aprobación explícita del dueño:
+
+| Pregunta | Respuesta normalizada | Fuente | Decisión | Artefacto a actualizar | Estado | Dueño |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  | aceptada \| explicación \| aprobación \| diferida \| rechazada |  |
+
+Reglas de bloqueo:
+
+- Si una fila queda `rechazada` o como contradicción no resuelta, detén el cierre de
+  Spec; no avances a Plan ni a Build.
+- Al aprobar, aplica la retropropagación en el mismo cambio: actualiza la pregunta en
+  `artifacts/FROMZERO_QUESTIONNAIRE.md` (con fila en su Registro de cambios) y la fila
+  correspondiente en `artifacts/FROMZERO_DECISIONS.md`.
+- Esta tabla es de cambios; es distinta de `## 5.6 Contraste de decisiones` del plan,
+  que solo verifica consistencia.
 
 ## Artefacto obligatorio
 

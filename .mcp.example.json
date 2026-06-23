@@ -25,7 +25,7 @@
         "SONARQUBE_TOKEN",
         "-e",
         "SONARQUBE_URL",
-        "sonarsource/sonarqube-mcp-server:latest"
+        "mcp/sonarqube"
       ],
       "env": {
         "SONARQUBE_TOKEN": "${SONARQUBE_TOKEN}",

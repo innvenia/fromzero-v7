@@ -13,3 +13,14 @@ Instrucciones:
 - Revisa contra el gate Security y `checklists/security.md`.
 - Nunca leas ni imprimas `.env` reales; verifica que no haya secretos en repo, logs ni documentación.
 - Entrega: hallazgos con severidad, evidencia y corrección propuesta.
+
+## Dominios de revisión adversarial
+
+En Sprints sensibles, ejecuta una revisión independiente y adversarial (busca el hueco
+explotable, no solo la cobertura) por dominio, apoyándote en los checklists indicados:
+
+- DB/RLS: aislamiento cross-tenant y por permisos/ownership (`checklists/security.md`, `checklists/scalability.md`).
+- Seguridad/secretos: exclusión de Git y Docker, errores seguros, rate limits (`checklists/security.md`).
+- Integraciones/webhooks/jobs: firma, idempotencia, reintentos, evidencia de respuesta del servicio (`checklists/integrations.md`).
+
+Reporta hallazgos críticos con severidad; deben resolverse o aceptarse como riesgo con razón.

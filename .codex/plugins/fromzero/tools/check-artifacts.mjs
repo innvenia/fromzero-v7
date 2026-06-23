@@ -135,6 +135,7 @@ const REQUIRED_SECTIONS = {
     "## Plan",
     "## Verificación",
     "## Verificaciones",
+    "## Gate de calidad",
     "## Riesgos",
     "## Issues",
     "## Siguientes pasos"
@@ -190,6 +191,22 @@ const REQUIRED_SECTIONS = {
     "## Proceso manual recomendado"
   ]
 };
+
+const START_HERE_REQUIRED_PHRASES = [
+  "Antes de usar cualquiera de estos prompts, crea o usa `docs/` como directorio estándar de insumos del proyecto.",
+  "Quiero crear una aplicacion para [tipo de usuario] que resuelva [problema].",
+  "No tengo PRD ni documentacion adicional todavia.",
+  "Registra esta idea inicial en docs/PROJECT_BRIEF.md.",
+  "Usa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar artifacts/FROMZERO_CONTEXT.md.",
+  "Tengo un PRD para este proyecto en [ruta-del-prd].",
+  "Si todavía no defini una ruta, usa docs/PRD.md.",
+  "Tengo documentacion para este proyecto en [ruta-de-docs].",
+  "FromZero debe preparar el contexto inicial en `artifacts/FROMZERO_CONTEXT.md`.",
+  "Ese archivo es el primer resultado que debes revisar. Resume:",
+  "> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.",
+  "> Siguiente paso para ti: revisa y valida la especificación. Si todo está correcto, responde \"Apruebo la especificación\". Si quieres cambiar algo, dime qué ajuste hago.",
+  "Apruebo el plan.\nEjecuta el siguiente Sprint aprobado."
+];
 
 const HUMAN_ZONE_STATES = new Set([
   "no aplica",
@@ -571,6 +588,45 @@ function validateSpec(content, relativePath, issues) {
   }
 }
 
+function validateStartHere(content, relativePath, issues) {
+  for (const phrase of START_HERE_REQUIRED_PHRASES) {
+    if (!content.includes(phrase)) {
+      issues.errors.push(`${relativePath}: START_HERE falta texto contractual: ${phrase}`);
+    }
+  }
+
+  if (!/^>\s+Activa el modo plan de .+ antes de continuar\.$/m.test(content)) {
+    issues.errors.push(`${relativePath}: START_HERE debe mostrar activación de modo plan como cita Markdown`);
+  }
+
+  const normalized = stripDiacritics(content.toLowerCase());
+  const forbidden = [
+    "no tienes que indicar rutas",
+    "antes de modificar codigo",
+    "si todavia no defini una ruta, usa docs/."
+  ];
+  for (const phrase of forbidden) {
+    if (normalized.includes(phrase)) {
+      issues.errors.push(`${relativePath}: START_HERE conserva texto prohibido: ${phrase}`);
+    }
+  }
+
+  const folderSection = sectionContent(content, "### Tengo documentación en una carpeta");
+  if (stripDiacritics(folderSection.toLowerCase()).includes("si todavia no defini una ruta")) {
+    issues.errors.push(`${relativePath}: START_HERE no debe aplicar fallback automático a docs/ en documentación en carpeta`);
+  }
+
+  for (const block of fencedTextBlocks(content)) {
+    if (block.includes("Activa el modo plan") || block.includes("Siguiente paso para ti:")) {
+      issues.errors.push(`${relativePath}: START_HERE tiene mensaje esperado del agente en bloque copiable`);
+    }
+  }
+}
+
+function fencedTextBlocks(content) {
+  return [...content.matchAll(/```text\n([\s\S]*?)```/g)].map((match) => match[1]);
+}
+
 function validateArtifact(relativePath, content, artifact, options) {
   const issues = { errors: [], warnings: [] };
   const structured = isNewStructuredArtifact(content);
@@ -597,6 +653,8 @@ function validateArtifact(relativePath, content, artifact, options) {
     validatePlan(content, relativePath, issues);
   } else if (artifact === "FROMZERO_SPEC") {
     validateSpec(content, relativePath, issues);
+  } else if (artifact === "START_HERE") {
+    validateStartHere(content, relativePath, issues);
   }
 
   if (structured && isApprovedOrReapproved(content)) {
@@ -892,6 +950,45 @@ function runSelfTest() {
       expectedWarnings: 1
     },
     {
+      name: "START_HERE canónico pasa contrato",
+      artifact: "START_HERE",
+      path: "artifacts/START_HERE.md",
+      strict: true,
+      content: fixture("START_HERE"),
+      expectedFailures: 0,
+      exactFailures: true
+    },
+    {
+      name: "START_HERE con modo plan en bloque copiable bloquea",
+      artifact: "START_HERE",
+      path: "artifacts/START_HERE.md",
+      strict: true,
+      content: fixture("START_HERE").replace(
+        "> Activa el modo plan de Codex antes de continuar.\n> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.",
+        "```text\nActiva el modo plan de Codex antes de continuar.\nEl siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.\n```"
+      ),
+      expectedFailures: 2
+    },
+    {
+      name: "START_HERE con fallback docs en carpeta bloquea",
+      artifact: "START_HERE",
+      path: "artifacts/START_HERE.md",
+      strict: true,
+      content: fixture("START_HERE").replace(
+        "Tengo documentacion para este proyecto en [ruta-de-docs].",
+        "Tengo documentacion para este proyecto en [ruta-de-docs].\nSi todavía no defini una ruta, usa docs/."
+      ),
+      expectedFailures: 2
+    },
+    {
+      name: "START_HERE con confirmación previa a código bloquea",
+      artifact: "START_HERE",
+      path: "artifacts/START_HERE.md",
+      strict: true,
+      content: `${fixture("START_HERE")}\nAntes de modificar codigo, confirma alcance, pruebas, verificaciones y riesgos.\n`,
+      expectedFailures: 1
+    },
+    {
       name: "artefacto generado fuera de artifacts bloquea",
       artifact: "FROMZERO_SPEC",
       path: "FROMZERO_SPEC.md",
@@ -1141,6 +1238,10 @@ function fixture(artifact) {
 
   if (artifact === "FROMZERO_PLAN") {
     return `${metadata}## 1. Reglas de ejecución\n\n## 2. Estado inicial\n\n## 3. Recursos y herramientas\n\n## 4. Verificaciones externas\n\n## 5.5 Conteo de cobertura REQ/GATE\n\n| Tipo | Total detectado | Cubiertos | Pendientes | Diferidos con razón | Excluidos con razón |\n|---|---:|---:|---:|---:|---:|\n| REQ | 0 | 0 | 0 | 0 | 0 |\n| GATE | 0 | 0 | 0 | 0 | 0 |\n\n### Revisión adversarial complementaria\n\n| Muestra determinística | Fuente | Item revisado | Resultado | Gap detectado | Acción |\n|---|---|---|---|---|---|\n| 1 |  |  | cubierto |  |  |\n\n## 5.6 Contraste de decisiones Questionnaire -> Spec -> Plan\n\n## 9. Validación de cierre\n\n## 10. Siguiente aprobación\n\nApruebo el plan\n`;
+  }
+
+  if (artifact === "START_HERE") {
+    return `${metadata}## Estado de instalación\n\n- App: Codex.\n\n## 1. Prepara control de versiones\n\n## 2. Elige como quieres empezar\n\nAntes de usar cualquiera de estos prompts, crea o usa \`docs/\` como directorio estándar de insumos del proyecto. Coloca ahí la idea inicial, el PRD o la documentación disponible. Si usas otra ubicación, reemplaza los placeholders con la ruta real.\n\n### Tengo una idea vaga\n\n\`\`\`text\nQuiero crear una aplicacion para [tipo de usuario] que resuelva [problema].\nNo tengo PRD ni documentacion adicional todavia.\nRegistra esta idea inicial en docs/PROJECT_BRIEF.md.\nUsa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar artifacts/FROMZERO_CONTEXT.md.\nNo implementes codigo de aplicacion todavia.\nNo avances de fase sin mi aprobación.\n\`\`\`\n\n### Tengo una idea con PRD\n\n\`\`\`text\nTengo un PRD para este proyecto en [ruta-del-prd].\nSi todavía no defini una ruta, usa docs/PRD.md.\nUsa FromZero para localizarlo, revisarlo criticamente, detectar gaps, contradicciones, riesgos, supuestos débiles y oportunidades de mejora, y preparar el contexto.\nNo implementes codigo de aplicacion todavia.\nNo avances de fase sin mi aprobación.\n\`\`\`\n\n### Tengo documentación en una carpeta\n\n\`\`\`text\nTengo documentacion para este proyecto en [ruta-de-docs].\nUsa FromZero para localizarla, revisarla, analizar criticamente el proyecto, detectar faltantes, contradicciones, riesgos y mejoras, y decirme que decisiones faltan antes de especificar.\nNo implementes codigo de aplicacion todavia.\nNo avances de fase sin mi aprobación.\n\`\`\`\n\n## 3. Revisa el primer resultado\n\nFromZero debe preparar el contexto inicial en \`artifacts/FROMZERO_CONTEXT.md\`.\n\nEse archivo es el primer resultado que debes revisar. Resume:\n\n## 4. Ejecuta el cuestionario en modo plan\n\n> Activa el modo plan de Codex antes de continuar.\n> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.\n\n## 5. Revisa y aprueba el cuestionario\n\n> Siguiente paso para ti: revisa y valida la especificación. Si todo está correcto, responde \"Apruebo la especificación\". Si quieres cambiar algo, dime qué ajuste hago.\n\n## 6. Crea el plan\n\n## 7. Ejecuta el siguiente Sprint\n\n\`\`\`text\nApruebo el plan.\nEjecuta el siguiente Sprint aprobado.\n\`\`\`\n`;
   }
 
   if (artifact === "ADR") {

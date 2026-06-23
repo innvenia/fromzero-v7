@@ -66,7 +66,7 @@ Para activar, se requiere una aprobacion explicita adicional. La activacion mini
 
 - Preferir variables externas; si un token vive inline, debe permanecer solo en el `.mcp.json` local ignorado por Git, nunca versionado ni impreso.
 - No versionar `.env.local`.
-- No leer ni imprimir `.env` reales.
+- Leer `.env.local` solo para uso operativo controlado de CLI/MCP/API; no imprimir, registrar ni versionar valores reales.
 - No activar escritura remota sin aprobacion puntual.
 - Mantener Supabase en `--read-only` salvo aprobacion contraria.
 - Mantener deshabilitadas las herramientas administrativas de SonarQube salvo aprobacion contraria.

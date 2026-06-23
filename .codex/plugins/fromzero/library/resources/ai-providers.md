@@ -14,6 +14,7 @@ OpenAI, Anthropic, Gemini, Ollama, Hugging Face, Replicate, Runpod y proveedores
 - Data retention decisión.
 - PII handling.
 - Fallback behavior.
+- Modelo verificado contra fuente oficial con cita (URL + qué se comprobó + fecha) antes de declararlo verificado.
 
 ## Seguridad
 

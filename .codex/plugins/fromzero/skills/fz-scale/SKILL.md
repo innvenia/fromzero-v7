@@ -35,7 +35,7 @@ medición o sin relajación justificada antes de release.
 - k6: obligatorio para release candidates críticos o flujos con carga declarada.
 - Si se crea un escenario k6 como artefacto, guardarlo bajo `artifacts/k6/` usando `templates/k6-scenario.md`.
 
-Documenta variables en `.env.example` y no leas `.env` reales.
+Documenta variables en `.env.example`; el agente puede leer `.env.local` para operar herramientas del TechStack dentro de la sesión (Controlled Secret Runtime Access), sin imprimir ni versionar secretos.
 
 Cuando el gate pase y haya cambios, evidencia o artefactos actualizados, crea commit automático si es seguro. El cierre debe mostrar hash corto y mensaje completo.
 

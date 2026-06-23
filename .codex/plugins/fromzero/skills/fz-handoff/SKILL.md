@@ -13,13 +13,19 @@ description: "Usar automáticamente cuando el usuario pida resumen, entrega, est
 - "Qué sigue?"
 - "Prepara la entrega."
 - "Dónde quedamos?"
+- "¿Cómo va el proyecto?"
+- "Dame el avance."
+- "% de avance."
+- "Cuánto falta."
 
 ## Incluir
 
 - Leer y actualizar `artifacts/FROMZERO_STATE.md` antes de responder.
+- Para un informe de avance ("¿cómo va el proyecto?", "% de avance"), ejecuta `tools/fromzero-progress.mjs --project .` para el porcentaje determinista por Sprints y preséntalo con el formato Estado de avance de `docs/reporting.md`, completando bloqueos, decisiones y deuda desde `artifacts/FROMZERO_STATE.md`, `artifacts/FROMZERO_DECISIONS.md` y `artifacts/DEFERRED_ACTIVATIONS.md`.
 - Si `artifacts/FROMZERO_STATE.md` falta, reconstruirlo desde `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_SPEC.md` y Git antes de proponer siguiente acción.
 - Qué cambió.
 - Por qué cambió.
+- Artefactos de cierre: verificar y, si aplica, actualizar `artifacts/DEFERRED_ACTIVATIONS.md` (activaciones pendientes con condición de activación y dueño) y `artifacts/FROMZERO_DECISIONS.md` (decisiones cerradas o reconciliadas) antes de cerrar; enlazarlos en el resumen para el dueño cuando haya diferidos.
 - Aceptación de producto contra visión validada: leer el `## Resumen validado para Spec` cuando exista, contrastarlo contra lo entregado, listar resultados esperados como entregado / diferido con razón / no cumplido, enlazar evidencia y registrar la frase literal de aceptación si el usuario la da.
 - Diff documental resumido cuando cambien spec, questionnaire o plan.
 - Diff documental resumido cuando cambie `artifacts/FROMZERO_STATE.md`.

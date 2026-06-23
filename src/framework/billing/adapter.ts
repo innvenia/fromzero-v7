@@ -1,24 +1,20 @@
 import { z } from "zod";
 
+function invoiceBillingEventSchema(eventType: "invoice.processed" | "invoice.payment_failed") {
+  return z.object({
+    provider: z.string().min(1),
+    eventId: z.string().min(1),
+    eventType: z.literal(eventType),
+    externalInvoiceId: z.string().min(1),
+    externalSubscriptionId: z.string().min(1).nullable(),
+    amount: z.number().nonnegative(),
+    currency: z.string().length(3)
+  });
+}
+
 export const normalizedBillingEventSchema = z.discriminatedUnion("eventType", [
-  z.object({
-    provider: z.string().min(1),
-    eventId: z.string().min(1),
-    eventType: z.literal("invoice.processed"),
-    externalInvoiceId: z.string().min(1),
-    externalSubscriptionId: z.string().min(1).nullable(),
-    amount: z.number().nonnegative(),
-    currency: z.string().length(3)
-  }),
-  z.object({
-    provider: z.string().min(1),
-    eventId: z.string().min(1),
-    eventType: z.literal("invoice.payment_failed"),
-    externalInvoiceId: z.string().min(1),
-    externalSubscriptionId: z.string().min(1).nullable(),
-    amount: z.number().nonnegative(),
-    currency: z.string().length(3)
-  }),
+  invoiceBillingEventSchema("invoice.processed"),
+  invoiceBillingEventSchema("invoice.payment_failed"),
   z.object({
     provider: z.string().min(1),
     eventId: z.string().min(1),

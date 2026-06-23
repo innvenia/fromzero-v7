@@ -1,5 +1,6 @@
 export * from "./log";
 export * from "./api-key";
+export * from "./ai-model";
 export * from "./custom-field";
 export * from "./bookmark";
 export * from "./consent";

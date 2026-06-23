@@ -74,52 +74,46 @@ export const defaultJobRetryPolicy = {
   backoffSeconds: [60, 300, 900]
 } satisfies JobRetryPolicy;
 
+function inngestJobDefinition(input: Pick<BackgroundJobDefinition, "name" | "trigger" | "auditAction" | "description">): BackgroundJobDefinition {
+  return {
+    ...input,
+    kind: "inngest",
+    idempotent: true,
+    retryPolicy: defaultJobRetryPolicy
+  };
+}
+
 export const sprintEightInngestJobDefinitions = [
-  {
+  inngestJobDefinition({
     name: "notification.dispatch",
-    kind: "inngest",
     trigger: "notification.requested",
-    idempotent: true,
     auditAction: "notification.dispatch",
-    retryPolicy: defaultJobRetryPolicy,
     description: "Dispatches notification channels without blocking HTTP requests."
-  },
-  {
+  }),
+  inngestJobDefinition({
     name: "rule.evaluate",
-    kind: "inngest",
     trigger: "rule.evaluate",
-    idempotent: true,
     auditAction: "rule.evaluate",
-    retryPolicy: defaultJobRetryPolicy,
     description: "Evaluates closed-grammar rules from framework events."
-  },
-  {
+  }),
+  inngestJobDefinition({
     name: "webhook.deliver",
-    kind: "inngest",
     trigger: "webhook.deliver",
-    idempotent: true,
     auditAction: "webhook.deliver",
-    retryPolicy: defaultJobRetryPolicy,
     description: "Delivers signed outbound webhooks with controlled retry."
-  },
-  {
+  }),
+  inngestJobDefinition({
     name: "import.process",
-    kind: "inngest",
     trigger: "import.confirmed",
-    idempotent: true,
     auditAction: "import.process",
-    retryPolicy: defaultJobRetryPolicy,
     description: "Processes confirmed CSV/XLSX import jobs asynchronously."
-  },
-  {
+  }),
+  inngestJobDefinition({
     name: "export.process",
-    kind: "inngest",
     trigger: "export.requested",
-    idempotent: true,
     auditAction: "export.process",
-    retryPolicy: defaultJobRetryPolicy,
     description: "Builds CSV/XLSX export files asynchronously."
-  }
+  })
 ] as const satisfies readonly BackgroundJobDefinition[];
 
 export const sprintEightPgCronSchedules = [

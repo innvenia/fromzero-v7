@@ -36,6 +36,8 @@ No uses pasos, fases, Sprints, etapas ni items visibles numerados como `0`.
 
 La experiencia normal empieza en `1`: Paso 1, Fase 1, Sprint 1 e Item 1. Solo se permite una excepción por razón técnica extrema, documentada por escrito.
 
+El Sprint 1 es preparación y base inicial: declarar y validar las herramientas obligatorias del stack, confirmar o diferir `bootstrap.json`, identificar y excluir los archivos con secretos, y registrar la aprobación humana de la preparación. Esta preparación es siempre el Sprint 1, nunca una fase o numeración `0`.
+
 ## Verificación de carga del adaptador
 
 Al iniciar trabajo FromZero, el agente debe verificar y reportar cómo está operando:
@@ -57,29 +59,43 @@ debe aplicar manualmente las verificaciones equivalentes.
 
 ## Frases para arrancar
 
-Usa esta frase cuando ya estas dentro de un proyecto y tienes documentación, notas, un PRD formal o cualquier archivo con la idea:
+Antes de usar cualquiera de estos prompts, el usuario debe crear o usar `docs/`
+como directorio estándar de insumos del proyecto. Ahí debe colocar la idea inicial,
+el PRD o la documentación disponible. Si usa otra ubicación, debe reemplazar los
+placeholders con la ruta real.
+
+Si tiene una idea vaga:
 
 ```text
-Estoy en este proyecto. Tengo documentacion/notas en docs. Revisa la idea con FromZero, analizala criticamente, detecta faltantes, riesgos y mejoras, y dime como empezamos. No implementes codigo de aplicacion todavia; puedes crear artefactos FromZero.
+Quiero crear una aplicacion para [tipo de usuario] que resuelva [problema].
+No tengo PRD ni documentacion adicional todavia.
+Registra esta idea inicial en docs/PROJECT_BRIEF.md.
+Usa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar artifacts/FROMZERO_CONTEXT.md.
+No implementes codigo de aplicacion todavia.
+No avances de fase sin mi aprobación.
 ```
 
 Si tienes un PRD:
 
 ```text
-Tengo un PRD en [ruta del PRD]. Usa FromZero para revisarlo criticamente, detectar gaps, contradicciones, riesgos, supuestos débiles y mejoras, y crear artifacts/FROMZERO_CONTEXT.md. No implementes codigo de aplicacion todavia; puedes crear artefactos FromZero.
+Tengo un PRD para este proyecto en [ruta-del-prd].
+Si todavía no defini una ruta, usa docs/PRD.md.
+Usa FromZero para localizarlo, revisarlo criticamente, detectar gaps, contradicciones, riesgos, supuestos débiles y oportunidades de mejora, y preparar el contexto.
+No implementes codigo de aplicacion todavia.
+No avances de fase sin mi aprobación.
 ```
 
 Si la documentación está en una carpeta específica:
 
 ```text
-La documentacion de mi proyecto esta en [ruta de la carpeta]. Usa FromZero para revisarla, analizar criticamente el proyecto, detectar faltantes, riesgos y mejoras, y decirme que decisiones faltan antes de especificar. No implementes codigo de aplicacion todavia; puedes crear artefactos FromZero.
+Tengo documentacion para este proyecto en [ruta-de-docs].
+Usa FromZero para localizarla, revisarla, analizar criticamente el proyecto, detectar faltantes, contradicciones, riesgos y mejoras, y decirme que decisiones faltan antes de especificar.
+No implementes codigo de aplicacion todavia.
+No avances de fase sin mi aprobación.
 ```
 
-Si todavía no tienes documentos, usa una frase que describa la idea real:
-
-```text
-Quiero crear una aplicacion de [tipo de app] para [tipo de usuario] con FromZero. Tengo esta idea general: [resumen breve]. Necesito que me guies paso a paso para validarla, aterrizarla y convertirla en una especificacion antes de construir.
-```
+En el caso de documentación en carpeta no hay fallback automático a `docs/`: si
+el usuario no reemplaza `[ruta-de-docs]`, el agente debe pedir la ruta real.
 
 Si quieres partir del framework FromZero cuando este disponible:
 
@@ -213,9 +229,9 @@ flowchart TD
 | 3. Spec | `Prepara la especificacion del proyecto.` | Convertir la idea validada y el cuestionario aprobado en alcance verificable y guardarlo en `artifacts/FROMZERO_SPEC.md`. | Cobertura del insumo, entidades, permisos, pantallas, integraciones, criterios, KPIs, ruta de construcción y aprobación. | Si el cuestionario crítico no fue revisado y aprobado, si es borrador, si no ejecutó Q&A o si hay ambiguedades que afectan seguridad, alcance, viabilidad o ruta técnica. |
 | 4. Design | `Define el diseno tecnico antes de planear.` | Definir schemas, APIs, permisos, jobs, cache, queries y ADRs. | Diseño implementable y contratos base. | Si faltan contratos, ownership, permisos o decisiones de arquitectura. |
 | 5. Plan | `Crea un plan por pasos pequenos para construirlo.` | Dividir el trabajo en Sprints verificables. | Sprints pequeños, ordenados, trazados a la spec y con dependencias claras. | Si el plan contradice spec, insumo o estructura física. |
-| 6. State | `Deja listo el estado para continuar despues.` | Crear o actualizar `artifacts/FROMZERO_STATE.md` al crear el plan. | Sprint actual, último Sprint completado, siguiente Sprint, verificaciones, bloqueos y próxima acción. | Si plan, spec o Git se contradicen. |
+| 6. State | `Deja listo el estado para continuar despues.` | Crear o actualizar `artifacts/FROMZERO_STATE.md` al crear el plan. | Sprint actual, último Sprint completado, siguiente Sprint, resumen breve de inicio, herramientas previstas, verificaciones, bloqueos y próxima acción. | Si plan, spec o Git se contradicen. |
 | 7. TDD | `Antes de escribir codigo, dime que vas a probar primero.` | Definir validación antes de implementar. | Pruebas, checks manuales o evidencia requerida por Sprint. | Si no hay forma clara de saber que algo funciona. |
-| 8. Build | `Continua con la ejecucion del proyecto.` | Leer `artifacts/FROMZERO_STATE.md` e implementar el siguiente Sprint aprobado. | Cambios pequeños, funcionales y alineados con la spec. | Si falta Spec aprobada, Plan, State, secretos, accesos o decisiones aprobadas. |
+| 8. Build | `Continua con la ejecucion del proyecto.` | Leer `artifacts/FROMZERO_STATE.md`, mostrar resumen breve con herramientas previstas e implementar el siguiente Sprint aprobado. | Cambios pequeños, funcionales y alineados con la spec. | Si falta Spec aprobada, Plan, State, secretos, accesos o decisiones aprobadas. |
 | 9. Security | `Revisa seguridad antes de seguir.` | Validar permisos, datos, inputs, secretos, errores y abuso. | Riesgos, correcciones y evidencia de seguridad. | Si hay exposición de datos, secretos o permisos fragiles. |
 | 10. UI | `Revisa la UI con el diseño de FromZero.` | Aplicar la decisión de UI registrada. | Pantallas consistentes, responsive, accesibles y con estados básicos. | Si la UI contradice el design system o no es usable. |
 | 11. Scalability | `Revisa si esto escala bien antes de cerrar.` | Revisar queries, cache, jobs, costos, límites y observabilidad. | Riesgos de escala y acciones necesarias antes de producción. | Si hay cuellos de botella obvios sin mitigación. |
@@ -239,18 +255,31 @@ Cuando el usuario pide iniciar, el adaptador debe:
 - proponer recursos faltantes en lenguaje simple;
 - pedir aprobación antes de instalar, descargar o conectar algo externo;
 - no escribir código antes de contexto, especificación y plan;
-- no leer `.env` reales.
+- leer `.env.local` solo para conectar o configurar herramientas del TechStack, sin imprimir ni versionar secretos (Controlled Secret Runtime Access).
+
+## Acceso a variables locales (runbook fijo)
+
+Procedimiento fijo. Ante "genera mi archivo de variables locales" o "prepara el acceso a mis variables locales", ejecútalo y detente. No edites el plugin instalado, no crees lanzadores, no edites la config de la app (`config.toml`, `mcp_config.json`), no toques otros archivos del proyecto, no subas versiones.
+
+1. Si no existe `.env.local`, cópialo de `.env.example` (no lo sobrescribas; la persona lo completa; no pidas secretos en el chat).
+2. Confirma que `.env.local` está en `.gitignore`; si no, agrégalo.
+3. (Opcional) `node tools/load-env-local.mjs --setup <app>` deja el README; `--verify <app>` revisa el estado y reporta solo presencia/ausencia.
+4. La persona abre Codex/Antigravity con su **icono normal** y no hace nada extra. En Claude Code el hook ya carga `.env.local`.
+5. Para usar una herramienta del TechStack (CLI o API: SonarScanner, API REST de SonarQube, Supabase CLI, `curl`), ejecútala **dentro de la sesión** a través del runner: `node tools/load-env-local.mjs -- <comando>`. Eso carga `.env.local` solo en ese comando, scoped al proyecto; nunca persistas secretos al entorno global del SO.
+6. Detente. Reporta solo presencia/ausencia. Si detectas contradicciones o estado previo, repórtalo; no lo corrijas por tu cuenta.
+
+Límite: el runner cubre CLI y API directa (suficiente para el bucle autónomo, p. ej. SonarQube: consultar issues/hotspots, corregir, re-escanear). Los servidores MCP los arranca la app, no el agente, así que no se alimentan por esta vía; para SonarQube usa el camino CLI/API.
+
+Verificación posterior: `node tools/load-env-local.mjs` (solo nombres y estado) o `--verify <app>`. Nunca muestres valores.
 
 ## Cuestionario automático
 
 Si al terminar el contexto hay dudas o decisiones pendientes antes de preparar la especificación, el agente debe iniciar o solicitar el cuestionario sin esperar a que el usuario lo pida.
 
-Antes de la primera pregunta debe mostrar un bloque claro y visible:
+Antes de la primera pregunta debe mostrar una cita clara y visible:
 
-```text
-Activa el modo plan de tu agente antes de continuar.
-El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
-```
+> Activa el modo plan de tu agente antes de continuar.
+> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
 
 El cuestionario debe guardarse bajo `artifacts/` solo después de ejecutar Q&A real con respuestas, correcciones o decisiones diferidas:
 
@@ -350,13 +379,11 @@ Si estás en modo plan o sin escritura, el agente debe explicar el bloqueo y dar
 guarda la especificación para revisión.
 ```
 
-Al cerrar esta fase, el agente debe decir claramente que archivo revisar, que commit automático se creó y que debe hacer el usuario después. El cierre debe usar un formato humano:
+Al cerrar esta fase, el agente debe decir claramente que archivo revisar, que commit automático se creó y que debe hacer el usuario después. El cierre debe usar un formato humano; el siguiente paso no debe presentarse como bloque copiable:
 
-```text
 Artefacto para revisar: [artifacts/FROMZERO_SPEC.md](artifacts/FROMZERO_SPEC.md)
 Commit: <hash> - <mensaje completo del commit>
-Siguiente paso para ti: revisa y valida [artifacts/FROMZERO_SPEC.md](artifacts/FROMZERO_SPEC.md). Si todo está correcto, responde "Apruebo la especificación". Si quieres cambiar algo, dime qué ajuste hago.
-```
+> Siguiente paso para ti: revisa y valida [artifacts/FROMZERO_SPEC.md](artifacts/FROMZERO_SPEC.md). Si todo está correcto, responde "Apruebo la especificación". Si quieres cambiar algo, dime qué ajuste hago.
 
 Si no hubo commit, el cierre debe explicar por qué no se creó y qué acción permite resolverlo.
 
@@ -398,6 +425,13 @@ condicional o parcial, el agente debe pedir confirmación antes de iniciar Build
 
 `Continua con la ejecucion del proyecto` solo reanuda un plan ya aprobado. Si el
 plan está en revisión, el agente debe pedir `Apruebo el plan`.
+
+Antes de codificar cada Sprint aprobado, el agente debe mostrar un mensaje breve
+con Sprint detectado, qué construirá, alcance, herramientas previstas,
+verificaciones y riesgos. Las herramientas incluyen skills, MCPs/conectores,
+subagentes, navegador, scripts CLI, test runners o servicios externos cuando
+apliquen. Si no hay bloqueos, el mensaje termina con `Iniciando la ejecución del
+Sprint N.` y la ejecución empieza automáticamente sin otra aprobación.
 
 ## Checkpoints Git automáticos
 

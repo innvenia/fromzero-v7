@@ -57,9 +57,42 @@ expectativa contra entrega.
 - Secretos verificados:
 - Unidad visible: Sprint
 - Verificación visual en navegador: ejecutada con evidencia | fallback registrado | no aplica (sin UI web)
+- Activaciones diferidas: `artifacts/DEFERRED_ACTIVATIONS.md` revisado con condición y dueño | sin diferidos
+- Decisiones: `artifacts/FROMZERO_DECISIONS.md` cerrado y sin respuestas sin reconciliar | no aplica
 - Commit automático: hash corto + mensaje completo, o razón concreta si no se creó
+- Commit bloqueado por cambios externos: escalado si | no aplica
+
+## Fuentes verificadas
+
+Toda afirmación de hecho externo marcada como verificada lleva su cita. Lo no verificado se
+etiqueta explícitamente como no verificado, nunca como verificado.
+
+| Afirmación | Fuente (URL) | Qué se comprobó | Fecha |
+|---|---|---|---|
+|  |  |  |  |
 
 ## Verificaciones
+
+## Gate de calidad
+
+Registrar la evidencia del gate local del Sprint y, si aplica, de SonarQube. El estándar de
+calidad interno FromZero (`docs/gates.md`) aplica exista o no SonarQube.
+
+- Comandos ejecutados: lint | typecheck | tests unitarios | coverage | build | audit | `git diff --check` | secret scan
+- Pruebas: total suite __ / del Sprint __ (conteos con alcance explícito, reconciliados)
+- Coverage local: global __% / new __% (mínimo 80% / 80%)
+- Estándar interno FromZero: cumple | no cumple con desviación aprobada (`artifacts/FROMZERO_DECISIONS.md`)
+- SonarQube: configurado si | no
+  - bugs / vulnerabilities / security hotspots abiertos:
+  - code smells introducidos:
+  - duplicated_lines_density / new_duplicated_lines_density:
+  - coverage / new coverage:
+  - Quality Gate oficial: pasa | falla | no aplica
+- Missing blame information: si | no | no aplica (Sonar no usado)
+- Issues abiertos:
+- Duplicación:
+- Riesgos residuales:
+- Archivos excluidos del commit o del análisis:
 
 ## Gotchas detectados
 
@@ -86,6 +119,15 @@ automático ni sync desde el proyecto cliente.
   4. El equipo FromZero clasifica el feedback antes de modificar la metodología.
 
 ## Riesgos
+
+## Limitaciones y bloqueos
+
+Cada limitación o bloqueo declarado lleva su evidencia (comando + resultado o config leída).
+Sin evidencia verificada se etiqueta como hipótesis no verificada, no como limitación.
+
+| Limitación o bloqueo | Evidencia (comando + resultado) | Impacto | Estado |
+|---|---|---|---|
+|  |  |  |  |
 
 ## Issues
 

@@ -4,7 +4,7 @@ Adaptador distribuible para ejecutar la metodología FromZero en Codex.
 
 Nombre instalable del plugin: `fromzero`.
 
-Versión actual: `0.4.33`.
+Versión actual: `0.8.0`.
 
 Instalación oficial: marketplace local en la raíz del repositorio completo (`.agents/plugins/marketplace.json` con `source.path` hacia `methodology/from_zero/adapters/codex`).
 
@@ -71,11 +71,18 @@ node .codex/plugins/fromzero/tools/init-project.mjs --project <ruta-del-proyecto
 
 Lee `artifacts/START_HERE.md` si eres usuario del proyecto. Lee `FIRST_STEPS.md` si estas revisando el adaptador.
 
-Frase recomendada:
+Frase recomendada para idea vaga:
 
 ```text
-Estoy en este proyecto. Tengo documentacion/notas en docs. Revisa la idea con FromZero, analizala criticamente, detecta faltantes, riesgos y mejoras, y dime como empezamos. No implementes codigo de aplicacion todavia; puedes crear artefactos FromZero.
+Quiero crear una aplicacion para [tipo de usuario] que resuelva [problema].
+No tengo PRD ni documentacion adicional todavia.
+Registra esta idea inicial en docs/PROJECT_BRIEF.md.
+Usa FromZero para analizar criticamente la idea, mejorarla, hacer preguntas necesarias y preparar artifacts/FROMZERO_CONTEXT.md.
+No implementes codigo de aplicacion todavia.
+No avances de fase sin mi aprobación.
 ```
+
+Para PRD o documentación en carpeta, usa los prompts de `artifacts/START_HERE.md`.
 
 Para aprobar un plan listo, responde:
 
@@ -88,12 +95,6 @@ apruebe el plan vigente. Codex debe registrar la frase literal y pedir
 confirmación si la respuesta es ambigua, condicional o parcial.
 
 `Continua con la ejecucion del proyecto` solo reanuda un plan ya aprobado.
-
-Si todavía no tienes documentos:
-
-```text
-Quiero crear una aplicacion de [tipo de app] para [tipo de usuario] con FromZero. Tengo esta idea general: [resumen breve]. Necesito que me guies paso a paso para validarla, aterrizarla y convertirla en una especificacion antes de construir.
-```
 
 ## Que hace
 
@@ -262,6 +263,8 @@ artifacts/FROMZERO_STATE.md
 
 Este archivo es la fuente de verdad para continuar el proyecto después de pausas, cambios de conversación o días sin actividad. Debe registrar Sprint actual, último Sprint completado, siguiente Sprint, estado de Git, commits, gates, bloqueos, riesgos, decisiones abiertas, comandos de verificación y próxima acción.
 
+Cada Sprint debe registrar un `Resumen breve de inicio` y `Herramientas previstas`. Antes de codificar, Codex muestra Sprint, alcance, verificaciones, riesgos y herramientas como skills, MCPs/conectores, subagentes, navegador, scripts CLI, test runners o servicios externos. Si no hay bloqueos, continúa automáticamente con `Iniciando la ejecución del Sprint N.`.
+
 El usuario no debe tener que recordar el número del Sprint ni copiar instrucciones largas. Puede escribir:
 
 ```text
@@ -280,12 +283,10 @@ Codex debe leer `artifacts/FROMZERO_STATE.md`, validar `artifacts/FROMZERO_PLAN.
 
 Si después de revisar el contexto hay dudas antes de especificar o planear, Codex debe iniciar o solicitar el cuestionario automáticamente en modo plan.
 
-Antes de preguntar debe mostrar:
+Antes de preguntar debe mostrar una cita:
 
-```text
-Activa el modo plan de Codex antes de continuar.
-El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
-```
+> Activa el modo plan de Codex antes de continuar.
+> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
 
 El cuestionario se guarda bajo `artifacts/` solo después de ejecutar Q&A real con respuestas, correcciones o decisiones diferidas:
 
@@ -379,7 +380,7 @@ Codex debe:
 
 - tocar solo archivos necesarios;
 - no inventar APIs;
-- no leer `.env` reales;
+- usar `.env.local` solo para operar herramientas del TechStack dentro de la sesión (Controlled Secret Runtime Access), sin imprimir ni versionar secretos;
 - no hardcodear secretos;
 - no conectar servicios externos sin aprobación;
 - no descargar packs externos sin aprobación;

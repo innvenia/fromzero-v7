@@ -62,7 +62,13 @@ description: "Usar automáticamente cuando el usuario pida organizar, planear, d
 - Confirma si existe commit base; si no existe, explica riesgo y pide resolverlo antes de implementar.
 - La numeración visible siempre empieza en `1`; no generes numeración inferior a `1` en pasos, Sprints, fases, etapas ni items.
 - Sprint 1 debe cubrir preparación/base inicial o marcarse como completado si esa preparación ya ocurrió antes del plan.
-- Lista todos los Sprints con título, objetivo, dependencias, criterios de éxito, archivos objetivo, pruebas y gates.
+- Lista todos los Sprints con título, objetivo, resumen breve de inicio, herramientas previstas, dependencias, criterios de éxito, archivos objetivo, pruebas y gates.
+- Cada Sprint debe incluir `Resumen breve de inicio` en lenguaje simple: qué se construirá, alcance principal y resultado verificable esperado. Debe ser breve y apto para mostrarse antes de codificar.
+- Cada Sprint debe incluir `Herramientas previstas`: skills FromZero, MCPs/conectores, subagentes, navegador, scripts CLI, test runners o servicios externos que probablemente se usarán. No prometas MCPs, subagentes o navegador si el runtime no está verificado; marca `no aplica` o `fallback` con razón.
+- Prefiere CLI sobre MCP por eficiencia de tokens; valida que el CLI o MCP responde y expone las herramientas necesarias antes de declararlo en un Sprint. CLI y MCP son herramientas de desarrollo, no runtime del producto.
+- Declara, por Sprint, qué herramientas son obligatorias y cuáles opcionales o diferidas. Lo no seleccionado no bloquea, pero documenta su compensación (por ejemplo, rate-limit y locks sin estado si no hay Redis).
+- Para componentes de alto riesgo (costo, privacidad o exfiltración de datos: IA, pagos, exportación masiva), exige que sus precondiciones estén satisfechas antes de iniciar su Sprint (API mínima, secretos saneados, budgets, redaction, provider decidido y revalidado), o difiérelas con registro en `artifacts/DEFERRED_ACTIVATIONS.md`. Ver `checklists/scalability.md`.
+- Define DoR y DoD por tipo de Sprint (BD/RLS, integración, UI, calidad). DoR incumplido bloquea el inicio del Sprint; DoD incumplido bloquea su cierre salvo aprobación de riesgo registrada.
 - El orden de Sprints debe derivar de `## Base para planificación`; cualquier divergencia debe quedar justificada con impacto, dependencia resuelta y riesgo aceptado.
 - Completa `## 5.7 Controles condicionales de riesgo`: especialistas,
   zonas humanas y automatización. Para cada dominio aplicable registra revisión,
@@ -102,6 +108,10 @@ description: "Usar automáticamente cuando el usuario pida organizar, planear, d
   `no aplica` con razón en bloqueos.
 - Valida dependencias entre Sprints: toda capacidad que un Sprint promete debe estar provista por ese Sprint o por uno anterior. Si un Sprint N depende de algo que llega en un Sprint M mayor que N, reordena, adelanta un mínimo verificable de M o declara en el Sprint N la limitación explícita y su condición de cierre.
 - Verifica contradicciones contra `artifacts/FROMZERO_QUESTIONNAIRE.md`; si una decisión cambio, actualiza la pregunta y el Registro de cambios antes de cerrar.
+- Antes de presentar el plan como listo, audita el plan contra la documentación de la metodología (`docs/`) y `artifacts/FROMZERO_QUESTIONNAIRE.md`, cierra los gaps detectados y reporta el resultado (aprueba o requiere cambios con la lista de gaps). Esta auditoría refuerza la validación de cierre, no la reemplaza.
+- Verifica que ninguna pregunta crítica quede abierta (gate de salida "preguntas críticas = 0") antes de presentar el plan como listo.
+- No habilites Build si la reconciliación de respuestas del dueño tiene filas `rechazada` o contradicciones sin resolver; deben quedar `aceptada` o diferidas con aprobación.
+- No apruebes el plan apoyado en ADRs en estado `borrador`; el estado del Plan es independiente del estado de cada ADR. Si un Sprint depende de un ADR pendiente, difiérelo con riesgo aprobado y registrado, o bloquea su inicio.
 - Puedes agregar secciones propias del proyecto si son necesarias, sin romper la estructura base.
 - Después de crear o actualizar el plan, resume cambios exactos en `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_QUESTIONNAIRE.md` y `artifacts/FROMZERO_PLAN.md`.
 - También resume cambios exactos en `artifacts/FROMZERO_STATE.md`.

@@ -158,6 +158,43 @@ function renderTemplate(template, replacements) {
   return template.replace(/\{\{([A-Z_]+)\}\}/g, (_, key) => replacements[key] ?? "");
 }
 
+function secretAccessSection(appName) {
+  const heading = "## Acceso a tus variables locales (`.env.local`)";
+  const intro = "Tus llaves, endpoints y tokens van en `.env.local` (no se versiona). El agente los usa solo para conectar o configurar tus herramientas del TechStack (Supabase, SonarQube, etc.) y nunca los muestra ni los versiona. El acceso es por proyecto y por sesión: nunca se guardan a nivel global, así no se mezclan entre proyectos.";
+  const app = appName.toLowerCase();
+
+  if (app === "claude code" || app === "claude-code") {
+    return [
+      heading,
+      "",
+      intro,
+      "",
+      "En Claude Code el acceso es automático:",
+      "",
+      "1. Pide: \"genera mi archivo de variables locales\" (copia `.env.example` a `.env.local`).",
+      "2. Completa `.env.local` con tus valores.",
+      "3. Reinicia la sesión del agente. Listo: el plugin carga `.env.local` solo.",
+      "",
+      "Para verificar sin mostrar valores, pide: \"verifica mis variables locales\"."
+    ].join("\n");
+  }
+
+  const appLabel = app === "antigravity" ? "Antigravity" : "Codex";
+  return [
+    heading,
+    "",
+    intro,
+    "",
+    "En " + appLabel + ", con tu icono normal (sin lanzadores ni configurar nada):",
+    "",
+    "1. Pide: \"genera mi archivo de variables locales\" (copia `.env.example` a `.env.local`).",
+    "2. Completa `.env.local` con tus valores.",
+    "3. Abre " + appLabel + " normal y pídele lo que necesites (ej: \"consulta SonarQube\").",
+    "",
+    "El agente carga `.env.local` solo al ejecutar cada herramienta, dentro de la sesión, scoped a este proyecto. Tus secretos no se muestran, no se guardan globales y no se mezclan entre proyectos."
+  ].join("\n");
+}
+
 function rulesBlock(appName, version, pluginPath) {
   return [
     RULES_BEGIN,
@@ -171,7 +208,7 @@ function rulesBlock(appName, version, pluginPath) {
     `- Cierre obligatorio de instalación o actualización: copia el bloque final obligatorio mostrado por \`tools/init-project.mjs\`; no lo resumas, no lo sustituyas por una lista propia y conserva el enlace Markdown a \`${START_HERE_PATH}\`.`,
     "- Si el proyecto no tiene Git inicializado, recomienda inicializarlo antes de ejecutar FromZero para conservar un punto de partida, revisar cambios y revertir con seguridad.",
     "- No uses pasos, fases, Sprints, etapas ni items visibles numerados como `0`; todo empieza en `1`.",
-    "- No leas `.env` reales; documenta variables en `.env.example`.",
+    "- Controlled Secret Runtime Access: puedes leer `.env.local` para conectar o configurar herramientas del TechStack (CLI, MCP, SDK, API); nunca imprimas, muestres ni versiones secretos; reporta solo presencia/ausencia. Documenta variables en `.env.example`; puedes copiar `.env.example` a `.env.local`.",
     RULES_END
   ].join("\n");
 }
@@ -597,7 +634,8 @@ function main() {
     ADAPTER_VERSION: version,
     PLUGIN_PATH: pluginPath,
     DEFAULT_DOCS_PATH: args.docs,
-    GIT_STATUS: gitStatus(projectRoot).templateStatus
+    GIT_STATUS: gitStatus(projectRoot).templateStatus,
+    SECRET_ACCESS: secretAccessSection(appName)
   });
 
   if (args.dryRun) {
