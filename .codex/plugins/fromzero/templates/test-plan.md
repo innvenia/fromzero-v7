@@ -36,3 +36,11 @@ Ruta de salida: `artifacts/test-plans/<sprint-or-module>.md`
 ## k6
 
 ## Limitaciones
+
+Cada limitación (prueba que no se puede ejecutar en el entorno) se registra con el comando
+exacto recomendado y el resultado u observación obtenida. Sin evidencia se etiqueta como
+hipótesis no verificada, no como limitación.
+
+| Limitación | Comando exacto | Resultado u observación | Nivel de evidencia faltante |
+|---|---|---|---|
+|  |  |  | estática / contrato local / ejecución real |

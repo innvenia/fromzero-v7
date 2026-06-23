@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "v8",
-      reporter: ["text", "lcov"]
+      reporter: ["text", "lcov"],
+      exclude: ["scripts/**"]
     },
     exclude: ["node_modules/**", ".next/**", "tests/e2e/**"],
     passWithNoTests: true

@@ -14,3 +14,8 @@
 - Descargas externas solo con aprobación explícita y versión fija.
 - Recurso faltante dispara pregunta de documentación oficial o sync de pack.
 - Gates por integración incluidos en plan y release.
+- Cada servicio aprobado individual y explícitamente (no en bloque), con validación previa de capacidades.
+- Evidencia de respuesta del servicio recogida antes de marcar la verificación cumplida (salida de CLI o `status` OK, respuesta API 2xx con payload, o webhook recibido y registrado). No marcar "activado" sin evidencia.
+- Revisión de integraciones independiente o adversarial (webhooks, idempotencia, secretos) ejecutada en Sprints sensibles.
+- Adapter externo con matriz mínima de tests (`docs/testing.md`): evento/caso principal, variantes soportadas, rechazo explícito de evento no soportado, normalización segura y sin logging de secretos.
+- SonarQube cuando esté configurado: flujo local documentado (`library/resources/sonarqube.md`); acceso validado antes del Sprint; scan antes del cierre; status/issues/quality gate consultados después; métricas registradas en el handoff; sin imprimir secretos.

@@ -53,6 +53,18 @@ Toda decisión aprobada en `artifacts/FROMZERO_QUESTIONNAIRE.md` debe tener fila
 |---|---|---|---|---|---|
 |  | Q000 |  |  | no | no aplica |
 
+## Reconciliación de respuestas del dueño
+
+Cuando una decisión nueva o más profunda cambie, normalice o contradiga una respuesta ya
+registrada, regístrala aquí y preséntala para aprobación explícita. Si una fila queda
+`rechazada` o como contradicción no resuelta, no se cierra la Spec. Al aprobar, aplica la
+retropropagación al cuestionario y al ledger de decisiones en el mismo cambio. Esta tabla
+es de cambios; es distinta del contraste de consistencia del plan.
+
+| Pregunta | Respuesta normalizada | Fuente | Decisión | Artefacto a actualizar | Estado | Dueño |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  | aceptada \| explicación \| aprobación \| diferida \| rechazada |  |
+
 ## Registro de cambios
 
 Registra cualquier ajuste hecho para alinear la spec con `docs/`, contexto,

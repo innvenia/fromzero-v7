@@ -1,5 +1,5 @@
 # START HERE - FromZero en este proyecto
-<!-- FROMZERO_START_HERE:BEGIN managed=true version=0.4.33 app=Codex -->
+<!-- FROMZERO_START_HERE:BEGIN managed=true version=0.6.1 app=Codex -->
 
 Este archivo te dice que acabas de instalar y como empezar a usarlo sin conocer detalles técnicos del plugin.
 
@@ -10,7 +10,7 @@ Este archivo te dice que acabas de instalar y como empezar a usarlo sin conocer 
 | Artefacto | START_HERE |
 | Propósito o subtítulo | Guía inicial del usuario del proyecto |
 | Proyecto | Codex |
-| Versión del adaptador FromZero | 0.4.33 |
+| Versión del adaptador FromZero | 0.6.1 |
 | Fecha de creación | Generada al instalar o actualizar |
 | Última actualización | Generada al instalar o actualizar |
 | Estado actual | guía activa |
@@ -28,10 +28,22 @@ Este archivo te dice que acabas de instalar y como empezar a usarlo sin conocer 
 
 - App: Codex.
 - Plugin o paquete: `fromzero`.
-- Versión: `0.4.33`.
+- Versión: `0.6.1`.
 - Instalación: activa en este proyecto.
 - Documentación: el agente la detecta en el proyecto.
-- Control de versiones al instalar: no detectado; recomendado inicializar antes de empezar.
+- Control de versiones al instalar: Git detectado en la raíz del proyecto.
+
+## Acceso a tus variables locales (`.env.local`)
+
+Tus llaves, endpoints y tokens van en `.env.local` (no se versiona). El agente los usa solo para conectar o configurar tus herramientas del TechStack (Supabase, SonarQube, etc.) y nunca los muestra ni los versiona.
+
+En Codex hay una configuración inicial, una sola vez:
+
+1. Pide: "genera mi archivo de variables locales" y "prepara el acceso a mis variables locales para Codex".
+2. Completa `.env.local` con tus valores.
+3. Abre `.fromzero/secret-access/README.txt` y sigue los pasos (pega el snippet en tu config de Codex e inicia con `./start-codex.ps1`).
+
+Después, el agente se conecta a tus herramientas por CLI y MCP sin mostrar tus secretos.
 
 ## 1. Prepara control de versiones
 

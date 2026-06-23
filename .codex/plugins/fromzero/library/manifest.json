@@ -32,10 +32,13 @@
       "packagedPath": "library/resources/supabase.md",
       "requiredEnvExample": [
         "NEXT_PUBLIC_SUPABASE_URL",
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+        "SUPABASE_PROJECT_ID"
       ],
       "secretEnv": [
-        "SUPABASE_SERVICE_ROLE_KEY"
+        "SUPABASE_SECRET_KEY",
+        "SUPABASE_DB_PASSWORD",
+        "SUPABASE_DIRECT_CONNECTION_STRING"
       ],
       "requiredGates": [
         "rls",
@@ -66,7 +69,7 @@
       ],
       "packagedPath": "library/resources/redis.md",
       "requiredEnvExample": [
-        "REDIS_URL"
+        "REDIS_ENABLED"
       ],
       "secretEnv": [
         "REDIS_URL"
@@ -96,11 +99,11 @@
       ],
       "packagedPath": "library/resources/sonarqube.md",
       "requiredEnvExample": [
-        "SONAR_HOST_URL",
-        "SONAR_PROJECT_KEY"
+        "SONARQUBE_URL",
+        "SONARQUBE_PROJECT_KEY"
       ],
       "secretEnv": [
-        "SONAR_TOKEN"
+        "SONARQUBE_TOKEN"
       ],
       "requiredGates": [
         "quality-gate",
@@ -785,14 +788,135 @@
       ],
       "packagedPath": "library/resources/mcp.md",
       "requiredEnvExample": [
-        "SONAR_HOST_URL"
+        "SONARQUBE_URL"
       ],
       "secretEnv": [
-        "SONAR_TOKEN"
+        "SONARQUBE_TOKEN"
       ],
       "requiredGates": [
         "mcp-approval",
         "no-secrets-in-repo"
+      ],
+      "required": false
+    },
+    {
+      "id": "resend",
+      "type": "integration",
+      "name": "Resend transactional email",
+      "triggers": [
+        "resend",
+        "email",
+        "transactional email",
+        "smtp",
+        "mailer"
+      ],
+      "phases": [
+        "fz-spec",
+        "fz-plan",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/resend.md",
+      "requiredEnvExample": [],
+      "secretEnv": [
+        "RESEND_API_KEY"
+      ],
+      "requiredGates": [
+        "verified-domain",
+        "no-secrets-in-repo",
+        "safe-errors"
+      ],
+      "required": false
+    },
+    {
+      "id": "recaptcha",
+      "type": "security",
+      "name": "reCAPTCHA bot protection",
+      "triggers": [
+        "recaptcha",
+        "captcha",
+        "bot protection",
+        "spam",
+        "abuse"
+      ],
+      "phases": [
+        "fz-spec",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/recaptcha.md",
+      "requiredEnvExample": [
+        "RECAPTCHA_SITE_KEY"
+      ],
+      "secretEnv": [
+        "RECAPTCHA_SECRET_KEY"
+      ],
+      "requiredGates": [
+        "server-side-verify",
+        "score-threshold",
+        "accessible-fallback"
+      ],
+      "required": false
+    },
+    {
+      "id": "core-ai",
+      "type": "ai-runtime",
+      "name": "From Zero Core AI runtime",
+      "triggers": [
+        "core ai",
+        "fromzero ai",
+        "ai runtime",
+        "model selection"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-scale",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/core-ai.md",
+      "requiredEnvExample": [
+        "AI_PROVIDER",
+        "AI_MODEL_ID",
+        "AI_DEFAULT_MODEL"
+      ],
+      "secretEnv": [
+        "CORE_AI_SECRET"
+      ],
+      "requiredGates": [
+        "budget-cap",
+        "rate-limit",
+        "cost-audit",
+        "prompt-injection"
+      ],
+      "required": false
+    },
+    {
+      "id": "openrouter",
+      "type": "ai-provider",
+      "name": "OpenRouter model gateway",
+      "triggers": [
+        "openrouter",
+        "ai gateway",
+        "model router",
+        "llm gateway"
+      ],
+      "phases": [
+        "fz-context",
+        "fz-spec",
+        "fz-security",
+        "fz-release"
+      ],
+      "packagedPath": "library/resources/openrouter.md",
+      "requiredEnvExample": [],
+      "secretEnv": [
+        "OPENROUTER_API_KEY"
+      ],
+      "requiredGates": [
+        "budget-cap",
+        "rate-limit",
+        "model-fallback"
       ],
       "required": false
     }

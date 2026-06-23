@@ -14,3 +14,4 @@ Instrucciones:
 - Verifica 375, 768 y 1920; WCAG 2.2 AA objetivo; estados loading, empty, error y success.
 - Verifica i18n en todos los textos visibles.
 - Entrega: desviaciones encontradas con pantalla/componente y corrección propuesta.
+- En Sprints sensibles de UI, ejecuta la revisión adversarial de tu dominio (Design System, i18n, responsive, accesibilidad, visual QA), complementaria a la revisión de seguridad/datos del auditor. Reporta hallazgos críticos para resolver o aceptar como riesgo con razón.

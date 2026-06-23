@@ -27,8 +27,8 @@
 3. Clasifica la ruta: framework existente, framework nuevo o app sin framework.
 4. Registra decisión de UI: framework, referencia del usuario, UI generado o sin UI.
 5. Valida críticamente problema, usuario, mercado, tecnología, alcance, seguridad, riesgos, operación y comercialización antes de planear. No te limites a listar faltantes.
-6. Crea o actualiza `artifacts/FROMZERO_CONTEXT.md` con análisis crítico, gaps, supuestos débiles, mejoras propuestas e inventario de capacidades.
-7. Si después del contexto hay dudas críticas, muestra `Activa el modo plan de Codex antes de continuar.` y explica que el siguiente paso de FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
+6. Crea o actualiza `artifacts/FROMZERO_CONTEXT.md` con análisis crítico, gaps, supuestos débiles, mejoras propuestas e inventario de capacidades. Usa `docs/` como directorio estándar de insumos: idea vaga en `docs/PROJECT_BRIEF.md`, PRD sin ruta en `docs/PRD.md` y documentación en carpeta solo con ruta real indicada.
+7. Si después del contexto hay dudas críticas, muestra `Activa el modo plan de Codex antes de continuar.` como cita Markdown y explica que el siguiente paso de FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
 8. No crees `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo antes de ejecutar Q&A real con respuestas, correcciones o decisiones diferidas. Si Codex no puede activar modo plan desde la conversación actual, detente después de `artifacts/FROMZERO_CONTEXT.md`, pide activar modo plan o abrir una conversación en modo plan, y no simules el cuestionario como archivo final.
 9. Crea o actualiza `artifacts/FROMZERO_QUESTIONNAIRE.md` solo después del Q&A real. Debe incluir preguntas, opciones, fuente documental por opción, explicación, respuesta seleccionada, notas, `Modo Q&A ejecutado: si` y estado de aprobación.
 10. Detén el avance hasta que el usuario revise, ajuste o apruebe explícitamente `artifacts/FROMZERO_QUESTIONNAIRE.md`.
@@ -73,13 +73,14 @@ El usuario no necesita nombrar skills.
 - `artifacts/FROMZERO_PLAN.md` define la ruta completa; `artifacts/FROMZERO_STATE.md` define dónde quedó el proyecto.
 - El usuario no debe tener que saber el número del siguiente Sprint.
 - Ante "continua" o "ejecuta el siguiente Sprint", lee `artifacts/FROMZERO_STATE.md`, valida `artifacts/FROMZERO_PLAN.md`, `artifacts/FROMZERO_SPEC.md` y `git status`, y ejecuta el siguiente Sprint si el plan ya fue aprobado y no hay bloqueos.
+- Antes de codificar un Sprint aprobado, muestra el resumen breve con Sprint, alcance, herramientas previstas, verificaciones y riesgos; si no hay bloqueos, termina con `Iniciando la ejecución del Sprint N.` y continúa automáticamente.
 - Si `artifacts/FROMZERO_STATE.md` falta o está desactualizado, reconstrúyelo desde plan, spec y Git; explica la inferencia y pide confirmación antes de tocar código.
 - Actualiza `artifacts/FROMZERO_STATE.md` al crear plan, aprobar plan, iniciar Sprint, completar Sprint, bloquear Sprint, cambiar verificaciones o hacer handoff.
 
 ## Cuestionario
 
 - No esperes a que el usuario pida preguntas si el contexto deja dudas antes de especificar o planear.
-- Antes de iniciar preguntas muestra: `Activa el modo plan de Codex antes de continuar.`.
+- Antes de iniciar preguntas muestra como cita Markdown: `Activa el modo plan de Codex antes de continuar.`.
 - Después del título, explica: `El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.`
 - Ejecuta el cuestionario en modo plan de Codex cuando esté disponible; si no puedes cambiar el modo programáticamente, anuncia el modo, pide activar modo plan o abrir conversación en modo plan, y no escribas `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo hasta tener respuestas reales.
 - Antes del primer ciclo, explica que el cuestionario puede ser extenso, irá por ciclos o categorías, tendrá opciones recomendadas y permitirá respuesta abierta cuando la UI lo soporte.
@@ -147,13 +148,13 @@ El usuario no necesita nombrar skills.
 - Ejecuta `node tools/resource-resolver.mjs --project <ruta-del-proyecto>` cuando el entorno permita scripts.
 - Usa `--install` solo con aprobación del usuario para copiar notas de recursos y lockfile a `.fromzero/`; `library/ui-template-reference` permanece dentro del plugin.
 - Activa solo recursos locales en `library/resources/` que coincidan con `triggers` y `phases`.
-- Documenta variables requeridas en `.env.example`; no leas `.env` reales.
+- Documenta variables requeridas en `.env.example`; usa `.env.local` solo para operar herramientas del TechStack dentro de la sesión con `tools/load-env-local.mjs -- <comando>` (Controlled Secret Runtime Access), sin imprimir ni versionar secretos.
 - No descargues packs ni conectes servicios externos sin aprobación explícita.
 
 ## Guardrails
 
 - No inventar schemas, rutas, permisos ni APIs.
-- No leer ni imprimir `.env` reales.
+- Controlled Secret Runtime Access: usar `.env.local` solo para operar herramientas del TechStack dentro de la sesión; nunca imprimir, mostrar ni versionar secretos; reportar solo presencia/ausencia. No crear lanzadores ni editar config de la app.
 - No usar datos dummy hardcodeados en UI.
 - No usar `Framework` como nombre de skills, agentes o gates.
 - Si una decisión cambia respecto a `artifacts/FROMZERO_QUESTIONNAIRE.md`, actualizar la pregunta afectada y su Registro de cambios en el mismo cambio. Dos artefactos vigentes no pueden contradecirse.

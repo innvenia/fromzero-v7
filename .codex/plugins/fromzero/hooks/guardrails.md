@@ -1,6 +1,10 @@
 # Guardrails
 
-- No leer `.env` reales.
+- Controlled Secret Runtime Access: el agente puede leer `.env.local` solo para conectar o configurar herramientas del TechStack (CLI, MCP, SDK, API directa).
+- Nunca imprimir, mostrar, copiar a respuestas/resúmenes, registrar ni versionar secretos; reportar solo presencia/ausencia (`NOMBRE_set: true`).
+- El paquete/adaptador instalado en el proyecto destino (`.codex/plugins/`, `.claude/`, `.agent/`, `library/`) es de solo lectura: nunca editarlo desde el proyecto; para cambiar comportamiento, editar la fuente de la metodología y re-sincronizar.
+- Para usar variables locales en herramientas del TechStack, ejecutarlas dentro de la sesión con `tools/load-env-local.mjs -- <comando>`; no crear lanzadores, no editar la config de la app (`config.toml`, `mcp_config.json`), no usar otros scripts de entorno, no persistir secretos al entorno global del SO (acceso scoped por proyecto y por sesión).
+- El setup de acceso a secretos es un runbook fijo e idempotente: ejecutarlo y detenerse; no refactorizar, no corregir docs del proyecto, no subir versiones ni tocar archivos fuera de los artefactos de secret-access. Si hay contradicciones, reportarlas, no auto-corregirlas.
 - No ejecutar Git destructivo sin aprobación explícita.
 - Verificar `.git` desde Context antes de escribir archivos.
 - Si falta `.git`, pedir aprobación antes de inicializarlo y antes de cambios complejos.
@@ -24,3 +28,8 @@
 - No cerrar una fase exitosa sin intentar commit automático seguro.
 - No reportar commit solo con hash; incluir hash corto y mensaje completo.
 - No dejar al humano sin enlaces a artefactos y acción siguiente.
+- No cerrar un Sprint de schema/RLS/integración sin ejecución real (migración aplicada + RLS negativa cross-tenant) salvo aprobación de riesgo registrada; un DoD incumplido bloquea el cierre.
+- Antes de migrar o verificar BD, resolver el entorno objetivo (local vs cloud) desde la decisión registrada y `.env.local`; nunca asumir `--local` por defecto.
+- Respaldar toda limitación o bloqueo con evidencia verificada (comando + resultado o config leída); no declarar limitaciones por suposición; lo no verificado se marca como hipótesis no verificada.
+- Toda afirmación de hecho externo verificado (modelo, API, precio, versión, disponibilidad) incluye fuente (URL), qué se comprobó y fecha; sin eso, marcarlo como no verificado.
+- No iniciar Build sobre un working tree con cambios externos o no relacionados sin reconocimiento explícito; no dejar deuda de commit bloqueado como limitación silenciosa, escalarla al humano.

@@ -160,7 +160,7 @@ Reglas:
 
 Todo proyecto generado debe crear `.env`, `.env.local` y `.env.example` con exactamente la misma estructura y las mismas variables. Solo `.env.example` se versiona y contiene placeholders seguros. `.env` y `.env.local` quedan ignorados por Git y pueden contener valores reales según entorno.
 
-Los agentes y procesos automatizados nunca deben leer, imprimir ni copiar valores reales desde `.env` o `.env.local`.
+Los agentes y procesos automatizados pueden leer `.env.local` solo como fuente secreta de configuración operativa para CLI, MCP, SDK o API del TechStack. Nunca deben imprimir, copiar, registrar, versionar ni exponer valores reales desde `.env` o `.env.local`; los reportes muestran solo presencia o ausencia.
 
 Variables documentadas en los tres archivos. El par canónico moderno de Supabase es `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (cliente) + `SUPABASE_SECRET_KEY` (servidor); `ANON_KEY` y `SERVICE_ROLE_KEY` son **legacy** (sistema clásico JWT), mantenidas solo por compatibilidad:
 

@@ -14,58 +14,107 @@ description: "Usar automáticamente cuando el usuario quiera revisar, iniciar, v
 5. Si no existe `.git`, explica que Git protege trazabilidad, rollback y revisión de cambios; pregunta si el usuario autoriza inicializarlo antes de modificar archivos.
 6. Si el usuario aprueba inicializar Git, crea el repositorio y una `.gitignore` segura antes de otros cambios. Si no aprueba, registra el riesgo y no hagas cambios complejos sin confirmación explícita.
 7. Verifica si existe `artifacts/START_HERE.md`. Si falta o fue generado por FromZero, créalo o actualizalo desde `templates/start-here.md`; si existe y no fue generado por FromZero, pide aprobación antes de modificarlo.
-8. Descubre documentación disponible en orden: `PRD.md`, directorios de documentación del proyecto (`docs/`, `documentation/` u otro indicado por el usuario), `README.md`, artefactos `artifacts/FROMZERO_*.md`, `.fromzero/` y archivos de configuración comunes.
-9. Si existe `docs/`, lee primero estas fuentes cuando existan y registra si alguna falta, fue truncada o no pudo leerse: `docs/PRD.md`, `docs/REFERENCE_MODULES.md`, `docs/REFERENCE_DATABASE_SCHEMA.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_STRUCTURE.md`, `docs/REFERENCE_STACK.md`, `docs/SECURITY_ASSURANCE.md`, `docs/SCALABILITY_ASSURANCE.md`, `docs/DEPENDENCY_MATRIX.md`, `docs/BOOTSTRAP_REFERENCE.md`, y luego el resto de `docs/`.
+8. Descubre documentación disponible en orden: ruta indicada explícitamente por el usuario, `docs/` como directorio estándar de insumos del proyecto, `PRD.md`, `documentation/`, `README.md`, artefactos `artifacts/FROMZERO_*.md`, `.fromzero/` y archivos de configuración comunes.
+9. Si existe `docs/`, lee primero estas fuentes cuando existan y registra si alguna falta, fue truncada o no pudo leerse: `docs/PRD.md`, `docs/PROJECT_BRIEF.md`, `docs/REFERENCE_MODULES.md`, `docs/REFERENCE_DATABASE_SCHEMA.md`, `docs/REFERENCE_ARCHITECTURE.md`, `docs/REFERENCE_STRUCTURE.md`, `docs/REFERENCE_STACK.md`, `docs/SECURITY_ASSURANCE.md`, `docs/SCALABILITY_ASSURANCE.md`, `docs/DEPENDENCY_MATRIX.md`, `docs/BOOTSTRAP_REFERENCE.md`, y luego el resto de `docs/`.
 10. Si el usuario declara una prioridad de fuentes, úsala por encima del orden por defecto y regístrala en `artifacts/FROMZERO_CONTEXT.md`.
 11. Usa heurística por tipo de contenido solo como complemento para detectar fuentes no listadas: visión/PRD, módulos, datos/schema, arquitectura, stack, seguridad, escalabilidad, dependencias, bootstrap/operación y estrategia. La heurística no reemplaza prioridades documentales explícitas ni permite excluir fuentes declaradas por el usuario.
-12. Si el usuario menciona una ubicación de documentos, por ejemplo `docs`, léela como fuente principal y pásala al resolver con `--docs <ruta>`.
-13. Si no hay documentos, guía una validación inicial antes de hablar de plan o código.
-14. Lee `library/manifest.json`, `library/categories.json` y `library/registry-index.json` del plugin.
-15. Ejecuta `node tools/resource-resolver.mjs --project <ruta>` si el entorno permite scripts; si hay rutas documentales explícitas, usa `--docs <ruta>` por cada una.
-16. No ejecutes `--install` hasta explicar qué copiará y recibir aprobación explícita.
-17. Detecta producto, tipo de app, stack, UI, datos, roles, tenant, integraciones, seguridad y escala.
-18. Extrae un inventario enumerable de capacidades desde las fuentes: módulos principales, capacidades transversales, tablas, pivotes, historiales, jobs programados, contratos API/mobile, páginas de infraestructura, permisos, auditoría, seguridad, escalabilidad, i18n, accesibilidad, observabilidad, configuración y diferidos documentados.
-19. Extrae un inventario atomico de requisitos desde headings funcionales, subheadings, bullets obligatorios y filas de tabla de fuentes prioritarias. Asigna ID estable, fuente, heading, dominio, obligación y estado a cada requisito.
-20. Usa dominios atomicos cuando aparezcan en la documentación: `auth-session`, `storage-files`, `billing-subscriptions`, `ui-primitives-overlays`, `theme-branding`, `grid-module-factory`, `custom-fields`, `event-bus-rules`, `notifications`, `import-export`, `api-errors-security`, módulos, tablas, jobs, páginas de infraestructura, seguridad y escalabilidad.
-21. No resumas listas internas como una sola capacidad. Si el PRD lista timeouts, estados, buckets, flows, workers, rutas, validaciones, limites, permisos, pruebas o gates, cada item obligatorio debe tener fila propia.
-22. Extrae un inventario de invariantes y gates desde reglas, restricciones, convenciones, presupuestos exactos, seguridad operativa y criterios de release. Usa dominios `bootstrap-order`, `real-data-only`, `naming-dual-standard`, `internal-service-boundary`, `dependency-security`, `api-inventory`, `performance-budget`, `template-brand-sanitization` y `consent-records` cuando apliquen.
-23. No dejes como nota implícita reglas como orden de bootstrap, datos reales estrictos, nomenclatura, Core AI interno, dependencias vulnerables, inventario API, performance exacta, marcas de templates o campos mínimos de consentimiento.
-24. Analiza criticamente la idea o proyecto antes de especificar: problema, usuario objetivo, mercado, alternativas, diferenciación, modelo comercial, adquisición, alcance, viabilidad, costos, operación, seguridad, riesgos y oportunidades de mejora. No te limites a listar faltantes.
-25. Registra el entendimiento inicial antes del Q&A cuando haya decisiones críticas: problema entendido, resultado esperado, usuario objetivo, usuario no objetivo, casos excluidos y supuestos del agente.
-26. Registra decisión de UI internamente como: framework, referencia del usuario, UI generado o sin UI.
-27. Si hay UI y se usara framework, revisa primero el framework disponible y sus contratos.
-28. Si hay UI y no hay framework o no se usara, pregunta en lenguaje simple si el usuario quiere usar la UI incluida en FromZero, una referencia externa o dejar la UI para después.
-29. Si hay UI y el usuario elige la UI incluida en FromZero, activa `fromzero-ui-template` como referencia de calidad sin asumir APIs inexistentes.
-30. Cruza tecnologías detectadas contra `triggers`, `categories.json` y `registry-index.json`.
-31. Si no hay cobertura suficiente, activa `missing-resource-resolution`.
-32. Lee solo los recursos locales seleccionados en `library/resources/`.
-33. Clasifica el trabajo: app independiente, proyecto desconocido o, solo cuando el proyecto sea el From Zero Framework, su área interna (framework base, app derivada, Core AI o adaptador; ver el glosario de la metodología).
-34. Crea o actualiza `artifacts/FROMZERO_CONTEXT.md` usando `templates/context.md`. Sin este artefacto no se cierra la fase de contexto.
-35. `artifacts/FROMZERO_CONTEXT.md` debe registrar la sección `## Metadatos` completa, fuentes, prioridad documental, estado de lectura, entendimiento inicial, usuario objetivo, usuario no objetivo, supuestos del agente, análisis crítico, gaps, contradicciones, supuestos débiles, mejoras propuestas a la documentación inicial, decisión de UI, inventario de capacidades, inventario atomico de requisitos, inventario de invariantes/gates y recomendación.
-36. No cierres Context como completo si una fuente prioritaria no fue leída, si el inventario solo cubre módulos macro y omite capacidades transversales documentadas, si el inventario atomico no descompone subrequisitos obligatorios de fuentes prioritarias, o si reglas bloqueantes no aparecen como invariantes/gates.
-37. Durante Context no crees ni actualices `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md` ni `artifacts/FROMZERO_STATE.md`. `artifacts/FROMZERO_STATE.md` se crea únicamente al crear `artifacts/FROMZERO_PLAN.md` o durante Build/Handoff si debe reconstruirse.
-38. Si el usuario pidio explícitamente no modificar archivos o el entorno está en modo plan/sin escritura, entrega el prompt exacto para crear `artifacts/FROMZERO_CONTEXT.md` al habilitar escritura y no avances como si existiera.
-39. Entrega un resumen para usuario no técnico: que encontro, que escenario detecto, que ruta recomienda, decisión de UI, estado Git, que falta y que recomienda hacer primero.
-40. Si no hay decisiones críticas y no se generará cuestionario, pide confirmación simple del contexto antes de habilitar Spec: "¿Esto refleja tu idea? Si algo no encaja, dímelo antes de continuar." No agregues esta confirmación cuando ya exista cuestionario aprobado.
-41. Si hay dudas, decisiones pendientes o faltantes antes de especificar o planear, no crees `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo todavía. Primero solicita o activa el modo plan nativo del agente para ejecutar el cuestionario con su UI/herramientas disponibles.
-42. Antes de la primera pregunta muestra un bloque visible, sin mayúsculas agresivas. Usa el nombre del agente cuando esté disponible:
+12. Si el usuario menciona una ubicación de documentos, por ejemplo `docs` o una ruta específica, léela como fuente principal y pásala al resolver con `--docs <ruta>`.
+13. Si el usuario usa el prompt de PRD sin ruta definida, usa `docs/PRD.md`; si ese archivo no existe, registra el faltante y pide el documento antes de cerrar Context como completo.
+14. Si el usuario usa el prompt de documentación en carpeta con el placeholder `[ruta-de-docs]` sin reemplazar, detente y pide la ruta real. No apliques fallback automático a `docs/` para ese caso.
+15. Si no hay documentos o el usuario trae una idea vaga/no escrita, usa `docs/` como directorio estándar de insumos y registra la idea inicial en `docs/PROJECT_BRIEF.md` cuando tengas escritura. Si estás en modo plan o sin escritura, indica que ese archivo debe guardarse antes de cerrar Context.
+16. Lee `library/manifest.json`, `library/categories.json` y `library/registry-index.json` del plugin.
+17. Ejecuta `node tools/resource-resolver.mjs --project <ruta>` si el entorno permite scripts; si hay rutas documentales explícitas, usa `--docs <ruta>` por cada una.
+18. No ejecutes `--install` hasta explicar qué copiará y recibir aprobación explícita.
+19. Detecta producto, tipo de app, stack, UI, datos, roles, tenant, integraciones, seguridad y escala.
+20. Extrae un inventario enumerable de capacidades desde las fuentes: módulos principales, capacidades transversales, tablas, pivotes, historiales, jobs programados, contratos API/mobile, páginas de infraestructura, permisos, auditoría, seguridad, escalabilidad, i18n, accesibilidad, observabilidad, configuración y diferidos documentados.
+21. Extrae un inventario atomico de requisitos desde headings funcionales, subheadings, bullets obligatorios y filas de tabla de fuentes prioritarias. Asigna ID estable, fuente, heading, dominio, obligación y estado a cada requisito.
+22. Usa dominios atomicos cuando aparezcan en la documentación: `auth-session`, `storage-files`, `billing-subscriptions`, `ui-primitives-overlays`, `theme-branding`, `grid-module-factory`, `custom-fields`, `event-bus-rules`, `notifications`, `import-export`, `api-errors-security`, módulos, tablas, jobs, páginas de infraestructura, seguridad y escalabilidad.
+23. No resumas listas internas como una sola capacidad. Si el PRD lista timeouts, estados, buckets, flows, workers, rutas, validaciones, limites, permisos, pruebas o gates, cada item obligatorio debe tener fila propia.
+24. Extrae un inventario de invariantes y gates desde reglas, restricciones, convenciones, presupuestos exactos, seguridad operativa y criterios de release. Usa dominios `bootstrap-order`, `real-data-only`, `naming-dual-standard`, `internal-service-boundary`, `dependency-security`, `api-inventory`, `performance-budget`, `template-brand-sanitization` y `consent-records` cuando apliquen.
+25. No dejes como nota implícita reglas como orden de bootstrap, datos reales estrictos, nomenclatura, Core AI interno, dependencias vulnerables, inventario API, performance exacta, marcas de templates o campos mínimos de consentimiento.
+26. Analiza criticamente la idea o proyecto antes de especificar: problema, usuario objetivo, mercado, alternativas, diferenciación, modelo comercial, adquisición, alcance, viabilidad, costos, operación, seguridad, riesgos y oportunidades de mejora. No te limites a listar faltantes.
+27. Registra el entendimiento inicial antes del Q&A cuando haya decisiones críticas: problema entendido, resultado esperado, usuario objetivo, usuario no objetivo, casos excluidos y supuestos del agente.
+28. Registra decisión de UI internamente como: framework, referencia del usuario, UI generado o sin UI.
+29. Si hay UI y se usara framework, revisa primero el framework disponible y sus contratos.
+30. Si hay UI y no hay framework o no se usara, pregunta en lenguaje simple si el usuario quiere usar la UI incluida en FromZero, una referencia externa o dejar la UI para después.
+31. Si hay UI y el usuario elige la UI incluida en FromZero, activa `fromzero-ui-template` como referencia de calidad sin asumir APIs inexistentes.
+32. Cruza tecnologías detectadas contra `triggers`, `categories.json` y `registry-index.json`.
+33. Si no hay cobertura suficiente, activa `missing-resource-resolution`.
+34. Lee solo los recursos locales seleccionados en `library/resources/`.
+35. Clasifica el trabajo: app independiente, proyecto desconocido o, solo cuando el proyecto sea el From Zero Framework, su área interna (framework base, app derivada, Core AI o adaptador; ver el glosario de la metodología).
+36. Crea o actualiza `artifacts/FROMZERO_CONTEXT.md` usando `templates/context.md`. Sin este artefacto no se cierra la fase de contexto.
+37. `artifacts/FROMZERO_CONTEXT.md` debe registrar la sección `## Metadatos` completa, fuentes, prioridad documental, estado de lectura, entendimiento inicial, usuario objetivo, usuario no objetivo, supuestos del agente, análisis crítico, gaps, contradicciones, supuestos débiles, mejoras propuestas a la documentación inicial, decisión de UI, inventario de capacidades, inventario atomico de requisitos, inventario de invariantes/gates y recomendación.
+38. No cierres Context como completo si una fuente prioritaria no fue leída, si el inventario solo cubre módulos macro y omite capacidades transversales documentadas, si el inventario atomico no descompone subrequisitos obligatorios de fuentes prioritarias, o si reglas bloqueantes no aparecen como invariantes/gates.
+39. Durante Context no crees ni actualices `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md` ni `artifacts/FROMZERO_STATE.md`. `artifacts/FROMZERO_STATE.md` se crea únicamente al crear `artifacts/FROMZERO_PLAN.md` o durante Build/Handoff si debe reconstruirse.
+40. Si el usuario pidio explícitamente no modificar archivos o el entorno está en modo plan/sin escritura, entrega el prompt exacto para crear `artifacts/FROMZERO_CONTEXT.md` al habilitar escritura y no avances como si existiera.
+41. Entrega un resumen para usuario no técnico: que encontro, que escenario detecto, que ruta recomienda, decisión de UI, estado Git, que falta y que recomienda hacer primero.
+42. Si no hay decisiones críticas y no se generará cuestionario, pide confirmación simple del contexto antes de habilitar Spec: "¿Esto refleja tu idea? Si algo no encaja, dímelo antes de continuar." No agregues esta confirmación cuando ya exista cuestionario aprobado.
+43. Si hay dudas, decisiones pendientes o faltantes antes de especificar o planear, no crees `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo todavía. Primero solicita o activa el modo plan nativo del agente para ejecutar el cuestionario con su UI/herramientas disponibles.
+44. Antes de la primera pregunta muestra un bloque visible, sin mayúsculas agresivas. Usa el nombre del agente cuando esté disponible:
    `Activa el modo plan de tu agente antes de continuar.`
    `El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.`
-43. Ejecuta el cuestionario en modo plan antes de escribir `artifacts/FROMZERO_QUESTIONNAIRE.md`. El usuario debe responder, diferir o corregir las decisiones críticas durante ese ciclo.
-44. Si la plataforma no permite cambiar de modo programáticamente o las herramientas nativas de Q&A no están disponibles, detente después de `artifacts/FROMZERO_CONTEXT.md`, muestra el bloque obligatorio y pide al usuario activar el modo plan o abrir una conversación en modo plan. No escribas `artifacts/FROMZERO_QUESTIONNAIRE.md` como si el Q&A ya hubiera ocurrido.
-45. Puedes listar preguntas candidatas en la respuesta o dentro de `artifacts/FROMZERO_CONTEXT.md`, pero no uses `artifacts/FROMZERO_QUESTIONNAIRE.md` para guardar preguntas vacías como cuestionario final. Si por alguna razón se crea un archivo antes de completar el Q&A, debe marcarse explícitamente como `Estado: borrador de preguntas`, `Modo Q&A ejecutado: no` y queda bloqueado para Spec.
-46. Crea o actualiza `artifacts/FROMZERO_QUESTIONNAIRE.md` solo después de ejecutar al menos un ciclo real de Q&A con respuestas, decisiones diferidas o correcciones del usuario. El archivo debe incluir `## Metadatos`, preguntas, opciones, fuente documental por opción o `sin respaldo documental`, explicación de cada opción, respuesta seleccionada, estado, notas, `Modo Q&A ejecutado: si` y estado de aprobación.
-47. No marques como recomendada una opción que reduzca, difiera o contradiga el insumo documental, salvo que el usuario apruebe explícitamente esa excepción y quede registrada con frase literal.
-48. Si el usuario pidió explícitamente no modificar archivos o el entorno está en modo plan/sin escritura, no intentes continuar como si el archivo existiera. Explica que `artifacts/FROMZERO_QUESTIONNAIRE.md` aún no puede crearse en ese modo.
-49. Actualiza `artifacts/FROMZERO_QUESTIONNAIRE.md` después de cada ciclo de respuestas para que el usuario pueda revisar y corregir decisiones.
-50. Después de cerrar el cuestionario, detén el avance hasta que el usuario revise, ajuste o apruebe explícitamente `artifacts/FROMZERO_QUESTIONNAIRE.md`.
-51. Entrega también el detalle técnico mínimo: recursos activados, variables para `.env.example`, secretos externos y verificaciones.
-52. Detén el trabajo si faltan objetivo, datos, permisos, tenant ownership, criterios críticos, ruta de construcción, decisión de UI, estado Git, configuración sensible no definida, cobertura documental prioritaria incompleta, inventario atomico incompleto o inventario de invariantes/gates incompleto.
-53. No pases a `fz-spec`, `fz-plan` ni `fz-build`; tampoco crees `artifacts/FROMZERO_STATE.md`, hasta que `artifacts/FROMZERO_CONTEXT.md` exista, `artifacts/FROMZERO_QUESTIONNAIRE.md` no sea borrador, el Q&A haya sido ejecutado y el cuestionario crítico esté aprobado explícitamente, respondido o tenga decisiones explícitamente diferidas aprobadas por el usuario.
-54. Al cerrar el cuestionario, entrega siempre el bloque "Siguiente paso" con una instrucción clara para el usuario.
-55. Si el proyecto no tiene `README.md`, propón crearlo con contenido mínimo (nombre, propósito, estado, cómo continuar) y créalo con aprobación. El README es un archivo vivo: se actualizará al cerrar Sprints y releases.
-56. Detecta si el stack se beneficia de servidores MCP empaquetados (ver `library/resources/mcp.md`); proponlos en lenguaje simple y nunca actives ni conectes un MCP sin aprobación explícita.
-57. Cuando Context o Questionnaire cree o actualice artefactos y la fase quede lista para revisión, crea un commit automático si es seguro. El commit debe incluir solo archivos de esa fase y el cierre debe mostrar hash y mensaje completo.
+45. Ejecuta el cuestionario en modo plan antes de escribir `artifacts/FROMZERO_QUESTIONNAIRE.md`. El usuario debe responder, diferir o corregir las decisiones críticas durante ese ciclo.
+46. Si la plataforma no permite cambiar de modo programáticamente o las herramientas nativas de Q&A no están disponibles, detente después de `artifacts/FROMZERO_CONTEXT.md`, muestra el bloque obligatorio y pide al usuario activar el modo plan o abrir una conversación en modo plan. No escribas `artifacts/FROMZERO_QUESTIONNAIRE.md` como si el Q&A ya hubiera ocurrido.
+47. Puedes listar preguntas candidatas en la respuesta o dentro de `artifacts/FROMZERO_CONTEXT.md`, pero no uses `artifacts/FROMZERO_QUESTIONNAIRE.md` para guardar preguntas vacías como cuestionario final. Si por alguna razón se crea un archivo antes de completar el Q&A, debe marcarse explícitamente como `Estado: borrador de preguntas`, `Modo Q&A ejecutado: no` y queda bloqueado para Spec.
+48. Crea o actualiza `artifacts/FROMZERO_QUESTIONNAIRE.md` solo después de ejecutar al menos un ciclo real de Q&A con respuestas, decisiones diferidas o correcciones del usuario. El archivo debe incluir `## Metadatos`, preguntas, opciones, fuente documental por opción o `sin respaldo documental`, explicación de cada opción, respuesta seleccionada, estado, notas, `Modo Q&A ejecutado: si` y estado de aprobación.
+49. No marques como recomendada una opción que reduzca, difiera o contradiga el insumo documental, salvo que el usuario apruebe explícitamente esa excepción y quede registrada con frase literal.
+50. Si el usuario pidió explícitamente no modificar archivos o el entorno está en modo plan/sin escritura, no intentes continuar como si el archivo existiera. Explica que `artifacts/FROMZERO_QUESTIONNAIRE.md` aún no puede crearse en ese modo.
+51. Actualiza `artifacts/FROMZERO_QUESTIONNAIRE.md` después de cada ciclo de respuestas para que el usuario pueda revisar y corregir decisiones.
+52. Después de cerrar el cuestionario, detén el avance hasta que el usuario revise, ajuste o apruebe explícitamente `artifacts/FROMZERO_QUESTIONNAIRE.md`.
+53. Entrega también el detalle técnico mínimo: recursos activados, variables para `.env.example`, secretos externos y verificaciones.
+54. Detén el trabajo si faltan objetivo, datos, permisos, tenant ownership, criterios críticos, ruta de construcción, decisión de UI, estado Git, configuración sensible no definida, cobertura documental prioritaria incompleta, inventario atomico incompleto, inventario de invariantes/gates incompleto o preparación inicial incompleta (stack obligatorio sin validar, `bootstrap.json` sin confirmar ni diferir, archivos con secretos sin excluir o aprobación humana de preparación sin registrar).
+55. No pases a `fz-spec`, `fz-plan` ni `fz-build`; tampoco crees `artifacts/FROMZERO_STATE.md`, hasta que `artifacts/FROMZERO_CONTEXT.md` exista, `artifacts/FROMZERO_QUESTIONNAIRE.md` no sea borrador, el Q&A haya sido ejecutado y el cuestionario crítico esté aprobado explícitamente, respondido o tenga decisiones explícitamente diferidas aprobadas por el usuario.
+56. Al cerrar el cuestionario, entrega siempre el bloque "Siguiente paso" con una instrucción clara para el usuario.
+57. Si el proyecto no tiene `README.md`, propón crearlo con contenido mínimo (nombre, propósito, estado, cómo continuar) y créalo con aprobación. El README es un archivo vivo: se actualizará al cerrar Sprints y releases.
+58. Detecta si el stack se beneficia de servidores MCP empaquetados (ver `library/resources/mcp.md`); proponlos en lenguaje simple y nunca actives ni conectes un MCP sin aprobación explícita.
+59. Cuando Context o Questionnaire cree o actualice artefactos y la fase quede lista para revisión, crea un commit automático si es seguro. El commit debe incluir solo archivos de esa fase y el cierre debe mostrar hash y mensaje completo.
+
+## Preparación inicial (cierre de Context)
+
+Antes de cerrar Context, el agente prepara el arranque del proyecto. Esta preparación
+es la base del Sprint 1 (preparación y base inicial), nunca una fase o numeración `0`:
+
+- Declarar el stack del proyecto y clasificar cada herramienta como obligatoria,
+  opcional o diferida para ESTE proyecto. Enforza solo lo declarado obligatorio.
+- Validar que lo declarado obligatorio está listo y funcional (por ejemplo, ejecutar
+  el comando de salud o `<cli> --version`); lo opcional y lo diferido no bloquean, pero
+  quedan registrados.
+- Confirmar o validar `bootstrap.json` cuando el proyecto lo use: contrato y datos
+  reales de arranque, o diferido con tracking en `artifacts/DEFERRED_ACTIVATIONS.md`.
+- Identificar los archivos que contienen secretos y confirmar que están excluidos de
+  Git y Docker (`.gitignore` y `.dockerignore`), con `.env.example` y
+  `.mcp.example.json` como plantillas.
+- Registrar la aprobación humana explícita de la preparación antes de cerrar Context.
+
+Si algo obligatorio no está listo, se difiere con condición de activación registrada
+o se bloquea el cierre; no se asume listo en silencio.
+
+## Consulta previa de decisiones
+
+Antes de emitir cualquier pregunta, consulta lo ya resuelto para no re-preguntar:
+
+1. Lee `artifacts/FROMZERO_DECISIONS.md` (si existe) y las fuentes `docs/`.
+2. Clasifica cada fuente o decisión como documentada, contradictoria o no documentada.
+3. Si una decisión ya está `aceptada` en el ledger o definida sin contradicción en la
+   documentación, cítala como decisión documentada asumida y no la preguntes.
+4. Si está contradictoria con una fuente o con una necesidad nueva, no la asumas:
+   derívala a la reconciliación de respuestas del dueño en `fz-spec`.
+5. Si es nueva, emite la pregunta; al cerrarse, regístrala en el ledger de decisiones.
+
+Cada pregunta que sí se emita debe poder explicar por qué no basta con asumir lo ya
+documentado.
+
+## Preferencia CLI sobre MCP
+
+- Prefiere herramientas CLI sobre MCP por eficiencia de tokens cuando ambas cubran la
+  necesidad. Usa MCP solo si el CLI no cubre el caso.
+- Antes de depender de un CLI o MCP, valida que funciona y expone las herramientas
+  necesarias (por ejemplo `<cli> --version` o una llamada de salud). No prometas un MCP
+  o CLI sin verificarlo; márcalo `no aplica` o `fallback` con razón.
+- CLI y MCP son herramientas de desarrollo: sirven para el diálogo entre el agente y
+  servicios (Supabase, Sonar y similares) durante la construcción. No forman parte del
+  runtime de la aplicación entregada. La referencia de MCP empaquetada vive por
+  adaptador en `library/resources/mcp.md`; esta preferencia es la regla normativa.
 
 ## Modo conversación simple
 
@@ -87,12 +136,10 @@ Pregunta solo lo indispensable y en lenguaje simple.
 
 Después del contexto inicial, el agente debe ejecutar un Q&A real para cerrar alcance antes de especificar o planear. Listar preguntas candidatas no cuenta como cuestionario ejecutado.
 
-Antes de la primera pregunta debe mostrar este bloque visible. En adaptadores concretos, reemplaza "TU AGENTE" por CODEX, CLAUDE CODE o ANTIGRAVITY:
+Antes de la primera pregunta debe mostrar esta cita visible. En adaptadores concretos, reemplaza "tu agente" por Codex, Claude Code o Antigravity:
 
-```text
-Activa el modo plan de tu agente antes de continuar.
-El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
-```
+> Activa el modo plan de tu agente antes de continuar.
+> El siguiente paso de la metodología FromZero usa el modo plan para hacer el cuestionario más guiado y fácil de revisar.
 
 Antes de iniciar el primer ciclo de preguntas, explica al usuario:
 
@@ -184,6 +231,18 @@ Si el agente hace preguntas en ciclos de 3, debe registrar en el archivo todas l
 No crees `artifacts/FROMZERO_QUESTIONNAIRE.md` definitivo con todas las respuestas vacías. Si hay preguntas críticas sin respuesta, el cierre debe pedir ejecutar o continuar el Q&A en modo plan.
 No habilites Spec si falta el resumen validado para Spec cuando hubo decisiones críticas.
 
+### Preguntas anticipadas de preparación
+
+En los primeros ciclos, adelanta las preguntas que cierran el gate de preparación,
+para reducir gates humanos por Sprint. Como mínimo:
+
+- ¿Qué herramientas del stack son obligatorias, cuáles opcionales y cuáles diferidas?
+- ¿Qué datos necesita `bootstrap.json` para arrancar (reales vs fixture) y cuáles se difieren?
+- ¿Qué archivos contienen secretos y deben excluirse de Git y Docker?
+- ¿Contra qué entorno se cerrará el trabajo (local, Supabase Local o cloud dev)?
+- ¿Quién da la aprobación humana de la preparación?
+- Si una herramienta obligatoria no está lista, ¿con qué placeholder o condición se difiere?
+
 ## Regla de redacción del Q&A
 
 Cada pregunta visible debe tener esta estructura lógica, aunque la herramienta nativa la muestre en tarjetas, botones o ayudas hover:
@@ -197,6 +256,7 @@ Cada pregunta visible debe tener esta estructura lógica, aunque la herramienta 
 
 Reglas obligatorias:
 
+- Toda pregunta técnica crítica debe incluir la estructura completa: definición simple, por qué importa, opciones, riesgo por opción, recomendación y nota técnica interna separada.
 - No conviertas requisitos ya documentados en opciones de alcance. Si la documentación dice que todos los módulos son obligatorios, no preguntes si el MVP debe tener "todos" o "solo algunos"; pregunta, si hace falta, por orden de entrega, profundidad del primer corte o condición de venta.
 - Si una opción usa una tecnología o sigla, explica el significado en la ayuda visible.
 - Si la pregunta depende de documentación existente, dilo explícitamente: "según la documentación del proyecto".
@@ -375,6 +435,7 @@ El cuestionario ya está completo. Antes de continuar, es obligatorio guardar to
 - No conectes servicios externos sin aprobación explícita.
 - No leas `.env` reales.
 - Usa `.env.example` para documentar variables requeridas.
+- El `.env.example` sigue el estándar único de `library/resources/env-template.md`: una sección titulada por producto y sin variables duplicadas.
 - Si una integración no existe en `library/manifest.json`, usa `categories.json` y luego `missing-resource-resolution`.
 - Para documentación oficial o sync de packs, pide aprobación y exige versión fija.
 - El resolver solo copia recursos empaquetados y genera lockfile; no descarga ni conecta servicios.
@@ -387,6 +448,7 @@ Al terminar, entrega siempre un informe breve con:
 - artefactos creados o actualizados, con enlaces Markdown;
 - verificaciones aprobadas, pendientes o bloqueadas;
 - verificaciones ejecutadas o razón concreta si no se ejecutaron;
+- limitaciones y bloqueos con su evidencia (comando + resultado o config leída), sin suposiciones;
 - riesgos o decisiones nuevas;
 - commit automático creado con hash y mensaje completo, o razón concreta si no se creó;
 - siguiente paso humano con el rótulo exacto `Siguiente paso para ti:`.

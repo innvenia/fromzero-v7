@@ -46,6 +46,7 @@ next-env.d.ts
 
 # Tests and coverage
 coverage/
+.scannerwork/
 .nyc_output/
 playwright-report/
 test-results/

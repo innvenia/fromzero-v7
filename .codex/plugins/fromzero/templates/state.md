@@ -45,6 +45,7 @@ commits ni los gates.
 - Branch:
 - Working tree:
 - Commit base:
+- Entorno objetivo de trabajo (BD): local desechable | Supabase Local | cloud dev operativo
 - Último commit FromZero: hash corto + mensaje completo
 
 ## 2. Artefactos vigentes
@@ -60,7 +61,11 @@ commits ni los gates.
 
 - Sprint actual:
 - Estado: pendiente | en ejecución | completado | bloqueado | requiere cambios
+- Tipo de cierre: no cerrado | cerrado validado | cerrado localmente | contrato implementado, integración pendiente | bloqueado por gate externo
+- Entorno validado: local desechable | Supabase Local | cloud dev operativo | producción intocable
 - Objetivo:
+- Resumen breve de inicio:
+- Herramientas previstas:
 - Fuente en plan:
 - Commit asociado: hash corto + mensaje completo
 
@@ -68,6 +73,8 @@ commits ni los gates.
 
 - Sprint:
 - Fecha:
+- Tipo de cierre: cerrado validado | cerrado localmente | contrato implementado, integración pendiente | bloqueado por gate externo
+- Entorno validado: local desechable | Supabase Local | cloud dev operativo | producción intocable
 - Evidencia:
 - Tests/comandos:
 - Commit: hash corto + mensaje completo
@@ -83,10 +90,27 @@ Registrar commits de fases ya cerradas al reconstruir o actualizar estado. No
 intentar registrar el hash del propio `artifacts/FROMZERO_STATE.md` antes de crear el commit;
 registrar el hash en la siguiente actualización segura.
 
+## 4.2 Estados de cierre y registro de deuda
+
+Tipo de cierre por Sprint y deuda que genera. La semántica (versionado vs verificado y
+la jerarquía de entornos) está definida en `docs/methodology.md`. Esta taxonomía es
+complementaria al mapa de estados canónicos de `## 6.2`: describe la calidad del cierre
+del Sprint, no el estado del artefacto.
+
+| Sprint | Tipo de cierre | Entorno validado | Dueño | Condición de activación | Sprint bloqueado | Evidencia | Ledger de activaciones |
+|---|---|---|---|---|---|---|---|
+|  | cerrado validado / cerrado localmente / contrato implementado, integración pendiente / bloqueado por gate externo |  |  |  |  |  | `artifacts/DEFERRED_ACTIVATIONS.md` |
+
+Un cierre `cerrado localmente` o `bloqueado por gate externo` exige una entrada en
+`artifacts/DEFERRED_ACTIVATIONS.md`. No se usa `completado` sin calificador cuando el
+Sprint depende de servicios externos.
+
 ## 5. Siguiente Sprint
 
 - Sprint:
 - Objetivo:
+- Resumen breve de inicio:
+- Herramientas previstas:
 - Dependencias:
 - Verificaciones requeridas:
 - Archivos objetivo:
@@ -96,7 +120,17 @@ registrar el hash en la siguiente actualización segura.
 
 | Item | Estado | Condición de activación | Evidencia requerida |
 |---|---|---|---|
+| Gate local del Sprint | pendiente | cierre de Sprint | lint, typecheck, tests, coverage, build, audit, `git diff --check`, secret scan |
+| Estándar interno FromZero | pendiente | cierre de Sprint | coverage ≥ 80%, duplicación ≤ 3%, issues 0 o desviación aprobada |
+| SonarQube y SCM blame | pendiente | si Sonar configurado | scan con archivos commiteados, sin `Missing blame information` |
 |  | pendiente |  |  |
+
+Fuentes externas verificadas (id de modelo, capacidad de API, precio, versión): cada una con
+fuente (URL), qué se comprobó y fecha; lo no verificado se marca como no verificado.
+
+| Afirmación | Fuente (URL) | Qué se comprobó | Fecha |
+|---|---|---|---|
+|  |  |  |  |
 
 ## 6.1 Historial de aprobaciones
 
@@ -127,9 +161,11 @@ nuevos o re-aprobados deben usar valores canónicos.
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales:
+- Bloqueos actuales (cada uno con su evidencia: comando + resultado o config leída):
+- Commit bloqueado por cambios externos: escalado si | no aplica
 - Riesgos activos:
 - Decisiones abiertas:
+- Issues abiertos o `Missing blame information` (Sonar):
 - Secretos o accesos requeridos:
 - Estado de aprobación humana requerido:
 

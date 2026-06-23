@@ -177,7 +177,7 @@ Todo proyecto generado debe crear tres archivos de variables con exactamente la 
 | `.env.local` | Valores reales para desarrollo local | Sí | No |
 | `.env.example` | Placeholders seguros y documentación de variables | No | Sí |
 
-Los agentes y procesos automatizados no deben leer, imprimir, copiar ni inferir valores reales desde `.env` o `.env.local`. Cualquier variable requerida se documenta en `.env.example` con placeholder seguro.
+Los agentes y procesos automatizados pueden leer `.env.local` solo como fuente secreta de configuración operativa para CLI, MCP, SDK o API del TechStack. No deben imprimir, copiar, inferir, registrar, versionar ni exponer valores reales desde `.env` o `.env.local`. Cualquier variable requerida se documenta en `.env.example` con placeholder seguro.
 
 ---
 

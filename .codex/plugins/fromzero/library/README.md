@@ -14,7 +14,7 @@ Esta librería es parte del adaptador distribuible. Debe viajar con el adaptador
 
 ## Seguridad
 
-- No leer `.env` reales.
+- Usar `.env.local` solo para operar herramientas del TechStack dentro de la sesión (Controlled Secret Runtime Access); nunca imprimir ni versionar secretos.
 - Usar solo `.env.example` para documentar variables.
 - No imprimir tokens, URLs privadas, passwords ni claves.
 - No conectar servicios externos sin aprobación explícita.

@@ -8,6 +8,94 @@ Formato:
 - Fecha en formato `YYYY-MM-DD`.
 - Cambios agrupados por tipo: `Added`, `Changed`, `Fixed`, `Removed`, `Security`.
 
+## 0.8.0 - 2026-06-22
+
+### Added
+
+- `docs/reporting.md`: formatos canónicos Informe de cierre de Sprint y Estado de avance.
+- `tools/fromzero-progress.mjs`: % de avance determinista por Sprints; lo usa `fz-handoff`.
+
+### Changed
+
+- Cierre de Sprint con formato canónico; `fz-handoff` con frases de estado e informe de avance (%).
+- Versión del adaptador actualizada a `0.8.0`.
+
+## 0.7.0 - 2026-06-22
+
+### Added
+
+- `tools/resolve-db-environment.mjs`: detección determinista de entorno BD (local vs cloud dev) desde `.env.local`, salida sanitizada; el objetivo se resuelve antes de migrar.
+- `docs/dor-dod.md`: DoR/DoD por tipo de Sprint con DoR de baseline limpio y DoD de ejecución real.
+- Secciones `## Fuentes verificadas` y `## Limitaciones y bloqueos` en el template de handoff; fuentes verificadas en state; evidencia por limitación en test-plan; entorno objetivo en context/plan/state.
+
+### Changed
+
+- Sprints de schema/RLS/integración: ejecución real (migración aplicada + RLS negativa cross-tenant, o llamada en vivo en dev) como DoD; cierre blando solo con aprobación de riesgo registrada o el Sprint queda bloqueado.
+- Guardrails nuevos: limitaciones con evidencia, hechos externos verificados con cita (URL + qué + fecha), baseline limpio con escalación de commit, resolución de entorno BD; `library/resources` (supabase, databases, core-ai, ai-providers, env-template) con playbook por entorno y verificación de modelo.
+- Versión del adaptador actualizada a `0.7.0`.
+
+## 0.6.0 - 2026-06-21
+
+### Added
+
+- Estándar único de `.env.example` (`library/resources/env-template.md`): plantilla base, marcadores `# requerido`/`# opcional · activar si`, reglas de extensión (categoría titulada, sin variables duplicadas) y guía de llenado interactiva.
+- Recursos nuevos en el catálogo: Resend, reCAPTCHA, Core AI y OpenRouter.
+
+### Changed
+
+- Supabase a keys modernas (`PUBLISHABLE_KEY`/`SECRET_KEY`) más `PROJECT_ID`/`DB_PASSWORD`/`DIRECT_CONNECTION_STRING`; legacy en sección aparte.
+- Redis con `REDIS_ENABLED` y sin duplicar `REDIS_URL`.
+- Permitido copiar `.env.example` a `.env`/`.env.local` sin leer ni versionar valores reales.
+- Versión del adaptador actualizada a `0.6.0`.
+
+### Security
+
+- BREAKING: variables de SonarQube renombradas a `SONARQUBE_URL`/`SONARQUBE_PROJECT_KEY`/`SONARQUBE_TOKEN` (recurso y MCP). Proyectos existentes deben renombrar.
+
+## 0.5.0 - 2026-06-20
+
+### Added
+
+- Gate de preparación pre-Sprint 1: selección y validación de herramientas, `bootstrap.json`, exclusión de secretos y aprobación humana.
+- Modo offline-first con semántica de cierre unificada (versionado vs verificado, jerarquía de entornos, taxonomía de cierre).
+- Templates nuevos: `deferred-activations.md` (ledger de activaciones diferidas) y `decisions.md` (ledger de decisiones), conectados a build, handoff y release.
+- DoR/DoD por Sprint con bloqueo y gate de salida "preguntas críticas = 0".
+- Reconciliación de respuestas del dueño con bloqueo; consulta previa del ledger antes de preguntar.
+- Niveles de servicio 1/2/3 y matriz de proveedores; tres niveles de evidencia de prueba.
+- Glosario ampliado con términos técnicos y conceptos nuevos.
+
+### Changed
+
+- Preferencia CLI sobre MCP y aclaración de tooling de desarrollo vs runtime del producto.
+- Aprobación por servicio (no en bloque) con evidencia de respuesta del servicio.
+- Secretos: identificar archivos y excluir de Git y Docker (`.dockerignore`, `.mcp.example.json`).
+- Revisión adversarial por dominio; gobernanza de ADR (estado del Plan distinto del ADR).
+- Versión del adaptador actualizada a `0.5.0`.
+
+## 0.4.35 - 2026-06-19
+
+### Added
+
+- Resumen breve obligatorio antes de iniciar cada Sprint aprobado, con alcance, verificaciones, riesgos y herramientas previstas.
+- Campos `Resumen breve de inicio` y `Herramientas previstas` en Plan y State para Sprint actual y siguiente Sprint.
+
+### Changed
+
+- Build inicia automáticamente después de mostrar `Iniciando la ejecución del Sprint N.` cuando no hay bloqueos.
+- Versión del adaptador actualizada a `0.4.35`.
+
+## 0.4.34 - 2026-06-18
+
+### Changed
+
+- `START_HERE.md` formaliza `docs/` como directorio estándar de insumos, registra ideas vagas en `docs/PROJECT_BRIEF.md`, usa `docs/PRD.md` como default de PRD y exige ruta real para documentación en carpeta.
+- Los mensajes esperados de activación de modo plan y cierre de Spec se muestran como citas Markdown, no como bloques copiables.
+- Versión del adaptador actualizada a `0.4.34`.
+
+### Added
+
+- Validaciones bloqueantes del contrato canónico de `START_HERE.md` en checks de artefactos y paridad.
+
 ## 0.4.33 - 2026-06-16
 
 ### Changed

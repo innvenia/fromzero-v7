@@ -49,6 +49,36 @@ node tools/runtime-smoke.mjs --root C:\ruta\del\repo
 
 Los packs externos siguen requiriendo aprobación, versión fija y validación.
 
+## Cargar variables locales (load-env-local.mjs)
+
+`load-env-local.mjs` da acceso operativo a los secretos que la persona puso en
+`.env.local`, sin exponerlos (política Controlled Secret Runtime Access). Es distinto del
+resolver: el resolver nunca lee `.env` (solo escanea para detectar el stack); este cargador
+sí lee `.env.local` a propósito, solo para runtime.
+
+- `node tools/load-env-local.mjs [--project <ruta>]`: reporta solo nombres y `NOMBRE_set:
+  true|false`. Nunca imprime valores.
+- `node tools/load-env-local.mjs -- <comando> [args...]`: mecanismo dentro-de-sesión. Carga
+  `.env.local` (con aliases) en el entorno del comando que lanza y lo ejecuta; nunca imprime
+  valores. Es como el agente usa los secretos en Codex y Antigravity (con el icono normal, sin
+  lanzadores, sin editar config de la app). Cubre CLI y API directa; los servidores MCP los
+  arranca la app, no el agente.
+- `node tools/load-env-local.mjs --claude-env-file`: lo usa el hook `SessionStart` de Claude
+  Code; vuelca `.env.local` al archivo de entorno de la sesión (`$CLAUDE_ENV_FILE`). No imprime
+  valores.
+- `node tools/load-env-local.mjs --setup <codex|claude-code|antigravity>`: asegura `.env.local`
+  (copia de `.env.example` si falta) y deja un README en `.fromzero/secret-access/`. No crea
+  lanzadores ni edita config de la app.
+- `node tools/load-env-local.mjs --verify <codex|claude-code|antigravity>`: revisa el estado
+  (`.env.local` existe e ignorado, variables con valor) y reporta OK/PENDIENTE y el paso
+  restante. Solo nombres, nunca valores.
+- Importable desde Node: `import { loadEnvLocal } from "./load-env-local.mjs"` puebla
+  `process.env` para scripts de API/SDK.
+- Aliases SonarQube: deriva `SONAR_TOKEN`/`SONAR_HOST_URL`/`SONAR_PROJECT_KEY` desde
+  `SONARQUBE_*` (y viceversa), para el SonarScanner CLI.
+- Guardrails: solo carga si `.env.local` existe y está ignorado por Git; confinado al
+  proyecto; nunca imprime valores.
+
 ## Validación de artefactos
 
 `check-artifacts.mjs` revisa artefactos `artifacts/FROMZERO_*.md`, `artifacts/START_HERE.md` y artefactos auxiliares estructurados bajo `artifacts/`:

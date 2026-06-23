@@ -91,6 +91,8 @@ Contexto visible:
 
 Por qué importa:
 
+Por qué no basta con asumir lo documentado:
+
 Tarjeta de decisión técnica:
 
 - Decisión en lenguaje común:
