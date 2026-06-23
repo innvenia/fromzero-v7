@@ -44,3 +44,12 @@ git diff --check
 - Seed remoto OpenRouter: `openrouter_seed_count = 1` para `google/gemma-4-26b-a4b-it:free`.
 - Prueba RLS real rollback-only: usuario sintético autenticado en tenant A ve `visible_same_tenant=1`, `visible_cross_tenant=0`, `visible_total=1`.
 - Advisory remoto fuera de alcance Sprint 9: `public.modules`, `public.plans` y `public.settings` tienen RLS deshabilitado; no se corrigió por ser deuda preexistente y requerir políticas propias.
+
+## Cierre pre-Sprint 10 2026-06-22
+
+- Commits Sprint 9 registrados: `f5fd78e`, `0696b33`, `e173e0e`.
+- Decisión aprobada: documentar advisory RLS global de `settings`, `modules` y `plans` sin migración antes de Sprint 10.
+- `npm run check`: pasó con 22 archivos de prueba, 114 pruebas, coverage statements 87.64% y build Next.js exitoso.
+- `python -m pytest core-ai/tests`: 4 pruebas pasaron.
+- `npm audit --audit-level=moderate`: 0 vulnerabilidades.
+- `git diff --check`: sin errores de whitespace; advertencias CRLF existentes en tooling FromZero.

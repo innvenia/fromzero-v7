@@ -11,24 +11,24 @@
 | Fecha de creación | 2026-06-18 |
 | Última actualización | 2026-06-22 |
 | Estado actual | activo |
-| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline; 2026-06-19: Sprint 4 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 4 completado localmente con auth/RBAC/API keys, migración SQL versionada, contratos Zod y pruebas; 2026-06-19: Sprint 5 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 5 completado localmente con Module Factory, Grid Universal, custom fields, filters, relationships, DataGrid, pruebas y documentación; 2026-06-19: Sprint 6 iniciado por aprobación explícita del usuario con Stripe mockeable y sin cobros reales; 2026-06-19: Sprint 6 completado localmente con billing core, subscriptions, statements, invoices, adapter Stripe mockeable, webhook HMAC, PDF individual, migración SQL versionada y pruebas; 2026-06-19: Sprint 7 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 7 completado localmente con storage, documents, tags, bookmarks, consent records, SQL versionado, pg_cron de purga y pruebas; 2026-06-19: Sprint 8 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 8 completado localmente con event outbox, jobs, rules, notifications, email templates, integrations/webhooks, SSRF/HMAC, import/export, SQL versionado y pruebas; 2026-06-21: Fase 1 Sprint 1-8 ejecutada con GitHub origin, Supabase cloud dev, Sonar config, UI capturas, handler privado de referencia y separación demo/fundacional; 2026-06-21: validación final local y cloud ejecutada sin tocar `docs/`, `.codex/` ni `.env.local`; 2026-06-21: GitHub Actions pasó en run `27921644951` y SonarQube publicó baseline para `fromzero-framework`; 2026-06-22: dependencias Sprint 1-8 revalidadas localmente y Sprint 9 iniciado por solicitud del usuario; 2026-06-22: Sprint 9 completado localmente con Core AI, OpenRouter adapter mockeable, ai_models, ai_budgets, redaction, budgets y pruebas; 2026-06-22: Sprint 9 reabierto como schema/RLS, entorno resuelto como cloud dev, migración `20260622222347_core_ai_openrouter.sql` aplicada a Supabase Cloud dev y RLS negativa cross-tenant validada con rollback |
-| Aprobación del usuario | aprobada para ejecutar Fase 1 |
-| Fecha de aprobación | 2026-06-21 |
+| Historial de estados | 2026-06-18: creado junto con Plan tras aprobación explícita de Spec; 2026-06-18: Plan/Spec/ADR corregidos por Task path, pg_cron y FCP, requiere re-aprobación; 2026-06-18: propagados ajustes Core AI, auditoría, RBAC, rules e integraciones a Spec/Plan/ADRs, requiere re-aprobación; 2026-06-18: plan vigente aprobado explícitamente, Sprint 1 pendiente de confirmación pre-código; 2026-06-18: Sprint 1 iniciado por aprobación explícita del usuario; 2026-06-18: Sprint 1 completado; 2026-06-18: Sprint 2 iniciado por solicitud `continua con el siguiente sprint`; 2026-06-18: Sprint 2 completado y commiteado; 2026-06-18: Sprint 3 iniciado por solicitud literal `ejecuta sprint 3`; 2026-06-18: Sprint 3 completado localmente con migración SQL versionada, bootstrap, contratos Zod, health API y pruebas; 2026-06-18: `.mcp.json` local preparado para Supabase y SonarQube con servidores deshabilitados y sin secretos inline; 2026-06-18: SonarQube MCP alineado a Docker stdio sin token inline; 2026-06-18: Supabase MCP alineado a npx stdio en modo read-only sin token inline; 2026-06-19: Sprint 4 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 4 completado localmente con auth/RBAC/API keys, migración SQL versionada, contratos Zod y pruebas; 2026-06-19: Sprint 5 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 5 completado localmente con Module Factory, Grid Universal, custom fields, filters, relationships, DataGrid, pruebas y documentación; 2026-06-19: Sprint 6 iniciado por aprobación explícita del usuario con Stripe mockeable y sin cobros reales; 2026-06-19: Sprint 6 completado localmente con billing core, subscriptions, statements, invoices, adapter Stripe mockeable, webhook HMAC, PDF individual, migración SQL versionada y pruebas; 2026-06-19: Sprint 7 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 7 completado localmente con storage, documents, tags, bookmarks, consent records, SQL versionado, pg_cron de purga y pruebas; 2026-06-19: Sprint 8 iniciado por aprobación explícita del usuario; 2026-06-19: Sprint 8 completado localmente con event outbox, jobs, rules, notifications, email templates, integrations/webhooks, SSRF/HMAC, import/export, SQL versionado y pruebas; 2026-06-21: Fase 1 Sprint 1-8 ejecutada con GitHub origin, Supabase cloud dev, Sonar config, UI capturas, handler privado de referencia y separación demo/fundacional; 2026-06-21: validación final local y cloud ejecutada sin tocar `docs/`, `.codex/` ni `.env.local`; 2026-06-21: GitHub Actions pasó en run `27921644951` y SonarQube publicó baseline para `fromzero-framework`; 2026-06-22: dependencias Sprint 1-8 revalidadas localmente y Sprint 9 iniciado por solicitud del usuario; 2026-06-22: Sprint 9 completado localmente con Core AI, OpenRouter adapter mockeable, ai_models, ai_budgets, redaction, budgets y pruebas; 2026-06-22: Sprint 9 reabierto como schema/RLS, entorno resuelto como cloud dev, migración `20260622222347_core_ai_openrouter.sql` aplicada a Supabase Cloud dev y RLS negativa cross-tenant validada con rollback; 2026-06-22: plan pre-Sprint 10 aprobado por el usuario, rama `codex/pre-sprint-10-readiness` creada para PR, commits Sprint 9 reales registrados y advisory RLS global documentado como deuda aceptada sin migración |
+| Aprobación del usuario | aprobada para cierre pre-Sprint 10 |
+| Fecha de aprobación | 2026-06-22 |
 | Frase literal de aprobación | PLEASE IMPLEMENT THIS PLAN |
 | Artefactos prerequisito | `artifacts/FROMZERO_PLAN.md` aprobado |
 | Documentos o fuentes asociadas | `artifacts/FROMZERO_SPEC.md`, `artifacts/FROMZERO_PLAN.md`, `artifacts/adr/`, Git |
 | Artefactos derivados o relacionados | `artifacts/handoffs/`, `artifacts/issues/`, `artifacts/test-plans/` |
-| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; Sprint 8: `c124575 feat(events): add automation and data exchange contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config`; Fase 1: `c494b9f feat(fromzero): complete phase 1 guided sanitation`; CI fix: `3ff5c76 ci: use project npm version` |
-| Restricciones de seguridad | Sin secretos impresos. `.env.local` leído solo para presencia/conexión. `bootstrap.json` local-only. `docs/` y `.codex/` fuera de alcance. |
+| Commit asociado | Sprint 1: `6d158ff chore(fromzero): completa sprint 1 base inicial`; Sprint 2: `1133fad feat(shell): add localized app shell`; Sprint 3: `b57c807 feat(db): add foundation schema and bootstrap`; Sprint 4: `b1bc9a4 feat(auth): add tenant rbac and api key contracts`; Sprint 5: `f7b3b86 feat(factory): add module factory grid contracts`; Sprint 6: `66b458e feat(billing): add billing core contracts`; Sprint 7: `bf4478c feat(storage): add document file shared module contracts`; Sprint 8: `c124575 feat(events): add automation and data exchange contracts`; MCP config: commits `chore(mcp): prepare local server config`, `chore(mcp): align sonarqube server config`, `chore(mcp): align supabase server config`; Fase 1: `c494b9f feat(fromzero): complete phase 1 guided sanitation`; CI fix: `3ff5c76 ci: use project npm version`; Sprint 9 cierre local/cloud: `f5fd78e fix(sonar): resolve quality findings before sprint 9`, `0696b33 feat(ai): validate sprint 9 cloud schema and rls`, `e173e0e fix(ai): resolve sonar quality gate findings` |
+| Restricciones de seguridad | Sin secretos impresos. `.env.local` leído solo para presencia/conexión. `bootstrap.json` local-only. Proveedores reales, purgas reales, MCP y migraciones nuevas requieren aprobación separada. |
 
 ## Resumen para el dueño
 
 - Estado actual: Sprint 9 cerrado validado en cloud dev.
 - Último avance: Core AI interno, OpenRouter adapter mockeable, catálogo `ai_models`, presupuestos `ai_budgets` y redacción/logs sin prompts.
 - Sprint actual: Sprint 9 cerrado validado; Sprint 10 pendiente no iniciado.
-- Siguiente acción: revisar evidencia y aprobar o pedir correcciones antes de Sprint 10.
-- Bloqueos o riesgos: OpenRouter real sigue diferido; advisory preexistente detectó RLS deshabilitado en `public.modules`, `public.plans` y `public.settings`, fuera del alcance Sprint 9.
-- Qué necesita decidir o aprobar el dueño: activar OpenRouter real y revisar el advisory RLS preexistente.
+- Siguiente acción: cerrar PR pre-Sprint 10 y no iniciar Sprint 10 hasta CI verde y working tree limpio.
+- Bloqueos o riesgos: OpenRouter real sigue diferido; advisory preexistente detectó RLS deshabilitado en `public.modules`, `public.plans` y `public.settings`; el dueño aprobó documentarlo sin migración antes de Sprint 10.
+- Qué necesita decidir o aprobar el dueño: mergear o pedir correcciones del PR pre-Sprint 10; activar OpenRouter real queda como gate separado.
 
 ## 1. Estado general
 
@@ -39,11 +39,11 @@
 - Plan: aprobado.
 - ADRs afectados: 001, 002, 003, 004 y 005 aprobados o reconciliados.
 - Git: inicializado.
-- Branch: `main`.
-- Working tree: validar con `git status --short` antes de continuar.
+- Branch: `codex/pre-sprint-10-readiness`.
+- Working tree: debe quedar limpio al cerrar el PR pre-Sprint 10.
 - Commit base antes de MCP config: `b57c807 feat(db): add foundation schema and bootstrap`.
-- Último commit FromZero: `c494b9f feat(fromzero): complete phase 1 guided sanitation`.
-- Último commit publicado: `3ff5c76 ci: use project npm version`.
+- Último commit FromZero: `e173e0e fix(ai): resolve sonar quality gate findings`.
+- Último commit publicado en `origin/main`: `160c5c5 security(sonar): remove notification sms regex hotspot`.
 
 ## 2. Artefactos vigentes
 
@@ -61,7 +61,7 @@
 - Estado: cerrado validado.
 - Objetivo completado: Core AI interno con FastAPI/Pydantic v2, provider adapter OpenRouter mockeable, model catalog, opt-in contractual, redaction, budgets y usage metadata para `ai.invocation`.
 - Fuente en plan: `artifacts/FROMZERO_PLAN.md` -> `### Sprint 9 - Core AI y OpenRouter`.
-- Commit asociado: pendiente.
+- Commit asociado: `f5fd78e fix(sonar): resolve quality findings before sprint 9`; `0696b33 feat(ai): validate sprint 9 cloud schema and rls`; `e173e0e fix(ai): resolve sonar quality gate findings`.
 
 ## 4. Último Sprint completado
 
@@ -74,7 +74,7 @@
 - Consulta remota: `public.ai_models` y `public.ai_budgets` existen, tienen RLS habilitado, `authenticated` tiene `SELECT`, `anon` no tiene `SELECT`, y `schema_migrations.version = 20260622222347`.
 - Prueba RLS real: transacción rollback-only con usuario sintético autenticado en tenant A; resultado `visible_same_tenant=1`, `visible_cross_tenant=0`, `visible_total=1`.
 - Verificación visual: no aplica; Sprint 9 no agrega UI web.
-- Commit: pendiente.
+- Commit: `f5fd78e fix(sonar): resolve quality findings before sprint 9`; `0696b33 feat(ai): validate sprint 9 cloud schema and rls`; `e173e0e fix(ai): resolve sonar quality gate findings`.
 
 ## 4.1 Commits previos relevantes
 
@@ -99,6 +99,9 @@
 | 66b458e | feat(billing): add billing core contracts | Sprint 6 | cerrado | Billing core, Stripe mock, webhooks, PDF y SQL versionado |
 | bf4478c | feat(storage): add document file shared module contracts | Sprint 7 | cerrado local | Storage, documents, tags, bookmarks, consent y SQL versionado |
 | c124575 | feat(events): add automation and data exchange contracts | Sprint 8 | cerrado local | Event outbox, jobs, rules, notifications, webhooks, import/export y SQL versionado |
+| f5fd78e | fix(sonar): resolve quality findings before sprint 9 | Pre-Sprint 9 | cerrado | Quality findings previos a Sprint 9 |
+| 0696b33 | feat(ai): validate sprint 9 cloud schema and rls | Sprint 9 | cerrado validado | Migración cloud dev y RLS negativa cross-tenant |
+| e173e0e | fix(ai): resolve sonar quality gate findings | Sprint 9 | cerrado validado | Hallazgos Sonar de Core AI corregidos |
 
 ## 5. Siguiente Sprint
 
@@ -132,6 +135,8 @@
 | FromZero artifact checker | no bloqueante | antes de cierre Fase 1 | falla solo por `.codex/plugins/fromzero/templates/*`, fuera de alcance de esta Fase |
 | OpenRouter ID | cerrado validado | Sprint 9 | `google/gemma-4-26b-a4b-it:free` revalidado contra OpenRouter oficial |
 | Sprint 9 Core AI/schema/RLS | cerrado validado | antes de Sprint 10 | contratos TS, Pydantic/FastAPI, adapter OpenRouter mockeable, redaction, budgets, SQL versionado; migración cloud aplicada; `public.ai_models`/`public.ai_budgets` verificadas; RLS cross-tenant negativa pasada |
+| Advisory RLS global `settings`/`modules`/`plans` | diferido aceptado | antes de Sprint 10 | dueño aprobó documentar sin migración; tablas documentadas como globales sin `tenant_id`, con deuda de access-control/RLS para hardening |
+| PR pre-Sprint 10 | en preparación | antes de Sprint 10 | rama `codex/pre-sprint-10-readiness`, CI verde, working tree limpio y PR creado |
 | Servicios cloud | pendiente | Sprint que los use | aprobación por servicio |
 | Migraciones cloud | pendiente | Sprint que las ejecute | aprobación antes de ejecutar |
 | Billing real | pendiente | Sprint 6 | aprobación antes de provider real |
@@ -170,17 +175,17 @@
 
 ## 7. Bloqueos y riesgos
 
-- Bloqueos actuales: ninguno para cierre validado de Sprint 9.
-- Riesgos activos: storage/purga física, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export real, performance FCP/LCP/API p95, revisión legal.
+- Bloqueos actuales: no iniciar Sprint 10 hasta cerrar PR pre-Sprint 10 con CI verde y working tree limpio.
+- Riesgos activos: storage/purga física, billing/webhooks, Core AI/OpenRouter, jobs automatizados pg_cron/Inngest, import/export real, performance FCP/LCP/API p95, revisión legal, advisory RLS global documentado sin fix.
 - Decisiones abiertas: activación MCP, observabilidad concreta por app derivada, Redis activo, legal final, servicios cloud reales y OpenRouter real.
 - Secretos o accesos requeridos: ninguno adicional para conexión directa Supabase; serán requeridos por Sprint con aprobación separada.
 - Estado de aprobación humana requerido: requerido para provider real, Inngest cloud, email/webhook real o purga real.
 
 ## 8. Próxima acción
 
-Revisar Sprint 9 cerrado validado y aprobar o pedir correcciones. Sprint 10 no iniciado.
+Cerrar PR pre-Sprint 10. Sprint 10 no iniciado.
 
-No activar OpenRouter real, purgas reales, proveedores reales ni MCP sin aprobación separada.
+No activar OpenRouter real, purgas reales, proveedores reales, MCP ni migraciones RLS nuevas sin aprobación separada.
 
 ## 9. Reglas de actualización
 
