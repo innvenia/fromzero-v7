@@ -11,7 +11,7 @@
 | Fecha de creación | 2026-06-21 |
 | Última actualización | 2026-06-22 |
 | Estado actual | aprobado |
-| Historial de estados | 2026-06-21: creado durante Fase 1 para normalizar P1-P62; 2026-06-22: Sprint 9 revalidó OpenRouter e implementó Core AI local; 2026-06-22: plan pre-Sprint 10 aprobado, Sprint 9 cerrado con commits reales y advisory RLS global documentado sin migración por decisión del dueño |
+| Historial de estados | 2026-06-21: creado durante Fase 1 para normalizar P1-P62; 2026-06-22: Sprint 9 revalidó OpenRouter e implementó Core AI local; 2026-06-22: plan pre-Sprint 10 aprobado, Sprint 9 cerrado con commits reales y advisory RLS global documentado sin migración por decisión del dueño; 2026-06-22: dueño pidió conservar advisory RLS global como diferido del proyecto y revisarlo al finalizar todos los Sprints |
 | Aprobación del usuario | aprobada |
 | Fecha de aprobación | 2026-06-21 |
 | Frase literal de aprobación | PLEASE IMPLEMENT THIS PLAN |
@@ -87,7 +87,7 @@
 | P60 | Revalidar OpenRouter antes de Sprint 9 | cerrado validado |
 | P61 | Límites costo/uso como deuda Core AI | cerrado validado |
 | P62 | Legal externo responsabilidad de app derivada | cerrado validado |
-| P63 | Advisory RLS global en `settings`, `modules` y `plans` se documenta sin migración antes de Sprint 10 | diferido aceptado |
+| P63 | Advisory RLS global en `settings`, `modules` y `plans` se documenta sin migración y se revisa al finalizar todos los Sprints | diferido aceptado hasta cierre de Sprints |
 
 ## Evidencia clave
 
@@ -97,4 +97,4 @@
 - `GET /api/v1/settings` es el handler privado de referencia.
 - GitHub Actions y SonarQube están configurados; `main` tiene runs verdes y el PR pre-Sprint 10 debe validar la rama.
 - Sprint 9 quedó asociado a `f5fd78e`, `0696b33` y `e173e0e`.
-- Advisory RLS global: `settings`, `modules` y `plans` son tablas globales sin `tenant_id`; queda documentado sin migración antes de Sprint 10 por decisión explícita del dueño.
+- Advisory RLS global: `settings`, `modules` y `plans` son tablas globales sin `tenant_id`; queda documentado sin migración antes de Sprint 10 y debe revisarse al finalizar todos los Sprints por decisión explícita del dueño.

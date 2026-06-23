@@ -48,7 +48,7 @@ git diff --check
 ## Cierre pre-Sprint 10 2026-06-22
 
 - Commits Sprint 9 registrados: `f5fd78e`, `0696b33`, `e173e0e`.
-- Decisión aprobada: documentar advisory RLS global de `settings`, `modules` y `plans` sin migración antes de Sprint 10.
+- Decisión aprobada: documentar advisory RLS global de `settings`, `modules` y `plans` sin migración antes de Sprint 10 y revisarlo al finalizar todos los Sprints.
 - `npm run check`: pasó con 22 archivos de prueba, 114 pruebas, coverage statements 87.64% y build Next.js exitoso.
 - `python -m pytest core-ai/tests`: 4 pruebas pasaron.
 - `npm audit --audit-level=moderate`: 0 vulnerabilidades.
